@@ -7,16 +7,18 @@ exports.seed = async function (knex) {
 
   const hash = await bcrypt.hash('password123', 10);
 
-  const [adminId, memberId] = await knex('users').insert([
+  const userRows = await knex('users').insert([
     { email: 'admin@hoianblog.vn', password_hash: hash, name: 'Admin', role: 'admin' },
     { email: 'member@hoianblog.vn', password_hash: hash, name: 'Nguyễn Văn A', role: 'member' },
   ]).returning('id');
+  const [adminId, memberId] = userRows.map((row) => row.id ?? row);
 
-  const [dulichId, amthucId, vanhoadId] = await knex('categories').insert([
+  const categoryRows = await knex('categories').insert([
     { name: 'Du lịch', slug: 'du-lich', description: 'Tin tức du lịch Hội An - Đà Nẵng' },
     { name: 'Ẩm thực', slug: 'am-thuc', description: 'Ẩm thực đặc sắc miền Trung' },
     { name: 'Văn hóa', slug: 'van-hoa', description: 'Văn hóa và lịch sử Hội An' },
   ]).returning('id');
+  const [dulichId, amthucId, vanhoadId] = categoryRows.map((row) => row.id ?? row);
 
   await knex('posts').insert([
     {

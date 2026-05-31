@@ -1,0 +1,12 @@
+{
+  "task_id": "fe-implementation",
+  "domain": "fe",
+  "phase": "verify",
+  "attempt": 1,
+  "actions": [
+    {
+      "purpose": "Run final frontend build",
+      "cmd": "cd demo_source_fe && npm run build"
+    }
+  ]
+}

@@ -1,180 +1,148 @@
-# Blog Tin Tức Hội An - Đà Nẵng
+# AI Full-Cycle Demo: Blog Hoi An - Da Nang
 
-Blog tin tức về Hội An và thành phố Đà Nẵng. Giao diện thân thiện người dùng, có trang quản lý admin để đăng tin.
+Du an ma nguon mo chia se cach ap dung **AI full cycle** de phat trien san pham web theo vong lap:
+**plan -> create -> review -> correct -> verify -> qa gate -> report**.
+
+Project nay gom 2 muc tieu song song:
+- San pham demo blog tin tuc (FE + BE + DB + auth + admin).
+- Bo khung agent/orchestrator de tu dong hoa quy trinh phat trien, test, fix loi, cap nhat tai lieu.
+
+## Gia tri chinh
+
+- Chia se thuc hanh xay dung AI workflow cho team dev.
+- Co san task contract, scripts runtime, gate rule va report de tai su dung.
+- Co the mo rong khi them tinh nang moi ma khong can xay lai tu dau.
 
 ## Tech Stack
 
-| Layer | Công nghệ |
+| Layer | Cong nghe |
 |---|---|
 | Frontend | React 18 + Vite + TailwindCSS + React Router v6 |
-| Rich Text | TipTap |
 | Backend | Node.js + Express + JWT |
 | Database | PostgreSQL + Knex.js |
-| Upload ảnh | Multer (local `/uploads`) |
-| Auth | JWT + bcrypt |
+| Auth | JWT + bcryptjs |
+| Upload | Multer |
+| Test | Jest + Supertest |
+| Automation | Bash scripts + JSON task contracts |
 
-## Cấu trúc thư mục
+## Cau truc thu muc (ban moi)
 
-```
+```text
 demo_workspace/
-├── demo_source_fe/          # React app
-│   └── src/
-│       ├── pages/
-│       │   ├── public/      # Home, Category, PostDetail, About, Contact
-│       │   └── admin/       # Dashboard, PostList, PostForm, UserList
-│       ├── components/      # Navbar, Footer, PostCard, RichEditor...
-│       ├── services/        # axios API calls
-│       └── context/         # AuthContext
-│
-├── demo_source_be/          # Express app
-│   └── src/
-│       ├── routes/          # auth, posts, categories, users, upload
-│       ├── controllers/
-│       ├── middlewares/     # auth.js, role.js
-│       └── db/
-│           ├── migrations/
-│           └── seeds/
-│
-├── demo_docs/               # Tài liệu: ERD, API spec, wireframe
-└── demo_test/               # Test cases (Jest + Supertest)
+├── demo_source_fe/                # Frontend source (public + admin)
+├── demo_source_be/                # Backend source (routes/controllers/db/tests)
+│   └── src/__tests__/             # Backend tests
+├── demo_docs/                     # Product/docs thiet ke nghiep vu
+├── docs/                          # Tai lieu van hanh agent va mapping
+├── agents/                        # Dinh nghia role agent
+├── skills/                        # Skill theo domain + phase
+├── scripts/
+│   ├── run_cycle.sh               # Full-cycle v4 (command-driven)
+│   ├── run_cycle_v5.sh            # Full-cycle v5 (AI-driven contract)
+│   └── agent_runner.sh            # Runner thuc thi phase plan
+├── .agents/
+│   ├── tasks.json                 # Task contract v4
+│   ├── tasks.v5.json              # Task contract v5
+│   ├── ai_status.jsonl            # Timeline event cho AI cycle
+│   └── overall_gate_decision.json # Ket qua gate tong
+└── reports/                       # Bao cao moi lan cycle
 ```
 
-## Database Schema
+## AI Full-Cycle Runtime
 
-```sql
-users        (id, email, password_hash, name, role: 'admin'|'member', created_at)
-categories   (id, name, slug, description)
-posts        (id, title, slug, content, thumbnail_url, status: 'draft'|'published',
-              author_id → users, category_id → categories, created_at, updated_at)
-```
+### v4 (command-driven)
+- Dung `scripts/run_cycle.sh`.
+- Co phase va gate, phu hop de bootstrap nhanh.
 
-## API Endpoints
+### v5 (AI-driven contract)
+- Dung `scripts/run_cycle_v5.sh`.
+- Moi task khai bao day du hanh dong theo phase trong `.agents/tasks.v5.json`.
+- `scripts/agent_runner.sh` thuc thi phase plan co cau truc (`purpose` + `cmd`).
+- Xuat timeline AI va report de audit.
 
-### Auth
-- `POST /api/auth/login`
-- `POST /api/auth/register`
+Xem them: `docs/agent-v5-runtime.md`, `docs/agent-playbook.md`, `docs/skills-mapping.md`.
 
-### Posts (public)
-- `GET /api/posts` — danh sách, filter by category, pagination
-- `GET /api/posts/:slug` — chi tiết
+## Domain Product
 
-### Posts (member+)
-- `POST /api/posts` — tạo bài
-- `PUT /api/posts/:id` — sửa bài của mình
-- `DELETE /api/posts/:id` — xóa bài của mình
+### Public routes
+- `/`
+- `/category/:slug`
+- `/post/:slug`
+- `/about`
+- `/contact`
 
-### Posts (admin)
-- `PUT /api/admin/posts/:id/status` — duyệt/ẩn bài
-- `DELETE /api/admin/posts/:id` — xóa bất kỳ
+### Admin routes
+- `/admin/login`
+- `/admin/dashboard`
+- `/admin/posts`
+- `/admin/posts/new`
+- `/admin/posts/:id/edit`
+- `/admin/categories`
+- `/admin/users`
 
-### Categories (admin)
-- `GET/POST/PUT/DELETE /api/categories`
+### API core
+- Auth: `/api/auth/*`
+- Posts: `/api/posts/*`
+- Categories: `/api/categories/*`
+- Admin: `/api/admin/*`
+- Upload: `/api/upload`
+- Health: `/api/health`
 
-### Users (admin)
-- `GET /api/admin/users`
-- `PUT /api/admin/users/:id/role`
+## Quick Start
 
-### Upload
-- `POST /api/upload`
-
-## Giao diện
-
-### Public Site
-| Route | Trang |
-|---|---|
-| `/` | Homepage: banner, bài nổi bật, bài mới nhất |
-| `/category/:slug` | Danh sách bài theo danh mục |
-| `/post/:slug` | Chi tiết bài viết |
-| `/about` | Giới thiệu blog |
-| `/contact` | Form liên hệ |
-
-### Admin Panel (`/admin/*`)
-| Route | Trang |
-|---|---|
-| `/admin/login` | Đăng nhập |
-| `/admin/dashboard` | Thống kê tổng quan |
-| `/admin/posts` | Danh sách bài, filter, duyệt/ẩn |
-| `/admin/posts/new` | Tạo bài mới (TipTap editor) |
-| `/admin/posts/:id/edit` | Sửa bài |
-| `/admin/categories` | Quản lý danh mục |
-| `/admin/users` | Quản lý người dùng (admin only) |
-
-## Phân quyền
-
-| Hành động | Admin | Member |
-|---|---|---|
-| Tạo bài | ✅ | ✅ |
-| Sửa/xóa bài của mình | ✅ | ✅ |
-| Duyệt/ẩn/xóa bài người khác | ✅ | ❌ |
-| Quản lý danh mục | ✅ | ❌ |
-| Quản lý người dùng | ✅ | ❌ |
-
-## Kế hoạch triển khai
-
-| Phase | Nội dung | Thời gian |
-|---|---|---|
-| 1 | Setup project + DB migrations + seed | 1-2 ngày |
-| 2 | Backend API (auth, posts, categories, upload) | 3-4 ngày |
-| 3 | Frontend Public (homepage, category, post detail, about, contact) | 3-4 ngày |
-| 4 | Admin Panel (dashboard, quản lý bài/danh mục/user) | 3-4 ngày |
-| 5 | Responsive, test, tài liệu API | 2 ngày |
-
-## Bắt đầu
+### 1) Cai dat
 
 ```bash
-# Backend
-cd demo_source_be && npm install && npm run dev
-
-# Frontend
-cd demo_source_fe && npm install && npm run dev
+cd demo_source_be && npm install
+cd ../demo_source_fe && npm install
 ```
 
-## 🗂 Project Status
-_Cập nhật: 2025-05-30_
+### 2) Chay backend
 
-### Docs (`demo_docs/`)
-| Phần | Status | Chi tiết |
-|---|---|---|
-| FE screen-list | ✅ Xong | 11 màn hình, `demo_docs/fe/screen-list.md` |
-| FE detail design | ✅ Xong | 11 file md (HOME, CATEGORY, POST_DETAIL, ABOUT, CONTACT, ADMIN_LOGIN, ADMIN_DASHBOARD, ADMIN_POST_LIST, ADMIN_POST_FORM, ADMIN_CATEGORY_LIST, ADMIN_USER_LIST) |
-| API list | ✅ Xong | 22 endpoint, `demo_docs/api/api-list.md` |
-| API detail design | ✅ Xong | 22 file md |
+```bash
+cd demo_source_be
+npm run migrate
+npm run seed
+npm run dev
+```
 
-### Backend (`demo_source_be/`)
-| Phần | Status | Chi tiết |
-|---|---|---|
-| package.json + scripts | ✅ Xong | dev, migrate, seed |
-| knexfile.js + DB config | ✅ Xong | PostgreSQL, dotenv |
-| Migrations | ✅ Xong | users, categories, posts |
-| Seeds | ✅ Xong | 2 users, 3 categories, 3 posts mẫu |
-| node_modules | ✅ Installed | — |
-| src/app.js | ✅ Xong | Express cơ bản, health check `/api/health` |
-| Middlewares (auth, role) | ❌ Chưa làm | — |
-| Routes | ❌ Chưa làm | — |
-| Controllers | ❌ Chưa làm | — |
-| Upload (Multer) | ❌ Chưa làm | — |
-| DB migrate/seed chạy thực | ❌ Chưa chạy | Cần PostgreSQL DB `hoian_blog` |
+### 3) Chay frontend
 
-### Frontend (`demo_source_fe/`)
-| Phần | Status | Chi tiết |
-|---|---|---|
-| package.json + config | ✅ Xong | Vite, Tailwind, PostCSS |
-| node_modules | ✅ Installed | — |
-| src/main.jsx + App.jsx | ✅ Xong | Skeleton, chỉ có route `/` placeholder |
-| src/services/api.js | ✅ Xong | axios + JWT interceptor |
-| AuthContext | ❌ Chưa làm | — |
-| Components (Navbar, Footer, PostCard...) | ❌ Chưa làm | — |
-| Pages Public (HOME, CATEGORY...) | ❌ Chưa làm | — |
-| Pages Admin | ❌ Chưa làm | — |
-| ProtectedRoute | ❌ Chưa làm | — |
+```bash
+cd demo_source_fe
+npm run dev
+```
 
-### Tests (`demo_test/`)
-| Phần | Status | Chi tiết |
-|---|---|---|
-| Thư mục / setup | ❌ Chưa làm | — |
+## Chay full-cycle automation
 
-### Bước tiếp theo
-1. Tạo DB PostgreSQL `hoian_blog`, chạy migrate + seed
-2. Implement BE: middlewares → routes → controllers (theo thứ tự trong `demo_docs/api/`)
-3. Implement FE: AuthContext → components → pages public → pages admin
-4. Viết tests
+### V4
+
+```bash
+bash scripts/run_cycle.sh
+```
+
+### V5 (khuyen nghi cho demo AI full cycle)
+
+```bash
+bash scripts/run_cycle_v5.sh
+```
+
+Ket qua:
+- Gate tong: `.agents/overall_gate_decision.json`
+- Report moi nhat: `reports/ai-cycle-*.md` hoac `reports/cycle-*.md`
+
+## Mo rong cho feature moi
+
+1. Them task moi vao `.agents/tasks.v5.json`.
+2. Dinh nghia actions cho `create/review/correct/verify`.
+3. Chay `bash scripts/run_cycle_v5.sh`.
+4. Review report, tiep tuc toi uu skill/task contract.
+
+## Luu y open-source
+
+- Khong commit file secret local nhu `demo_source_be/.env`.
+- Co the commit `agents/`, `skills/`, `.agents/` neu muc tieu la chia se framework full-cycle cho cong dong.
+
+## Giay phep va dong gop
+
+Du an huong toi chia se cach lam, ban co the fork, mo rong task contracts, them skill packs va gui PR.

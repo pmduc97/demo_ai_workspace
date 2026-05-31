@@ -1,0 +1,16 @@
+{
+  "task_id": "be-implementation",
+  "domain": "be",
+  "phase": "verify",
+  "attempt": 1,
+  "actions": [
+    {
+      "purpose": "Run strict backend test suite",
+      "cmd": "cd demo_source_be && npm test"
+    },
+    {
+      "purpose": "Smoke-check API health endpoint",
+      "cmd": "cd demo_source_be && npm run start >/tmp/be_start.log 2>&1 & BE_PID=$!; sleep 2; curl -fsS http://localhost:3001/api/health >/dev/null; kill $BE_PID"
+    }
+  ]
+}

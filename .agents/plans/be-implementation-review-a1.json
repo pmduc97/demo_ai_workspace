@@ -1,0 +1,12 @@
+{
+  "task_id": "be-implementation",
+  "domain": "be",
+  "phase": "review",
+  "attempt": 1,
+  "actions": [
+    {
+      "purpose": "Run backend tests in tolerant mode",
+      "cmd": "cd demo_source_be && npm test -- --passWithNoTests"
+    }
+  ]
+}

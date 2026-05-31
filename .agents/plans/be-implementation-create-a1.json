@@ -1,0 +1,16 @@
+{
+  "task_id": "be-implementation",
+  "domain": "be",
+  "phase": "create",
+  "attempt": 1,
+  "actions": [
+    {
+      "purpose": "Ensure DB schema is ready",
+      "cmd": "cd demo_source_be && npm run migrate || true"
+    },
+    {
+      "purpose": "Seed sample data",
+      "cmd": "cd demo_source_be && npm run seed || true"
+    }
+  ]
+}

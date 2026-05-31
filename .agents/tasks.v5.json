@@ -1,0 +1,60 @@
+{
+  "tasks": [
+    {
+      "task_id": "be-implementation",
+      "domain": "be",
+      "max_attempts": 2,
+      "phases": {
+        "create": {
+          "actions": [
+            { "purpose": "Ensure DB schema is ready", "cmd": "cd demo_source_be && npm run migrate || true" },
+            { "purpose": "Seed sample data", "cmd": "cd demo_source_be && npm run seed || true" }
+          ]
+        },
+        "review": {
+          "actions": [
+            { "purpose": "Run backend tests in tolerant mode", "cmd": "cd demo_source_be && npm test -- --passWithNoTests" }
+          ]
+        },
+        "correct": {
+          "actions": [
+            { "purpose": "Re-run tests after fixes", "cmd": "cd demo_source_be && npm test -- --passWithNoTests" }
+          ]
+        },
+        "verify": {
+          "actions": [
+            { "purpose": "Run strict backend test suite", "cmd": "cd demo_source_be && npm test" },
+            { "purpose": "Smoke-check API health endpoint", "cmd": "cd demo_source_be && npm run start >/tmp/be_start.log 2>&1 & BE_PID=$!; sleep 2; curl -fsS http://localhost:3001/api/health >/dev/null; kill $BE_PID" }
+          ]
+        }
+      }
+    },
+    {
+      "task_id": "fe-implementation",
+      "domain": "fe",
+      "max_attempts": 2,
+      "phases": {
+        "create": {
+          "actions": [
+            { "purpose": "Compile frontend", "cmd": "cd demo_source_fe && npm run build" }
+          ]
+        },
+        "review": {
+          "actions": [
+            { "purpose": "Check key FE architecture files", "cmd": "test -f demo_source_fe/src/context/AuthContext.jsx && test -f demo_source_fe/src/components/ProtectedRoute.jsx" }
+          ]
+        },
+        "correct": {
+          "actions": [
+            { "purpose": "Rebuild FE after corrections", "cmd": "cd demo_source_fe && npm run build" }
+          ]
+        },
+        "verify": {
+          "actions": [
+            { "purpose": "Run final frontend build", "cmd": "cd demo_source_fe && npm run build" }
+          ]
+        }
+      }
+    }
+  ]
+}

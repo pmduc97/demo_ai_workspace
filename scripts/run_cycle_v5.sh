@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$ROOT_DIR"
 STATE_DIR="$ROOT_DIR/.agents"
 REPORT_DIR="$ROOT_DIR/reports"
 TASKS_FILE="$STATE_DIR/tasks.v5.json"

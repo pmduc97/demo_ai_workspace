@@ -9,6 +9,9 @@ if [[ $# -lt 2 ]]; then
   exit 1
 fi
 
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$ROOT_DIR"
+
 PLAN_FILE="$1"
 STATUS_FILE="$2"
 

@@ -27,7 +27,8 @@
   - correct -> `skills/qa/correct.md`
 
 ## Ready for production checklist
-- [ ] tasks.json có verify commands hợp lệ cho từng task.
+- [ ] tasks.json và tasks.v5.json có verify commands hợp lệ cho từng task.
 - [ ] findings.json được cập nhật theo output review thực tế.
-- [ ] run_cycle.sh chạy pass trên sample tasks.
+- [ ] run_cycle.sh và run_cycle_v5.sh chạy pass trên sample tasks.
 - [ ] reports/ được tạo và lưu đầy đủ audit.
+- [ ] Tất cả domain (BE/FE/Test/Docs/QA) đều có task tương ứng trong contract.

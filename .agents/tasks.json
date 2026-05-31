@@ -60,7 +60,28 @@
       "verify": [
         "test -f skills/be/create.md",
         "test -f skills/fe/create.md",
-        "test -f skills/test/create.md"
+        "test -f skills/test/create.md",
+        "for d in be fe test docs qa; do for p in create review correct; do test -f skills/$d/$p.md || (echo \"MISSING: skills/$d/$p.md\" && exit 1); done; done && echo 'All skill files present'"
+      ]
+    },
+    {
+      "task_id": "test-suite",
+      "title": "Backend test suite setup and coverage",
+      "domain": "test",
+      "max_attempts": 2,
+      "create": [
+        "mkdir -p demo_source_be/src/__tests__",
+        "cd demo_source_be && npm test -- --passWithNoTests"
+      ],
+      "review": [
+        "ls demo_source_be/src/__tests__/",
+        "cd demo_source_be && npm test -- --passWithNoTests --coverage 2>&1 | tail -20"
+      ],
+      "correct": [
+        "cd demo_source_be && npm test -- --passWithNoTests"
+      ],
+      "verify": [
+        "cd demo_source_be && npm test"
       ]
     }
   ]

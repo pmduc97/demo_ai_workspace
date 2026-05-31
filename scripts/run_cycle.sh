@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$ROOT_DIR"
 STATE_DIR="$ROOT_DIR/.agents"
 REPORT_DIR="$ROOT_DIR/reports"
 TASKS_FILE="$STATE_DIR/tasks.json"
@@ -31,6 +32,7 @@ init_files() {
 JSON
   [[ -f "$FINDINGS_FILE" ]] || echo '{"findings":[]}' > "$FINDINGS_FILE"
   [[ -f "$STATUS_FILE" ]] || echo '{"history":[]}' > "$STATUS_FILE"
+  validate_json "$STATUS_FILE" || { echo "[cycle] ERROR: $STATUS_FILE is corrupt. Delete it to reset: rm '$STATUS_FILE'" >&2; exit 1; }
 }
 
 get_tasks_len() { node -e "const fs=require('fs');const d=JSON.parse(fs.readFileSync(process.argv[1],'utf8'));process.stdout.write(String((d.tasks||[]).length));" "$TASKS_FILE"; }
@@ -65,12 +67,10 @@ run_phase() {
   run_cmd_list "$task_id" "$domain" "$phase" "$task_json" "$attempt"
 }
 
-write_gate(){ cat > "$GATE_FILE" <<JSON
-{"task_id":"$1","domain":"$2","decision":"$3","reason":"$4","attempt":$5,"timestamp":"$(now)"}
-JSON
-cat > "$GATE_DIR/$1.json" <<JSON
-{"task_id":"$1","domain":"$2","decision":"$3","reason":"$4","attempt":$5,"timestamp":"$(now)"}
-JSON
+write_gate(){
+  local gate_json; gate_json="{\"task_id\":\"$1\",\"domain\":\"$2\",\"decision\":\"$3\",\"reason\":\"$4\",\"attempt\":$5,\"timestamp\":\"$(now)\"}"
+  echo "$gate_json" > "$GATE_FILE"
+  echo "$gate_json" > "$GATE_DIR/$1.json"
 }
 write_overall_gate(){ cat > "$OVERALL_GATE_FILE" <<JSON
 {"decision":"$1","reason":"$2","timestamp":"$(now)"}
@@ -116,7 +116,7 @@ process_task() {
 write_report(){ local report="$REPORT_DIR/cycle-$(date +%Y%m%d-%H%M%S).md"; {
  echo "# Cycle Report"; echo "- Generated: $(now)"; echo "- Overall Gate: $(tr '\n' ' ' < "$OVERALL_GATE_FILE" 2>/dev/null || echo n/a)"; echo
  echo "## Gate (last task)"; cat "$GATE_FILE" 2>/dev/null || true; echo
- echo "## Recent status entries"; tail -n 120 "$STATUS_FILE" || true; echo
+ echo "## Recent status entries"; node -e "const fs=require('fs');try{const d=JSON.parse(fs.readFileSync(process.argv[1],'utf8'));const h=d.history||[];console.log(JSON.stringify(h.slice(-20),null,2));}catch(e){console.log('(unreadable)')}" "$STATUS_FILE" 2>/dev/null || true; echo
  echo "## Recent logs"; tail -n 120 "$LOG_FILE" || true; } > "$report"; echo "$report"; }
 
 main(){ init_files; validate_json "$TASKS_FILE"; validate_json "$FINDINGS_FILE"; local len i task_json failed=0

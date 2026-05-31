@@ -1,36 +1,36 @@
 # Agent Playbook (Full Auto v4)
 
-## Muc tieu
-Van hanh full auto cho project theo vong lap: `create -> review -> correct -> verify -> qa_gate` den khi PASS hoac het retry.
+## Mục tiêu
+Vận hành full auto cho project theo vòng lặp: `create -> review -> correct -> verify -> qa_gate` đến khi PASS hoặc hết retry.
 
-## Pham vi tu dong hoa
+## Phạm vi tự động hóa
 - Backend: implement/fix API, middleware, controllers, routes.
 - Frontend: implement/fix pages, components, auth flow, route guard.
 - Test: unit/integration tests, test data.
-- DB: migrations, seeds, schema sync khi can.
-- Docs: cap nhat design/API/huong dan chay.
+- DB: migrations, seeds, schema sync khi cần.
+- Docs: cập nhật design/API/hướng dẫn chạy.
 
 ## Runtime files
 - `.agents/tasks.json`: queue task + command theo phase
 - `.agents/findings.json`: findings theo task
-- `.agents/task_status.json`: lich su phase
-- `.agents/gate_decision.json`: gate task gan nhat
-- `.agents/overall_gate_decision.json`: gate tong
-- `reports/cycle-<timestamp>.md`: report tong hop
+- `.agents/task_status.json`: lịch sử phase
+- `.agents/gate_decision.json`: gate task gần nhất
+- `.agents/overall_gate_decision.json`: gate tổng
+- `reports/cycle-<timestamp>.md`: report tổng hợp
 
 ## Tasks schema (v4)
-Moi task co the khai bao command cho tung phase:
-- `create`: tao/chinh code
-- `review`: chay check nhanh
+Mỗi task có thể khai báo command cho từng phase:
+- `create`: tạo/chỉnh code
+- `review`: chạy check nhanh
 - `correct`: auto-fix sau fail
-- `verify`: gate command bat buoc pass
+- `verify`: gate command bắt buộc pass
 
 ## Gate rules
-- FAIL neu con blocker `Critical/High` trong `findings.json` cua task.
-- FAIL neu bat ky command `verify` nao fail.
-- PASS khi verify pass va khong con blocker.
+- FAIL nếu còn blocker `Critical/High` trong `findings.json` của task.
+- FAIL nếu bất kỳ command `verify` nào fail.
+- PASS khi verify pass và không còn blocker.
 
-## Cach dung
+## Cách dùng
 ```bash
 ./scripts/run_cycle.sh
 ```

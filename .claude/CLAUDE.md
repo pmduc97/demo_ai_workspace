@@ -1,7 +1,7 @@
 # CLAUDE.md — Blog Hội An / Đà Nẵng
 
 ## 🗂 Project Status
-_Cập nhật: 2025-05-30_
+_Cập nhật: 2026-05-31_
 
 ### Docs (`demo_docs/`)
 | Phần | Status | Chi tiết |
@@ -19,11 +19,11 @@ _Cập nhật: 2025-05-30_
 | Migrations | ✅ Xong | users, categories, posts |
 | Seeds | ✅ Xong | 2 users, 3 categories, 3 posts mẫu |
 | node_modules | ✅ Installed | — |
-| src/app.js | ✅ Xong | Express cơ bản, health check `/api/health` |
-| Middlewares (auth, role) | ❌ Chưa làm | — |
-| Routes | ❌ Chưa làm | — |
-| Controllers | ❌ Chưa làm | — |
-| Upload (Multer) | ❌ Chưa làm | — |
+| src/app.js | ✅ Xong | Express + routes mount + error handler |
+| Middlewares (auth, role, validate) | ✅ Xong | `src/middlewares/` |
+| Routes | ✅ Xong | auth, posts, categories, admin, upload |
+| Controllers | ✅ Xong | auth, posts, categories, users, upload |
+| Upload (Multer) | ✅ Xong | `src/controllers/upload.controller.js` |
 | DB migrate/seed chạy thực | ❌ Chưa chạy | Cần PostgreSQL DB `hoian_blog` |
 
 ### Frontend (`demo_source_fe/`)
@@ -31,24 +31,37 @@ _Cập nhật: 2025-05-30_
 |---|---|---|
 | package.json + config | ✅ Xong | Vite, Tailwind, PostCSS |
 | node_modules | ✅ Installed | — |
-| src/main.jsx + App.jsx | ✅ Xong | Skeleton, chỉ có route `/` placeholder |
+| src/main.jsx + App.jsx | ✅ Xong | BrowserRouter + AuthProvider + routes đầy đủ |
 | src/services/api.js | ✅ Xong | axios + JWT interceptor |
-| AuthContext | ❌ Chưa làm | — |
+| AuthContext | ❌ Chưa làm | `src/context/AuthContext.jsx` |
 | Components (Navbar, Footer, PostCard...) | ❌ Chưa làm | — |
 | Pages Public (HOME, CATEGORY...) | ❌ Chưa làm | — |
 | Pages Admin | ❌ Chưa làm | — |
-| ProtectedRoute | ❌ Chưa làm | — |
+| ProtectedRoute | ❌ Chưa làm | `src/components/ProtectedRoute.jsx` |
 
-### Tests (`demo_test/`)
+### Tests (`demo_source_be/src/__tests__/`)
 | Phần | Status | Chi tiết |
 |---|---|---|
-| Thư mục / setup | ❌ Chưa làm | — |
+| health.test.js | ✅ Xong | Smoke test `/api/health` |
+| Auth/Posts/Categories/Admin tests | ❌ Chưa làm | — |
+
+### AI Full-Cycle Framework
+| Phần | Status | Chi tiết |
+|---|---|---|
+| agents/ (6 agents) | ✅ Xong | be, fe, test, docs, qa, orchestrator + verify |
+| skills/ (15 skills) | ✅ Xong | 5 domain × 3 phase (create/review/correct) |
+| scripts/run_cycle_v5.sh | ✅ Xong | V5 AI-driven orchestrator |
+| scripts/run_cycle.sh | ✅ Xong | V4 command-driven orchestrator |
+| scripts/agent_runner.sh | ✅ Xong | Phase plan executor |
+| .agents/tasks.v5.json | ✅ Xong | 4 tasks: be, fe, test-suite, docs-sync |
+| .agents/tasks.json | ✅ Xong | 4 tasks: be, fe, docs-db-sync, test-suite |
+| docs/ (3 files) | ✅ Xong | playbook, v5-runtime, skills-mapping |
 
 ### Bước tiếp theo
 1. Tạo DB PostgreSQL `hoian_blog`, chạy migrate + seed
-2. Implement BE: middlewares → routes → controllers (theo thứ tự trong `demo_docs/api/`)
-3. Implement FE: AuthContext → components → pages public → pages admin
-4. Viết tests
+2. Implement FE: AuthContext → ProtectedRoute → components → pages public → pages admin
+3. Viết tests: auth, posts, categories, admin endpoints
+4. Chạy `bash scripts/run_cycle_v5.sh` để verify toàn bộ cycle
 
 
 

@@ -145,22 +145,26 @@ Kết quả:
 
 ## Trạng thái hiện tại (2026-05-31)
 
-### Backend (`demo_source_be/`)
+### Backend (`demo_source_be/`) — ✅ Hoàn chỉnh
 | Phần | Status |
 |---|---|
 | Express app, health check | ✅ Xong |
-| Middlewares (auth, role, validate) | ✅ Xong |
-| Routes + Controllers (auth, posts, categories, admin, upload) | ✅ Xong |
-| Migrations + Seeds | ✅ Xong |
-| DB chạy thực (PostgreSQL `hoian_blog`) | ❌ Chưa chạy |
+| Middlewares: auth (JWT), role, validate | ✅ Xong |
+| Routes: auth, posts, categories, admin, upload | ✅ Xong |
+| Controllers: đầy đủ logic, pagination, filter, join | ✅ Xong |
+| Migrations + Seeds (users, categories, posts) | ✅ Xong |
+| DB chạy thực (PostgreSQL `hoian_blog`) | ❌ Cần tạo DB và chạy migrate |
 
-### Frontend (`demo_source_fe/`)
+### Frontend (`demo_source_fe/`) — ✅ ~85% hoàn chỉnh
 | Phần | Status |
 |---|---|
-| Vite + Tailwind + React Router skeleton | ✅ Xong |
-| axios + JWT interceptor | ✅ Xong |
-| AuthContext, ProtectedRoute | ❌ Chưa làm |
-| Components, Pages (public + admin) | ❌ Chưa làm |
+| Routing, AuthContext, ProtectedRoute | ✅ Xong |
+| Navbar, Footer, PostCard | ✅ Xong |
+| Public: Home, Category, Post Detail | ✅ Xong |
+| Public: About, Contact | ⚠️ Placeholder tĩnh |
+| Admin: Login, Post List, Post Form | ✅ Xong |
+| Admin: Category List, User List | ✅ Xong |
+| Admin: Dashboard | ⚠️ Chỉ có heading |
 
 ### Tests
 | Phần | Status |
@@ -168,18 +172,18 @@ Kết quả:
 | health.test.js | ✅ Xong |
 | Auth / Posts / Categories / Admin tests | ❌ Chưa làm |
 
-### AI Full-Cycle Framework
+### AI Full-Cycle Framework — ✅ Hoàn chỉnh
 | Phần | Status |
 |---|---|
-| 6 agents (be, fe, test, docs, qa, orchestrator, verify) | ✅ Xong |
+| 7 agents (be, fe, test, docs, qa, orchestrator, verify) | ✅ Xong |
 | 15 skills (5 domain × 3 phase) | ✅ Xong |
 | scripts v4 + v5 + agent_runner | ✅ Xong |
 | Task contracts (4 tasks mỗi version) | ✅ Xong |
 | Docs vận hành (playbook, v5-runtime, skills-mapping) | ✅ Xong |
 
 ### Bước tiếp theo
-1. Tạo DB PostgreSQL `hoian_blog` → chạy `npm run migrate && npm run seed`
-2. Implement FE: `AuthContext` → `ProtectedRoute` → components → pages
+1. Tạo DB PostgreSQL `hoian_blog` → `npm run migrate && npm run seed`
+2. Hoàn thiện FE: About/Contact content, Dashboard stats
 3. Viết tests: auth, posts, categories, admin endpoints
 4. Chạy `bash scripts/run_cycle_v5.sh` để verify toàn bộ cycle
 

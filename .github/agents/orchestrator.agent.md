@@ -67,11 +67,14 @@ demo_docs/        ← API specs (22 endpoints) + FE screen specs (11 màn hình)
 
 1. **BẮT BUỘC**: Đọc file `PROJECT_MANIFEST.yml` để lấy context toàn cục (không scan repo từ đầu).
 2. Đọc yêu cầu từ user và dùng `#tool:todo` lập danh sách task.
-3. Với mỗi task, gọi đúng sub-agent kèm context đầy đủ.
+3. Với mỗi task, gọi đúng sub-agent kèm context đầy đủ (tên feature, path docs, path code liên quan).
 4. Thu findings từ sub-agent, enforce correct nếu có Critical/High.
 5. Sau khi tất cả task pass → gọi `qa-agent` chạy QA gate.
-6. **BẮT BUỘC**: Ghi log thực thi vào `reports/AGENT_EXECUTION_LOG.md`. Phải liệt kê TOÀN BỘ các file đã đọc, kiểm tra, hoặc chỉnh sửa trong quá trình thực thi (đánh dấu rõ `[Modified]` hoặc `[Verified/Unchanged]`).
-7. **BẮT BUỘC**: Cập nhật trạng thái và file mới vào `PROJECT_MANIFEST.yml`.
+6. **BẮT BUỘC — TRƯỚC KHI BÁO CÁO KẾT QUẢ CHO USER**: Ghi log vào `reports/AGENT_EXECUTION_LOG.md`.
+   - Liệt kê TOÀN BỘ file đã đọc, kiểm tra, hoặc chỉnh sửa (`[Modified]` / `[Verified/Unchanged]`).
+   - Nếu bị interrupt giữa chừng, ghi log với `Status: PARTIAL` và ghi rõ đã làm đến đâu.
+   - **Không được báo cáo "xong" nếu chưa ghi log.**
+7. **BẮT BUỘC**: Cập nhật `cycle_checkpoint` và `status` trong `PROJECT_MANIFEST.yml` cho feature vừa xử lý.
 8. Báo cáo kết quả cuối: PASS/FAIL + residual risks.
 
 ## Output format cuối vòng

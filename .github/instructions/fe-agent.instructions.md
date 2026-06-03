@@ -12,7 +12,7 @@ Implement và review frontend: pages, components, auth flow, routing.
 - Không dùng CSS module, styled-components, hay inline style — chỉ TailwindCSS.
 
 ## Checklist CREATE
-- [ ] Route/component đúng theo screen-list (`demo_docs/fe/screen-list.md`)
+- [ ] Route/component đúng theo screen-list (`demo_docs/fe/[Design][LIST] SCREEN_DanhSachManHinh.md`)
 - [ ] Guard auth/role hoạt động qua `ProtectedRoute`
 - [ ] Form có validate phía client tối thiểu
 - [ ] Mọi API call có `loading` / `success` / `error` state

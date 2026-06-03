@@ -6,41 +6,41 @@ argument-hint: "Module to test: auth | posts | categories | admin | upload"
 
 # Test Suite Skill
 
-## Muc tieu
-Viet va maintain test suite cho backend API (Jest + Supertest), bao phu luong chinh va loi quan trong.
+## Mục tiêu
+Viết và maintain test suite cho backend API (Jest + Supertest), bao phủ luồng chính và lỗi quan trọng.
 
-## Khi nao dung
-- Viet test cho module moi (auth, posts, categories, admin, upload)
-- Them test case cho endpoint vua implement
+## Khi nào dùng
+- Viết test cho module mới (auth, posts, categories, admin, upload)
+- Thêm test case cho endpoint vừa implement
 - Fix flaky test
 - Check coverage
 
 ## Procedure
 
-### Buoc 1 — Doc truoc khi viet
-1. Doc API spec cua module tai `demo_docs/api/`
-2. Doc controller tuong ung tai `demo_source_be/src/controllers/`
-3. Doc test hien co de giu nhat quan structure
+### Bước 1 — Đọc trước khi viết
+1. Đọc API spec của module tại `demo_docs/api/`
+2. Đọc controller tương ứng tại `demo_source_be/src/controllers/`
+3. Đọc test hiện có để giữ nhất quán structure và helpers
 
-### Buoc 2 — Setup (neu chua co)
-Tao hoac check file `src/__tests__/helpers/setup.js`:
+### Bước 2 — Setup (nếu chưa có)
+Tạo hoặc check file `src/__tests__/helpers/setup.js`:
 ```javascript
 const db = require('../../db');
 beforeAll(async () => { /* verify DB connection */ });
 afterAll(async () => { await db.destroy(); });
 ```
 
-### Buoc 3 — Viet test theo template
-Xem [test template](./references/test-template.md) de co structure chuan.
+### Bước 3 — Viết test theo template
+Xem [test template](./references/test-template.md) để có structure chuẩn.
 
-Bat buoc cho moi endpoint:
+Bắt buộc cho mỗi endpoint:
 - Happy path (2xx)
-- 401 Unauthorized (khong co token)
+- 401 Unauthorized (không có token)
 - 403 Forbidden (sai role)
-- 422 Validation error (thieu/sai field)
-- 404 Not found (resource khong ton tai)
+- 422 Validation error (thiếu/sai field)
+- 404 Not found (resource không tồn tại)
 
-### Buoc 4 — Chay va verify
+### Bước 4 — Chạy và verify
 ```powershell
 cd demo_source_be
 npm test
@@ -58,3 +58,26 @@ cd demo_source_be && npm test
 ### Coverage
 Statements: X% | Branches: X% | Functions: X% | Lines: X%
 ```
+
+---
+
+## 📝 Ghi Log Bắt Buộc
+
+Sau khi hoàn thành skill này, **PHẢI** ghi log vào `reports/AGENT_EXECUTION_LOG.md` trước khi báo cáo kết quả.
+
+Dùng template sau (copy và điền vào):
+
+```markdown
+### [YYYY-MM-DD HH:mm:ss] - {be-agent | fe-agent | test-agent | playwright-agent | docs-agent}
+- **Task**: {Mô tả ngắn gọn việc vừa làm}
+- **Skill Used**: {tên skill này}
+- **Target Feature**: {key trong PROJECT_MANIFEST.yml, ví dụ: auth_login}
+- **Files Processed**:
+  - `path/to/file` [Modified]
+  - `path/to/file` [Verified/Unchanged]
+- **Status**: SUCCESS | FAILED | PARTIAL
+- **Notes**: {Ghi chú: findings, residual risks, việc chưa làm}
+```
+
+> ⚠️ Nếu bị interrupt, ghi `Status: PARTIAL` và ghi rõ đã làm đến bước nào.
+> ⚠️ Sau khi ghi log, cập nhật `cycle_checkpoint` trong `PROJECT_MANIFEST.yml`.

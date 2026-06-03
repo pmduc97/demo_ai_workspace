@@ -38,3 +38,26 @@ Tạo tài liệu Test Case ITa (Functional Integration) dựa trên tài liệu
 - File Markdown tuân thủ 100% cấu trúc của `TEMPLATE_ITa.md`.
 - Dữ liệu SQL phải hợp lệ với PostgreSQL.
 - Các TC ID và Data ID phải được tham chiếu chéo chính xác.
+
+---
+
+## 📝 Ghi Log Bắt Buộc
+
+Sau khi hoàn thành skill này, **PHẢI** ghi log vào `reports/AGENT_EXECUTION_LOG.md` trước khi báo cáo kết quả.
+
+Dùng template sau (copy và điền vào):
+
+```markdown
+### [YYYY-MM-DD HH:mm:ss] - {be-agent | fe-agent | test-agent | playwright-agent | docs-agent}
+- **Task**: {Mô tả ngắn gọn việc vừa làm}
+- **Skill Used**: {tên skill này}
+- **Target Feature**: {key trong PROJECT_MANIFEST.yml, ví dụ: auth_login}
+- **Files Processed**:
+  - `path/to/file` [Modified]
+  - `path/to/file` [Verified/Unchanged]
+- **Status**: SUCCESS | FAILED | PARTIAL
+- **Notes**: {Ghi chú: findings, residual risks, việc chưa làm}
+```
+
+> ⚠️ Nếu bị interrupt, ghi `Status: PARTIAL` và ghi rõ đã làm đến bước nào.
+> ⚠️ Sau khi ghi log, cập nhật `cycle_checkpoint` trong `PROJECT_MANIFEST.yml`.

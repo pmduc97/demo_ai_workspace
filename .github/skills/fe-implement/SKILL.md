@@ -6,45 +6,51 @@ argument-hint: "Screen name or component to implement (e.g. HOME, ADMIN_POST_FOR
 
 # FE Implement Skill
 
-## Muc tieu
-Implement man hinh hoac component dung spec, on dinh khi goi API, bao dam trai nghiem nguoi dung co ban.
+## Mục tiêu
+Implement màn hình hoặc component đúng spec, ổn định khi gọi API, đảm bảo trải nghiệm người dùng cơ bản.
 
-## Khi nao dung
-- Tao moi mot man hinh (page) hoac component
-- Fix loi UI/UX
+## Khi nào dùng
+- Tạo mới một màn hình (page) hoặc component
+- Fix lỗi UI/UX
 - Implement auth flow (AuthContext, ProtectedRoute)
-- Them/sua route
+- Thêm/sửa route
 
 ## Procedure
 
-### Buoc 1 — Doc spec truoc khi code
-1. Tim man hinh trong [screen map](./references/screen-map.md)
-2. Doc spec day du tai `demo_docs/fe/[Design][SCREEN] {ScreenCode}_{ScreenName}.md`
-3. Doc API spec lien quan tai `demo_docs/api/[Design][API] API{ID}_{Group}_{Name}.md`
-4. Doc `src/services/api.js` de tai dung ham da co
-5. Doc `src/context/AuthContext.jsx` de lay auth state dung cach
+### Bước 1 — Đọc spec trước khi code
+1. Xem danh sách màn hình tại `demo_docs/fe/[Design][LIST] SCREEN_DanhSachManHinh.md`
+2. Đọc spec đầy đủ tại `demo_docs/fe/[Design][SCREEN] {ScreenCode}_{ScreenName}.md`
+3. Đọc API spec liên quan tại `demo_docs/api/[Design][API] API{ID}_{Group}_{Name}.md`
+4. Đọc `src/services/api.js` để tái dùng hàm đã có
+5. Đọc `src/context/AuthContext.jsx` để lấy auth state đúng cách
+6. Đọc `demo_docs/fe/[Design][LIST] COMPONENT_DanhSach.md` để tái dùng component đã có
 
-### Buoc 2 — Implement theo checklist
-Xem day du tai [checklist](./references/checklist.md).
+### Bước 2 — Implement theo checklist
+Xem đầy đủ tại [checklist](./references/checklist.md).
 
-Tom tat bat buoc:
-- Route dung theo screen-list
-- Moi API call co loading/error/success state
-- Empty state khi list rong
-- Chi dung TailwindCSS
-- Khong hardcode URL/token
+Tóm tắt bắt buộc:
+- Route đúng theo screen-list
+- Mọi API call có loading/error/success state
+- Empty state khi list rỗng
+- Chỉ dùng TailwindCSS
+- Không hardcode URL/token
+- Admin route có `ProtectedRoute` guard
+- Form disable submit khi đang loading
+- Lỗi API hiển thị rõ cho user
 
-### Buoc 3 — Self-review
-Truoc khi bao xong, check lai:
-- Admin route co ProtectedRoute chua?
-- Form co disable submit khi loading chua?
-- Loi API co hien thi cho user chua?
+### Bước 3 — Self-review
+Trước khi báo xong, check lại:
+- Admin route có ProtectedRoute chưa?
+- Form có disable submit khi loading chưa?
+- Lỗi API có hiển thị cho user chưa?
+- Tên field có đồng bộ với API response chưa?
+- Responsive cơ bản desktop/mobile đã được kiểm tra chưa?
 
-### Buoc 4 — Verify
+### Bước 4 — Verify
 ```powershell
 cd demo_source_fe
 npm run dev
-# Mo http://localhost:5173 va test thu cong
+# Mở http://localhost:5173 và test thủ công
 ```
 
 ## Output
@@ -53,11 +59,34 @@ npm run dev
 - src/pages/...
 - src/components/...
 
-### Route changes (neu co)
-App.jsx: them <Route path="..." element={...} />
+### Route changes (nếu có)
+App.jsx: thêm <Route path="..." element={...} />
 
 ### Manual verify steps
-1. Mo http://localhost:5173/...
+1. Mở http://localhost:5173/...
 2. ...
 3. Expect: ...
 ```
+
+---
+
+## 📝 Ghi Log Bắt Buộc
+
+Sau khi hoàn thành skill này, **PHẢI** ghi log vào `reports/AGENT_EXECUTION_LOG.md` trước khi báo cáo kết quả.
+
+Dùng template sau (copy và điền vào):
+
+```markdown
+### [YYYY-MM-DD HH:mm:ss] - {be-agent | fe-agent | test-agent | playwright-agent | docs-agent}
+- **Task**: {Mô tả ngắn gọn việc vừa làm}
+- **Skill Used**: {tên skill này}
+- **Target Feature**: {key trong PROJECT_MANIFEST.yml, ví dụ: auth_login}
+- **Files Processed**:
+  - `path/to/file` [Modified]
+  - `path/to/file` [Verified/Unchanged]
+- **Status**: SUCCESS | FAILED | PARTIAL
+- **Notes**: {Ghi chú: findings, residual risks, việc chưa làm}
+```
+
+> ⚠️ Nếu bị interrupt, ghi `Status: PARTIAL` và ghi rõ đã làm đến bước nào.
+> ⚠️ Sau khi ghi log, cập nhật `cycle_checkpoint` trong `PROJECT_MANIFEST.yml`.

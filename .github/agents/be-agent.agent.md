@@ -65,3 +65,6 @@ Báo cáo theo format:
 ### Review findings (nếu có)
 [High] file:line — mô tả — fix đề xuất
 ```
+
+## Ghi Log Bắt Buộc
+Sau mỗi task, **TRƯỚC KHI báo cáo xong**, ghi log vào `reports/AGENT_EXECUTION_LOG.md` và cập nhật `cycle_checkpoint` trong `PROJECT_MANIFEST.yml`.

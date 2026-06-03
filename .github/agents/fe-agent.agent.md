@@ -36,17 +36,17 @@ src/
     Footer.jsx
     PostCard.jsx
   pages/
-    public/Home.jsx
-    public/Category.jsx
-    public/PostDetail.jsx
-    public/About.jsx
-    public/Contact.jsx
-    AdminLogin.jsx
-    admin/Dashboard.jsx
-    admin/PostList.jsx
-    admin/PostForm.jsx
-    admin/CategoryList.jsx
-    admin/UserList.jsx
+    public/HomePage.jsx
+    public/CategoryPage.jsx
+    public/PostDetailPage.jsx
+    public/AboutPage.jsx
+    public/ContactPage.jsx
+    admin/LoginPage.jsx
+    admin/DashboardPage.jsx
+    admin/PostListPage.jsx
+    admin/PostFormPage.jsx
+    admin/CategoryListPage.jsx
+    admin/UserListPage.jsx
 ```
 
 ## Quy tắc cứng
@@ -58,7 +58,7 @@ src/
 
 ## Checklist CREATE (bắt buộc trước khi báo xong)
 
-- [ ] Route/component đúng theo `demo_docs/fe/screen-list.md`
+- [ ] Route/component đúng theo `demo_docs/fe/[Design][LIST] SCREEN_DanhSachManHinh.md`
 - [ ] Admin routes có `ProtectedRoute` guard
 - [ ] Mọi API call có `loading` / `success` / `error` state
 - [ ] Empty state khi list rỗng
@@ -77,6 +77,10 @@ src/
 
 ### Route changes (nếu có)
 ...
+```
+
+## Ghi Log Bắt Buộc
+Sau mỗi task, **TRƯỚC KHI báo cáo xong**, ghi log vào `reports/AGENT_EXECUTION_LOG.md` và cập nhật `cycle_checkpoint` trong `PROJECT_MANIFEST.yml`.
 
 ### Manual verify steps
 1. Mở http://localhost:5173/...

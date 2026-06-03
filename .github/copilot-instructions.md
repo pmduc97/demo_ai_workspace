@@ -6,7 +6,8 @@ Blog tin tức về Hội An và Đà Nẵng.
 - **Frontend**: React 18 + Vite + TailwindCSS + React Router v6 (`demo_source_fe/`)
 - **Backend**: Node.js + Express + Knex.js + JWT (`demo_source_be/`)
 - **Database**: PostgreSQL, 3 bảng: `users`, `categories`, `posts`
-- **Test**: Jest + Supertest (`demo_source_be/src/__tests__/`)
+- **Unit Test**: Jest + Supertest (`demo_source_be/src/__tests__/`)
+- **E2E Test**: Playwright (`demo_playwright/`)
 
 ## Quy tắc code — LUÔN tuân thủ
 

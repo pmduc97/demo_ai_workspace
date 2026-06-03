@@ -41,6 +41,7 @@ demo_ai_workspace/
 │   │   ├── fe-agent.instructions.md     # applyTo: demo_source_fe/**
 │   │   ├── docs-agent.instructions.md   # applyTo: demo_docs/**
 │   │   ├── test-agent.instructions.md   # applyTo: src/__tests__/**
+│   │   ├── playwright-agent.instructions.md # applyTo: demo_playwright/**
 │   │   └── qa-gate.instructions.md      # applyTo: **
 │   ├── prompts/                   # Slash commands trong Copilot Chat
 │   │   ├── be-create.prompt.md
@@ -52,11 +53,13 @@ demo_ai_workspace/
 │   │   ├── doc-be-create.prompt.md
 │   │   ├── doc-be-review.prompt.md
 │   │   ├── test-create.prompt.md
+│   │   ├── playwright-create.prompt.md
 │   │   └── qa-gate.prompt.md
 │   └── skills/                    # On-demand workflows
 │       ├── be-implement/SKILL.md
 │       ├── fe-implement/SKILL.md
 │       ├── test-suite/SKILL.md
+│       ├── playwright-suite/SKILL.md
 │       ├── qa-gate/SKILL.md
 │       ├── doc-fe-implement/SKILL.md
 │       ├── doc-fe-review/SKILL.md
@@ -74,6 +77,11 @@ demo_ai_workspace/
 │       ├── [Design][LIST] COMPONENT_DanhSach.md
 │       ├── [Design][LIST] UTILS_DanhSach.md
 │       └── [Design][SCREEN] {ScreenCode}_*.md
+├── demo_playwright/               # E2E Testing
+│   ├── page-objects/              # Page Object Model classes
+│   ├── tests/                     # Test specs (*.spec.ts)
+│   ├── utils/                     # Helpers (evidence.ts)
+│   └── playwright.config.ts
 ├── demo_source_be/                # Express backend
 │   └── src/
 │       ├── controllers/
@@ -114,6 +122,7 @@ Toàn bộ workflow chạy trong **GitHub Copilot Chat** trên VS Code, không c
 | `/fe-create` | Implement một màn hình FE |
 | `/fe-review` | Review frontend code |
 | `/test-create` | Viết test suite cho một module |
+| `/playwright-create` | Viết kịch bản test E2E bằng Playwright |
 | `/qa-gate` | Kiểm tra tổng trước khi merge |
 | `/doc-fe-implement` | Viết/chuẩn hóa tài liệu FE Screen Design |
 | `/doc-fe-review` | Review và chấm điểm tài liệu FE Screen Design |
@@ -128,8 +137,9 @@ Toàn bộ workflow chạy trong **GitHub Copilot Chat** trên VS Code, không c
 3. CREATE  → be-agent / fe-agent implement
 4. REVIEW  → tự review hoặc cross-review
 5. CORRECT → fix finding Critical/High
-6. TEST    → test-agent viết test
-7. QA GATE → qa-agent kiểm tra tổng, ra verdict PASS/FAIL
+6. TEST    → test-agent viết test unit/integration
+7. E2E TEST→ playwright-agent viết/chạy test E2E
+8. QA GATE → qa-agent kiểm tra tổng, ra verdict PASS/FAIL
 ```
 
 ### Gate Rules

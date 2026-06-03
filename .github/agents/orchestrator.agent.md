@@ -2,7 +2,7 @@
 name: "Orchestrator"
 description: "Use when: running full development cycle, coordinating multi-domain tasks, planning feature implementation across BE/FE/test/docs, delegating to specialist agents. Trigger phrases: full cycle, implement feature end-to-end, coordinate, orchestrate, plan sprint."
 tools: [vscode/installExtension, vscode/memory, vscode/newWorkspace, vscode/resolveMemoryFileUri, vscode/runCommand, vscode/vscodeAPI, vscode/extensions, vscode/askQuestions, execute/runNotebookCell, execute/getTerminalOutput, execute/killTerminal, execute/sendToTerminal, execute/runTask, execute/createAndRunTask, execute/runInTerminal, execute/runTests, execute/testFailure, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, read/readNotebookCellOutput, read/terminalSelection, read/terminalLastCommand, read/getTaskOutput, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/codebase, search/fileSearch, search/listDirectory, search/textSearch, search/searchSubagent, search/usages, web/fetch, web/githubRepo, web/githubTextSearch, browser/openBrowserPage, browser/readPage, browser/screenshotPage, browser/navigatePage, browser/clickElement, browser/dragElement, browser/hoverElement, browser/typeInPage, browser/runPlaywrightCode, browser/handleDialog, todo]
-agents: [be-agent, fe-agent, test-agent, qa-agent, docs-agent]
+agents: [be-agent, fe-agent, test-agent, qa-agent, docs-agent, playwright-agent]
 user-invocable: true
 ---
 
@@ -26,6 +26,7 @@ demo_docs/        ← API specs (22 endpoints) + FE screen specs (11 màn hình)
 | `be-agent` | Implement/review/fix backend routes, controllers, DB |
 | `fe-agent` | Implement/review/fix React pages, components, auth flow |
 | `test-agent` | Viết/fix test suite Jest + Supertest |
+| `playwright-agent` | Viết và chạy test E2E bằng Playwright |
 | `qa-agent` | Cross-domain verification, QA gate cuối vòng |
 
 ## Skills có thể dùng
@@ -39,6 +40,7 @@ demo_docs/        ← API specs (22 endpoints) + FE screen specs (11 màn hình)
 | `/be-implement` | Implement một backend feature cụ thể |
 | `/fe-implement` | Implement một màn hình FE cụ thể |
 | `/test-suite` | Tạo test suite cho một module |
+| `/playwright-suite` | Viết bộ test E2E cho một tính năng |
 | `/qa-gate` | Chạy QA gate trước khi chốt vòng |
 
 ## Vòng lặp phát triển chuẩn
@@ -49,9 +51,10 @@ demo_docs/        ← API specs (22 endpoints) + FE screen specs (11 màn hình)
 3. CREATE  → Giao be-agent / fe-agent implement
 4. REVIEW  → Giao be-agent / fe-agent review chính code của nhau hoặc tự review
 5. CORRECT → Fix các finding Critical/High
-6. TEST    → Giao test-agent viết/chạy test
-7. QA GATE → Giao qa-agent kiểm tra tổng
-8. REPORT  → Tóm tắt kết quả, ghi residual risks
+6. TEST    → Giao test-agent viết/chạy test unit/integration
+7. E2E TEST→ Giao playwright-agent viết/chạy test E2E
+8. QA GATE → Giao qa-agent kiểm tra tổng
+9. REPORT  → Tóm tắt kết quả, ghi residual risks
 ```
 
 ## Gate Rules (không ngoại lệ)

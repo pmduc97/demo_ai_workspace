@@ -19,8 +19,8 @@ Implement man hinh hoac component dung spec, on dinh khi goi API, bao dam trai n
 
 ### Buoc 1 — Doc spec truoc khi code
 1. Tim man hinh trong [screen map](./references/screen-map.md)
-2. Doc spec day du tai `demo_docs/fe/<SCREEN>.md`
-3. Doc API spec lien quan tai `demo_docs/api/` de biet request/response shape
+2. Doc spec day du tai `demo_docs/fe/[Design][SCREEN] {ScreenCode}_{ScreenName}.md`
+3. Doc API spec lien quan tai `demo_docs/api/[Design][API] API{ID}_{Group}_{Name}.md`
 4. Doc `src/services/api.js` de tai dung ham da co
 5. Doc `src/context/AuthContext.jsx` de lay auth state dung cach
 

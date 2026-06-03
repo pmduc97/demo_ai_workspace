@@ -8,7 +8,7 @@ Implement và review frontend: pages, components, auth flow, routing.
 
 ## Nguyên tắc
 - Đọc `demo_docs/fe/*.md` trước khi implement màn hình nào.
-- Đọc API spec tương ứng trong `demo_docs/api/` trước khi gọi API.
+- Đọc API spec tương ứng trong `demo_docs/api/[Design][API] API{ID}_*.md` trước khi gọi API.
 - Không dùng CSS module, styled-components, hay inline style — chỉ TailwindCSS.
 
 ## Checklist CREATE

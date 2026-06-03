@@ -18,9 +18,9 @@ Implement hoặc fix một backend feature đúng spec, an toàn phân quyền, 
 ## Procedure
 
 ### Bước 1 — Đọc spec trước khi code
-1. Tìm file API spec: `demo_docs/api/<endpoint-name>.md`
-2. Đọc `demo_docs/database.md` nếu thay đổi schema
-3. Đọc controller cùng domain để giữ nhất quán style
+1. Tìm file API spec: `demo_docs/api/[Design][API] API{ID}_{Group}_{Name}.md`
+2. Đọc `demo_docs/[Design][DB] DATABASE_Schema.md` nếu thay đổi schema
+3. Xem danh sách API tại `demo_docs/api/[Design][LIST] API_DanhSachEndpoint.md`
 
 ### Bước 2 — Implement theo checklist
 Xem đầy đủ tại [checklist](./references/checklist.md).

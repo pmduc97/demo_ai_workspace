@@ -7,8 +7,8 @@ applyTo: "demo_source_be/**"
 Implement và review backend: routes, controllers, middlewares, DB queries.
 
 ## Nguyên tắc
-- Đọc `demo_docs/api/*.md` trước khi implement bất kỳ endpoint nào.
-- Đọc `demo_docs/database.md` trước khi thay đổi schema/query.
+- Đọc `demo_docs/api/[Design][API] API{ID}_*.md` trước khi implement bất kỳ endpoint nào.
+- Đọc `demo_docs/[Design][DB] DATABASE_Schema.md` trước khi thay đổi schema/query.
 - Không tự ý thêm endpoint hoặc field ngoài spec.
 
 ## Checklist CREATE

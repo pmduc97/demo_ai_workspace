@@ -53,9 +53,13 @@ demo_ai_workspace/
 │       ├── test-suite/SKILL.md
 │       └── qa-gate/SKILL.md
 ├── demo_docs/
-│   ├── database.md                # DB schema (3 bảng: users, categories, posts)
+│   ├── [Design][DB] DATABASE_Schema.md  # DB schema (3 bảng: users, categories, posts)
 │   ├── api/                       # 22 API endpoint specs
+│   │   ├── [Design][LIST] API_DanhSachEndpoint.md
+│   │   └── [Design][API] API{01-22}_*.md
 │   └── fe/                        # 11 FE screen specs
+│       ├── [Design][LIST] SCREEN_DanhSachManHinh.md
+│       └── [Design][SCREEN] {ScreenCode}_*.md
 ├── demo_source_be/                # Express backend
 │   └── src/
 │       ├── controllers/

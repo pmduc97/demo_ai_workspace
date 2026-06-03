@@ -15,8 +15,8 @@ Chỉ làm việc trong `demo_source_be/`. Không tự ý sửa FE code.
 
 ## Trước khi implement bất kỳ thứ gì
 
-1. Đọc API spec liên quan tại `demo_docs/api/<endpoint>.md`
-2. Đọc `demo_docs/database.md` nếu có thay đổi schema
+1. Đọc API spec liên quan tại `demo_docs/api/[Design][API] API{ID}_*.md`
+2. Đọc `demo_docs/[Design][DB] DATABASE_Schema.md` nếu có thay đổi schema
 3. Đọc controller/route tương tự đã có để giữ nhất quán style
 
 ## Skill sử dụng

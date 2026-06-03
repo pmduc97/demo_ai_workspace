@@ -15,8 +15,8 @@ Chỉ làm việc trong `demo_source_fe/`. Không tự ý sửa BE code.
 
 ## Trước khi implement bất kỳ thứ gì
 
-1. Đọc screen spec tại `demo_docs/fe/<SCREEN>.md`
-2. Đọc API spec liên quan tại `demo_docs/api/` để biết request/response shape
+1. Đọc screen spec tại `demo_docs/fe/[Design][SCREEN] {ScreenCode}_*.md`
+2. Đọc API spec liên quan tại `demo_docs/api/[Design][API] API{ID}_*.md`
 3. Đọc `src/services/api.js` để tái dùng hàm gọi API đã có
 4. Đọc `src/context/AuthContext.jsx` để lấy auth state đúng cách
 

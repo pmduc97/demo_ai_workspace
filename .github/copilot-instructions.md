@@ -44,9 +44,11 @@ Blog tin tức về Hội An và Đà Nẵng.
 - Migrations và seeds dùng Knex CLI
 
 ## Cấu trúc tài liệu
-- API specs: `demo_docs/api/*.md` (22 endpoints)
-- FE screen specs: `demo_docs/fe/*.md` (11 màn hình)
-- DB schema: `demo_docs/database.md`
+- API specs: `demo_docs/api/[Design][API] API{ID}_{Group}_{Name}.md` (22 endpoints)
+- FE screen specs: `demo_docs/fe/[Design][SCREEN] {ScreenCode}_{ScreenName}.md` (11 màn hình)
+- DB schema: `demo_docs/[Design][DB] DATABASE_Schema.md`
+- Danh sách API: `demo_docs/api/[Design][LIST] API_DanhSachEndpoint.md`
+- Danh sách màn hình: `demo_docs/fe/[Design][LIST] SCREEN_DanhSachManHinh.md`
 
 ## Workflow AI (Full-Cycle)
 Workspace này dùng quy trình: **create → review → correct → verify → qa_gate**

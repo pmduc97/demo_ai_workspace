@@ -1,0 +1,30 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "rename-docs-DISABLED",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$fe='d:\\Projects\\demo_ai_workspace\\demo_docs\\fe'; $api='d:\\Projects\\demo_ai_workspace\\demo_docs\\api'; $db='d:\\Projects\\demo_ai_workspace\\demo_docs'; Rename-Item \"$fe\\ABOUT.md\" \"[Design][SCREEN] ABOUT_GioiThieu.md\"; Rename-Item \"$fe\\CONTACT.md\" \"[Design][SCREEN] CONTACT_LienHe.md\"; Rename-Item \"$fe\\HOME.md\" \"[Design][SCREEN] HOME_TrangChu.md\"; Rename-Item \"$fe\\CATEGORY.md\" \"[Design][SCREEN] CATEGORY_DanhMuc.md\"; Rename-Item \"$fe\\POST_DETAIL.md\" \"[Design][SCREEN] POST_DETAIL_ChiTietBai.md\"; Rename-Item \"$fe\\ADMIN_LOGIN.md\" \"[Design][SCREEN] ADMIN_LOGIN_DangNhap.md\"; Rename-Item \"$fe\\ADMIN_DASHBOARD.md\" \"[Design][SCREEN] ADMIN_DASHBOARD_TongQuan.md\"; Rename-Item \"$fe\\ADMIN_POST_LIST.md\" \"[Design][SCREEN] ADMIN_POST_LIST_DanhSachBai.md\"; Rename-Item \"$fe\\ADMIN_POST_FORM.md\" \"[Design][SCREEN] ADMIN_POST_FORM_TaoSuaBai.md\"; Rename-Item \"$fe\\ADMIN_CATEGORY_LIST.md\" \"[Design][SCREEN] ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md\"; Rename-Item \"$fe\\ADMIN_USER_LIST.md\" \"[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md\"; Rename-Item \"$fe\\screen-list.md\" \"[Design][LIST] SCREEN_DanhSachManHinh.md\"; Rename-Item \"$api\\auth-login.md\" \"[Design][API] API01_Auth_DangNhap.md\"; Rename-Item \"$api\\auth-register.md\" \"[Design][API] API02_Auth_DangKy.md\"; Rename-Item \"$api\\auth-me.md\" \"[Design][API] API03_Auth_ThongTinUser.md\"; Rename-Item \"$api\\posts-list.md\" \"[Design][API] API04_Posts_DanhSach.md\"; Rename-Item \"$api\\posts-get-by-slug.md\" \"[Design][API] API05_Posts_ChiTiet.md\"; Rename-Item \"$api\\posts-my.md\" \"[Design][API] API06_Posts_CuaToi.md\"; Rename-Item \"$api\\posts-create.md\" \"[Design][API] API07_Posts_TaoBai.md\"; Rename-Item \"$api\\posts-update.md\" \"[Design][API] API08_Posts_CapNhat.md\"; Rename-Item \"$api\\posts-delete.md\" \"[Design][API] API09_Posts_Xoa.md\"; Rename-Item \"$api\\admin-posts-list.md\" \"[Design][API] API10_AdminPosts_DanhSach.md\"; Rename-Item \"$api\\admin-posts-get.md\" \"[Design][API] API11_AdminPosts_ChiTiet.md\"; Rename-Item \"$api\\admin-posts-status.md\" \"[Design][API] API12_AdminPosts_DoiStatus.md\"; Rename-Item \"$api\\admin-posts-delete.md\" \"[Design][API] API13_AdminPosts_Xoa.md\"; Rename-Item \"$api\\categories-list.md\" \"[Design][API] API14_Categories_DanhSach.md\"; Rename-Item \"$api\\categories-get.md\" \"[Design][API] API15_Categories_ChiTiet.md\"; Rename-Item \"$api\\categories-create.md\" \"[Design][API] API16_Categories_Tao.md\"; Rename-Item \"$api\\categories-update.md\" \"[Design][API] API17_Categories_CapNhat.md\"; Rename-Item \"$api\\categories-delete.md\" \"[Design][API] API18_Categories_Xoa.md\"; Rename-Item \"$api\\admin-users-list.md\" \"[Design][API] API19_AdminUsers_DanhSach.md\"; Rename-Item \"$api\\admin-users-role.md\" \"[Design][API] API20_AdminUsers_DoiRole.md\"; Rename-Item \"$api\\upload.md\" \"[Design][API] API21_Upload_AnhBai.md\"; Rename-Item \"$api\\admin-stats.md\" \"[Design][API] API22_AdminStats_ThongKe.md\"; Rename-Item \"$api\\api-list.md\" \"[Design][LIST] API_DanhSachEndpoint.md\"; Rename-Item \"$db\\database.md\" \"[Design][DB] DATABASE_Schema.md\"; Write-Host 'DONE'"
+			]
+		},
+		{
+			"label": "rename-docs",
+			"type": "shell",
+			"command": "powershell -NoProfile -ExecutionPolicy Bypass -File rename-docs.ps1"
+		},
+		{
+			"label": "rename-docs2",
+			"type": "shell",
+			"command": "powershell -NoProfile -ExecutionPolicy Bypass -File rename-docs2.ps1"
+		},
+		{
+			"label": "cleanup-temp",
+			"type": "shell",
+			"command": "powershell -NoProfile -Command \"Remove-Item 'rename-docs.ps1','rename-docs2.ps1' -Force -ErrorAction SilentlyContinue; Write-Host 'Cleaned'\""
+		}
+	]
+}

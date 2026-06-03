@@ -26,10 +26,12 @@ Hai mục tiêu song song:
 
 ```text
 demo_ai_workspace/
+├── PROJECT_MANIFEST.yml           # Bản đồ map 1-1 Feature -> Docs -> Code -> DB -> Test
 ├── .github/
 │   ├── copilot-instructions.md    # Rules toàn workspace (auto-load)
 │   ├── agents/                    # Custom agents
 │   │   ├── orchestrator.agent.md  # Agent tổng — điều phối full cycle
+│   │   ├── docs-agent.agent.md    # Docs specialist
 │   │   ├── be-agent.agent.md      # Backend specialist
 │   │   ├── fe-agent.agent.md      # Frontend specialist
 │   │   ├── test-agent.agent.md    # Test specialist
@@ -45,20 +47,32 @@ demo_ai_workspace/
 │   │   ├── be-review.prompt.md
 │   │   ├── fe-create.prompt.md
 │   │   ├── fe-review.prompt.md
+│   │   ├── doc-fe-create.prompt.md
+│   │   ├── doc-fe-review.prompt.md
+│   │   ├── doc-be-create.prompt.md
+│   │   ├── doc-be-review.prompt.md
 │   │   ├── test-create.prompt.md
 │   │   └── qa-gate.prompt.md
 │   └── skills/                    # On-demand workflows
 │       ├── be-implement/SKILL.md
 │       ├── fe-implement/SKILL.md
 │       ├── test-suite/SKILL.md
-│       └── qa-gate/SKILL.md
+│       ├── qa-gate/SKILL.md
+│       ├── doc-fe-implement/SKILL.md
+│       ├── doc-fe-review/SKILL.md
+│       ├── doc-be-implement/SKILL.md
+│       └── doc-be-review/SKILL.md
 ├── demo_docs/
+│   ├── [Design] Status.md               # Bảng theo dõi trạng thái tài liệu
 │   ├── [Design][DB] DATABASE_Schema.md  # DB schema (3 bảng: users, categories, posts)
 │   ├── api/                       # 22 API endpoint specs
 │   │   ├── [Design][LIST] API_DanhSachEndpoint.md
+│   │   ├── [Design][LIST] UTILS_DanhSach.md
 │   │   └── [Design][API] API{01-22}_*.md
 │   └── fe/                        # 11 FE screen specs
 │       ├── [Design][LIST] SCREEN_DanhSachManHinh.md
+│       ├── [Design][LIST] COMPONENT_DanhSach.md
+│       ├── [Design][LIST] UTILS_DanhSach.md
 │       └── [Design][SCREEN] {ScreenCode}_*.md
 ├── demo_source_be/                # Express backend
 │   └── src/
@@ -74,7 +88,14 @@ demo_ai_workspace/
 │       ├── components/
 │       └── pages/
 └── reports/                       # Báo cáo các cycle cũ
+    └── AGENT_EXECUTION_LOG.md     # Log truy vết hành động của AI
 ```
+
+## Quản lý Trạng thái & Truy vết (State & Traceability)
+
+Để giải quyết vấn đề "mất trí nhớ" (Amnesia) giữa các session chat của AI, dự án sử dụng 2 file cốt lõi:
+- **`PROJECT_MANIFEST.yml`**: Bản đồ map 1-1 giữa Feature -> Docs -> Code -> DB -> Test. Mọi Agent phải đọc file này đầu tiên để lấy context toàn cục thay vì scan lại repo.
+- **`reports/AGENT_EXECUTION_LOG.md`**: Nơi ghi log bắt buộc sau mỗi lần Agent hoàn thành một task, giúp truy vết chính xác AI đã làm gì, sửa file nào.
 
 ## AI Workflow — GitHub Copilot Native
 
@@ -94,16 +115,21 @@ Toàn bộ workflow chạy trong **GitHub Copilot Chat** trên VS Code, không c
 | `/fe-review` | Review frontend code |
 | `/test-create` | Viết test suite cho một module |
 | `/qa-gate` | Kiểm tra tổng trước khi merge |
+| `/doc-fe-implement` | Viết/chuẩn hóa tài liệu FE Screen Design |
+| `/doc-fe-review` | Review và chấm điểm tài liệu FE Screen Design |
+| `/doc-be-implement` | Viết/chuẩn hóa tài liệu BE API Design |
+| `/doc-be-review` | Review và chấm điểm tài liệu BE API Design |
 
 ### Vòng lặp phát triển
 
 ```
-1. PLAN    → Orchestrator phân rã yêu cầu thành task
-2. CREATE  → be-agent / fe-agent implement
-3. REVIEW  → tự review hoặc cross-review
-4. CORRECT → fix finding Critical/High
-5. TEST    → test-agent viết test
-6. QA GATE → qa-agent kiểm tra tổng, ra verdict PASS/FAIL
+1. DOCS    → docs-agent chuẩn hóa tài liệu thiết kế (FE/BE)
+2. PLAN    → Orchestrator phân rã yêu cầu thành task
+3. CREATE  → be-agent / fe-agent implement
+4. REVIEW  → tự review hoặc cross-review
+5. CORRECT → fix finding Critical/High
+6. TEST    → test-agent viết test
+7. QA GATE → qa-agent kiểm tra tổng, ra verdict PASS/FAIL
 ```
 
 ### Gate Rules

@@ -19,6 +19,8 @@ Review một FE screen design doc để đảm bảo đúng format, đủ nội 
 ### Bước 1 — Xác định file cần review
 1. Tìm file trong `demo_docs/fe/[Design][SCREEN] {ScreenCode}_{ScreenName}.md`
 2. Xem danh sách tại `demo_docs/fe/[Design][LIST] SCREEN_DanhSachManHinh.md` nếu không rõ tên file
+3. Đọc file `demo_docs/fe/[Design][LIST] COMPONENT_DanhSach.md` để đối chiếu các component được sử dụng trong Section 4.
+4. Đọc file `demo_docs/fe/[Design][LIST] UTILS_DanhSach.md` để đối chiếu các hàm logic được sử dụng trong Section 10.
 
 ### Bước 2 — Chạy checklist
 Xem đầy đủ tại [review-checklist.md](./references/review-checklist.md).

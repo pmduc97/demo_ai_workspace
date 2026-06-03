@@ -50,6 +50,10 @@ Blog tin tức về Hội An và Đà Nẵng.
 - Danh sách API: `demo_docs/api/[Design][LIST] API_DanhSachEndpoint.md`
 - Danh sách màn hình: `demo_docs/fe/[Design][LIST] SCREEN_DanhSachManHinh.md`
 
+## Quản lý Trạng thái & Truy vết (State & Traceability)
+- **`PROJECT_MANIFEST.yml`**: Bản đồ map 1-1 giữa Feature -> Docs -> Code -> DB -> Test. Mọi Agent phải đọc file này để lấy context thay vì scan repo.
+- **`reports/AGENT_EXECUTION_LOG.md`**: Nơi ghi log bắt buộc sau mỗi lần Agent hoàn thành một task.
+
 ## Workflow AI (Full-Cycle)
 Workspace này dùng quy trình: **create → review → correct → verify → qa_gate**
 

@@ -50,32 +50,26 @@ Components dùng lại: `AdminLayout`, `ProtectedRoute` (role: admin).
 
 ## 5. Chi tiết UI từng section
 
-### 5.1 PageHeader
-- Tiêu đề: "Quản Lý Danh Mục"
-- Không có nút thêm riêng (form thêm inline bên dưới)
+### 5.1 AddCategoryForm
+| UI Control | Loại | Ràng buộc (Min/Max/Format) | JSON Field mapping | Ghi chú |
+|------------|------|----------------------------|--------------------|---------|
+| Tên | Input text | Bắt buộc, min 2 ký tự | `name` | |
+| Slug | Input text | Bắt buộc, a-z, 0-9, `-` | `slug` | Auto-generate từ Tên |
+| Mô tả | Input text | Max 500 ký tự | `description` | |
+| Nút Thêm | Button | Disabled khi loading | N/A | |
 
-### 5.2 AddCategoryForm
-- Card tiêu đề "Thêm Danh Mục Mới"
-- Layout ngang: Input Tên + Input Slug + Input Mô tả + Nút "Thêm"
-- Slug: auto-generate từ tên khi người dùng nhập, có thể sửa thủ công
-- Validation: tên bắt buộc, slug bắt buộc
+### 5.2 CategoryTable & Inline Edit
+| UI Control | Loại | Ràng buộc (Min/Max/Format) | JSON Field mapping | Ghi chú |
+|------------|------|----------------------------|--------------------|---------|
+| Tên (View) | Text | N/A | `name` | |
+| Slug (View) | Text | N/A | `slug` | |
+| Mô tả (View) | Text | N/A | `description` | |
+| Số bài (View) | Text | N/A | `postCount` | |
+| Tên (Edit) | Input text | Bắt buộc, min 2 ký tự | `name` | |
+| Slug (Edit) | Input text | Bắt buộc, a-z, 0-9, `-` | `slug` | |
+| Mô tả (Edit) | Input text | Max 500 ký tự | `description` | |
 
-### 5.3 CategoryTable
-| Cột | Mô tả |
-|-----|-------|
-| STT | Số thứ tự |
-| Tên | Tên danh mục |
-| Slug | Slug URL |
-| Mô tả | Mô tả ngắn |
-| Số bài | `postCount` từ API |
-| Hành động | Nút Sửa + Nút Xóa |
-
-### 5.4 Inline Edit
-- Click Sửa: dòng chuyển thành input fields (Tên, Slug, Mô tả)
-- Nút "Lưu" (`text-green-600`) + Nút "Hủy" (`text-gray-400`) thay thế nút Sửa/Xóa
-- Submit Lưu: gọi API update, reload danh sách
-
-### 5.5 DeleteModal
+### 5.3 DeleteModal
 - Text: "Xóa danh mục này? Các bài viết thuộc danh mục sẽ không còn danh mục."
 - Nút "Xóa" (`bg-red-500`) + Nút "Hủy"
 
@@ -137,4 +131,16 @@ const [deleteModal, setDeleteModal] = useState({ open: false, id: null });
 | Mobile (< 768px) | AddForm stack dọc, bảng scroll ngang |
 | Tablet (768–1024px) | AddForm ngang, bảng đầy đủ cột |
 | Desktop (> 1024px) | Full layout với AdminLayout sidebar |
+
+## 10. Events & Actions
+
+| Control | Event | Logic xử lý |
+|---------|-------|-------------|
+| Input Tên (Add) | `onChange` | Update `addForm.name`, gọi hàm `toSlug()` để update `addForm.slug` |
+| Nút Thêm | `onClick` | Gọi API `POST /api/categories`, reload danh sách, clear form |
+| Nút Sửa (Row) | `onClick` | Set `editingId = id`, copy data row vào `editForm` |
+| Nút Hủy (Row) | `onClick` | Set `editingId = null`, clear `editForm` |
+| Nút Lưu (Row) | `onClick` | Gọi API `PUT /api/categories/:id`, reload danh sách, clear `editingId` |
+| Nút Xóa (Row) | `onClick` | Set `deleteModal = { open: true, id }` |
+| Nút Xóa (Modal) | `onClick` | Gọi API `DELETE /api/categories/:id`, reload danh sách, đóng modal |
 - Không có danh mục: "Chưa có danh mục nào. Hãy thêm danh mục đầu tiên!"

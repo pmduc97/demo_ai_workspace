@@ -49,25 +49,19 @@ Components dùng lại: `AdminLayout`, `ProtectedRoute` (role: admin), `useAuth`
 
 ## 5. Chi tiết UI từng section
 
-### 5.1 PageHeader
-- Tiêu đề: "Quản Lý Người Dùng"
-- Subtitle: "X người dùng" (tổng số)
+### 5.1 UserTable
+| UI Control | Loại | Ràng buộc (Min/Max/Format) | JSON Field mapping | Ghi chú |
+|------------|------|----------------------------|--------------------|---------|
+| Avatar | Image/Text | Chữ cái đầu tên | `name`, `id` | Nền màu theo `id % palette` |
+| Tên | Text | N/A | `name` | |
+| Email | Text | N/A | `email` | |
+| Role Badge | Dropdown | `admin` hoặc `member` | `role` | Đỏ cho admin, xanh cho member |
+| Số bài | Text | N/A | `postCount` | |
+| Ngày tham gia | Text | Format `DD/MM/YYYY` | `created_at` | |
 
-### 5.2 UserTable
-| Cột | Mô tả |
-|-----|-------|
-| Avatar | Chữ cái đầu tên, nền màu theo `id % palette` |
-| Tên | Tên đầy đủ |
-| Email | Địa chỉ email |
-| Role | Badge: `admin` (đỏ `bg-red-100 text-red-700`) / `member` (xanh `bg-blue-100 text-blue-700`) |
-| Số bài | `postCount` từ API |
-| Ngày tham gia | Format `DD/MM/YYYY` từ `created_at` |
-| Hành động | Nút đổi role (ẩn nếu là current user) |
-
-### 5.3 Đổi Role
-- Click badge Role → dropdown chọn `Admin` / `Member`
-- Confirm modal: "Đổi role của [tên] thành [role mới]?"
-- Current user: badge disabled, tooltip "Không thể đổi role của chính mình"
+### 5.2 ConfirmModal
+- Text: "Đổi role của [tên] thành [role mới]?"
+- Nút "Xác nhận" (`bg-blue-600`) + Nút "Hủy"
 
 ## 6. API Calls
 
@@ -116,3 +110,12 @@ const { user: currentUser } = useAuth();
 | Mobile (< 768px) | Bảng scroll ngang, ẩn cột Ngày tham gia |
 | Tablet (768–1024px) | Bảng đủ cột, sidebar thu gọn |
 | Desktop (> 1024px) | Full layout với AdminLayout sidebar |
+
+## 10. Events & Actions
+
+| Control | Event | Logic xử lý |
+|---------|-------|-------------|
+| Role Badge | `onClick` | Mở dropdown chọn role (disabled nếu là current user) |
+| Dropdown Item | `onClick` | Set `roleModal = { open: true, userId, newRole }` |
+| Nút Xác nhận (Modal) | `onClick` | Gọi API `PUT /api/admin/users/:id/role`, update state local (hoặc reload list), đóng modal |
+| Nút Hủy (Modal) | `onClick` | Đóng modal, clear `roleModal` |

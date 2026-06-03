@@ -49,23 +49,17 @@ Components dùng lại: `useAuth` (hook từ `AuthContext`), `Navigate` (React R
 
 ## 5. Chi tiết UI từng section
 
-### 5.1 LoginCard
-- Card trắng, `shadow-lg`, `rounded-xl`, padding `40px`
-- Width `400px` trên desktop, full-width với margin `16px` trên mobile
+### 5.1 LoginCard & Logo
+- Card trắng, `shadow-lg`, `rounded-xl`, padding `40px`, width `400px` (desktop).
+- Logo: "Blog Hội An" (`text-amber-600`), Tagline: "Quản lý nội dung".
 
-### 5.2 Logo
-- Tên blog: **"Blog Hội An"** — `font-bold text-2xl text-amber-600`
-- Tagline: "Quản lý nội dung" — `text-sm text-gray-500 mt-1`
-
-### 5.3 LoginForm
-| Field | Type | Placeholder | Required |
-|-------|------|------------|---------|
-| Email | `email` | `admin@hoianblog.vn` | ✅ |
-| Mật khẩu | `password` | `••••••••` | ✅ |
-
-- Nút submit: "Đăng Nhập" — full width, `bg-amber-500 hover:bg-amber-600 text-white`
-- Loading state: spinner thay thế text nút
-- Error banner: hiển thị phía trên form — `bg-red-50 text-red-700 rounded p-3`
+### 5.2 LoginForm
+| UI Control | Loại | Ràng buộc (Min/Max/Format) | JSON Field mapping | Ghi chú |
+|------------|------|----------------------------|--------------------|---------|
+| Email | Input text | Format email, bắt buộc | `email` | Placeholder: `admin@hoianblog.vn` |
+| Mật khẩu | Input password | Min 6 ký tự, bắt buộc | `password` | Placeholder: `••••••••` |
+| Nút Đăng Nhập | Button | Disabled khi loading | N/A | Hiển thị spinner khi loading |
+| Error Banner | Alert | N/A | N/A | Hiển thị lỗi từ API (nếu có) |
 
 ## 6. API Calls
 
@@ -126,76 +120,13 @@ async function handleSubmit(e) {
 | Tablet (768–1024px) | Card `360px` căn giữa |
 | Desktop (> 1024px) | Card `400px` căn giữa |
 
-## Route & Navigation
-- **Route**: `/admin/login`
-- Redirect sau login: `/admin/dashboard`
-- Nếu đã đăng nhập: tự động redirect đến `/admin/dashboard`
+## 10. Events & Actions
 
-## Layout & Components
-
-```
-<div className="min-h-screen bg-gray-100 flex items-center justify-center">
-  <LoginCard>
-    <Logo />
-    <LoginForm />
-  </LoginCard>
-</div>
-```
-
-## Chi tiết UI
-
-### LoginCard
-- Card trắng, shadow-lg, border-radius, padding 40px
-- Width: 400px (desktop) / full width với margin (mobile)
-
-### Logo
-- Tên blog: "Blog Hội An" (font-bold, text-2xl, màu vàng/amber)
-- Tagline: "Quản lý nội dung"
-
-### LoginForm
-- Fields:
-
-| Field | Type | Required | Validation |
-|---|---|---|---|
-| Email | email input | Có | Format email hợp lệ |
-| Mật khẩu | password input | Có | Tối thiểu 6 ký tự |
-
-- Nút submit: "Đăng Nhập" — full width, màu amber
-- Loading state: spinner trong nút
-- Error message: hiển thị trên đầu form (nền đỏ nhạt) khi sai credentials
-
-## API Calls
-
-```js
-POST /api/auth/login
-Body: { email, password }
-Response 200: { token, user: { id, name, email, role } }
-Response 401: { message: "Email hoặc mật khẩu không đúng" }
-```
-
-## State Management
-
-```js
-const [form, setForm] = useState({ email: '', password: '' });
-const [loading, setLoading] = useState(false);
-const [error, setError] = useState('');
-const { login } = useContext(AuthContext);
-
-async function handleSubmit(e) {
-  e.preventDefault();
-  setLoading(true);
-  setError('');
-  try {
-    const { data } = await api.post('/auth/login', form);
-    login(data.token, data.user); // lưu vào context + localStorage
-    navigate('/admin/dashboard');
-  } catch (err) {
-    setError(err.response?.data?.message || 'Đăng nhập thất bại');
-  } finally {
-    setLoading(false);
-  }
-}
-```
+| Control | Event | Logic xử lý |
+|---------|-------|-------------|
+| Input Email | `onChange` | Cập nhật state `form.email`, clear `error` |
+| Input Mật khẩu | `onChange` | Cập nhật state `form.password`, clear `error` |
+| Nút Đăng Nhập | `onClick` / `onSubmit` | `e.preventDefault()`, set `loading=true`, gọi API `POST /api/auth/login`. Nếu thành công: gọi `login(token, user)` và redirect `/admin/dashboard`. Nếu lỗi: set `error` message. |
 
 ## AuthContext
 ```js

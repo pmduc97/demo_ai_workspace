@@ -47,13 +47,12 @@ status: draft
 
 ## 5. Chi tiết UI từng section
 
-### 5.1 Header
-- Tiêu đề trang
-- Nút hành động chính (nếu có)
-
-### 5.2 Main Content
-- Mô tả bố cục chính
-- Các trạng thái: loading / empty / error / success
+### 5.1 Form / Bảng dữ liệu
+| UI Control | Loại | Ràng buộc (Min/Max/Format) | JSON Field mapping | Ghi chú |
+|------------|------|----------------------------|--------------------|---------|
+| Email | Input text | Format email, bắt buộc | `email` | Hiển thị lỗi inline |
+| Mật khẩu | Input password | Min 6 ký tự, bắt buộc | `password` | |
+| Nút Submit | Button | Disabled khi loading | N/A | |
 
 ## 6. API Calls
 
@@ -91,3 +90,10 @@ const [error, setError] = useState(null);
 | Mobile (< 768px) | Stack dọc, ẩn sidebar |
 | Tablet (768–1024px) | Sidebar thu gọn |
 | Desktop (> 1024px) | Full layout |
+
+## 10. Events & Actions
+
+| Control | Event | Logic xử lý |
+|---------|-------|-------------|
+| Nút Submit | `onClick` / `onSubmit` | `e.preventDefault()`, set loading, gọi API login |
+| Input Email | `onChange` | Update state `form.email`, clear error message |

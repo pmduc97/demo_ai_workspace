@@ -1,17 +1,49 @@
-# GET /api/admin/users — Danh Sách Người Dùng
+---
+version: 1.0
+created: 2026-06-03
+updated: 2026-06-03
+status: stable
+---
 
-## Thông tin
-- **Method**: GET
-- **Endpoint**: `/api/admin/users`
-- **Auth**: Bearer token (Admin only)
-- **Controller**: `src/controllers/adminUserController.js` → `list`
+# [Design][API] API19_AdminUsers_DanhSach
 
-## Query Parameters
-Không có (trả về tất cả, không phân trang — số lượng user thường nhỏ).
+## 1. Tổng quan
+> API dùng để lấy danh sách tất cả người dùng trong hệ thống kèm theo số lượng bài viết họ đã đăng. Chỉ Admin mới có quyền truy cập.
 
-## Response
+## 2. Thông tin chung
 
-**200 OK**:
+| Thuộc tính | Giá trị |
+|-----------|---------|
+| Method | `GET` |
+| Endpoint | `/api/admin/users` |
+| Auth yêu cầu | Có (Bearer Token) |
+| Role cho phép | Admin |
+| Controller | `src/controllers/adminUserController.js` -> `list` |
+
+## 3. Request
+
+### 3.1 Headers & Parameters
+| Tên | Vị trí | Kiểu dữ liệu | Bắt buộc | Ràng buộc | Mô tả |
+|-----|--------|--------------|----------|-----------|-------|
+| Authorization | Header | String | ✅ | `Bearer <token>` | Token xác thực |
+
+### 3.2 Body Payload
+> Không có.
+
+## 4. Response
+
+### 4.1 Thành công (HTTP 200)
+| Field | Kiểu dữ liệu | Có thể Null | Mô tả |
+|-------|--------------|-------------|-------|
+| (root) | Array | ❌ | Mảng các user |
+| id | Number | ❌ | ID người dùng |
+| name | String | ❌ | Tên hiển thị |
+| email | String | ❌ | Email đăng nhập |
+| role | String | ❌ | Role (`admin` hoặc `member`) |
+| postCount | Number | ❌ | Tổng số bài viết đã đăng |
+| created_at | String | ❌ | Ngày tham gia (ISO 8601) |
+
+**Ví dụ Response:**
 ```json
 [
   {
@@ -33,8 +65,20 @@ Không có (trả về tất cả, không phân trang — số lượng user th�
 ]
 ```
 
-## Logic xử lý
-1. Middleware `auth` + `role('admin')`
-2. Query `users` LEFT JOIN `posts` ON `posts.author_id = users.id`
-3. GROUP BY `users.id`, COUNT posts → `postCount`
-4. Không trả về `password_hash`
+### 4.2 Lỗi & Exceptions
+| HTTP Code | Message / Error Code | Điều kiện xảy ra |
+|-----------|----------------------|------------------|
+| 403 | `Forbidden` | User không phải Admin |
+
+## 5. Logic xử lý (Business Logic)
+1. Thực hiện **[Q1]** để lấy danh sách user, kết hợp đếm số lượng bài viết của từng user.
+2. Trả về mảng user (đảm bảo không trả về `password_hash`).
+
+## 6. Database Queries & Mapping
+
+| Query ID | Bảng (Table) | Hành động | Điều kiện (WHERE) / Data | Knex.js Snippet dự kiến |
+|----------|--------------|-----------|--------------------------|-------------------------|
+| **[Q1]** | `users`, `posts` | `SELECT` | `LEFT JOIN posts ON posts.author_id = users.id GROUP BY users.id` | `knex('users').select('users.id', 'users.name', 'users.email', 'users.role', 'users.created_at').count('posts.id as postCount').leftJoin('posts', 'posts.author_id', 'users.id').groupBy('users.id')` |
+
+## 7. Side Effects (Tác động phụ)
+> Không có.

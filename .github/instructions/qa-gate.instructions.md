@@ -43,6 +43,10 @@ Cross-domain verification trước khi chốt một vòng phát triển.
 - [ ] Không có endpoint trong code mà thiếu trong docs
 - [ ] Không có field trong response mà docs ghi sai
 
+### Integration Testing (ITa/ITb)
+- [ ] Đã có tài liệu Test Case ITa/ITb cho các luồng chính
+- [ ] Playwright tests (ITa/ITb) chạy PASS 100%
+
 ## Output format
 ```
 QA Gate: PASS | FAIL

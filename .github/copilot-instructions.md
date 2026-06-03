@@ -56,7 +56,7 @@ Blog tin tức về Hội An và Đà Nẵng.
 - **`reports/AGENT_EXECUTION_LOG.md`**: Nơi ghi log bắt buộc sau mỗi lần Agent hoàn thành một task.
 
 ## Workflow AI (Full-Cycle)
-Workspace này dùng quy trình: **create → review → correct → verify → qa_gate**
+Workspace này dùng quy trình: **plan → docs → test_design → create → review → test_execution → qa_gate**
 
 Các prompt workflow có sẵn tại `.github/prompts/`:
 - `be-create.prompt.md` — Implement backend feature
@@ -65,6 +65,10 @@ Các prompt workflow có sẵn tại `.github/prompts/`:
 - `fe-review.prompt.md` — Review frontend code
 - `test-create.prompt.md` — Viết test suite
 - `qa-gate.prompt.md` — QA gate check trước khi merge
+- `doc-ita-create.prompt.md` — Viết tài liệu Test Case ITa (Functional Integration)
+- `doc-ita-review.prompt.md` — Review tài liệu Test Case ITa
+- `doc-itb-create.prompt.md` — Viết tài liệu Test Case ITb (Scenario Integration)
+- `doc-itb-review.prompt.md` — Review tài liệu Test Case ITb
 
 ## Lệnh thường dùng (Windows)
 ```powershell

@@ -22,7 +22,8 @@
 			"/^cmd\\.exe /c \"npm install -D jest-circus\"$/": {
 				"approve": true,
 				"matchCommandLine": true
-			}
+			},
+			"Rename-Item": true
 		}
 	}
 }

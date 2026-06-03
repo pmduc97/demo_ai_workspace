@@ -51,7 +51,10 @@ demo_ai_workspace/
 │   │   ├── doc-fe-create.prompt.md
 │   │   ├── doc-fe-review.prompt.md
 │   │   ├── doc-be-create.prompt.md
-│   │   ├── doc-be-review.prompt.md
+│   │   ├── doc-ita-create.prompt.md
+│   │   ├── doc-ita-review.prompt.md
+│   │   ├── doc-itb-create.prompt.md
+│   │   ├── doc-itb-review.prompt.md
 │   │   ├── test-create.prompt.md
 │   │   ├── playwright-create.prompt.md
 │   │   └── qa-gate.prompt.md
@@ -64,7 +67,11 @@ demo_ai_workspace/
 │       ├── doc-fe-implement/SKILL.md
 │       ├── doc-fe-review/SKILL.md
 │       ├── doc-be-implement/SKILL.md
-│       └── doc-be-review/SKILL.md
+│       ├── doc-be-review/SKILL.md
+│       ├── doc-ita-implement/SKILL.md
+│       ├── doc-ita-review/SKILL.md
+│       ├── doc-itb-implement/SKILL.md
+│       └── doc-itb-review/SKILL.md
 ├── demo_docs/
 │   ├── [Design] Status.md               # Bảng theo dõi trạng thái tài liệu
 │   ├── [Design][DB] DATABASE_Schema.md  # DB schema (3 bảng: users, categories, posts)
@@ -77,9 +84,20 @@ demo_ai_workspace/
 │       ├── [Design][LIST] COMPONENT_DanhSach.md
 │       ├── [Design][LIST] UTILS_DanhSach.md
 │       └── [Design][SCREEN] {ScreenCode}_*.md
+│   └── tests/                     # Test Cases (ITa/ITb)
+│       ├── ITa/
+│       │   ├── TEMPLATE_ITa.md
+│       │   ├── VIEWPOINT_ITa.md
+│       │   └── CHECKLIST_TC_ITa.md
+│       └── ITb/
+│           ├── TEMPLATE_ITb.md
+│           ├── VIEWPOINT_ITb.md
+│           └── CHECKLIST_TC_ITb.md
 ├── demo_playwright/               # E2E Testing
 │   ├── page-objects/              # Page Object Model classes
 │   ├── tests/                     # Test specs (*.spec.ts)
+│   │   ├── ITa_functional/        # Code test chức năng
+│   │   └── ITb_scenarios/         # Code test luồng
 │   ├── utils/                     # Helpers (evidence.ts)
 │   └── playwright.config.ts
 ├── demo_source_be/                # Express backend
@@ -124,6 +142,10 @@ Toàn bộ workflow chạy trong **GitHub Copilot Chat** trên VS Code, không c
 | `/test-create` | Viết test suite cho một module |
 | `/playwright-create` | Viết kịch bản test E2E bằng Playwright |
 | `/qa-gate` | Kiểm tra tổng trước khi merge |
+| `/doc-ita-create` | Viết tài liệu Test Case ITa (Functional Integration) |
+| `/doc-ita-review` | Review và chấm điểm tài liệu Test Case ITa |
+| `/doc-itb-create` | Viết tài liệu Test Case ITb (Scenario Integration) |
+| `/doc-itb-review` | Review và chấm điểm tài liệu Test Case ITb |
 | `/doc-fe-implement` | Viết/chuẩn hóa tài liệu FE Screen Design |
 | `/doc-fe-review` | Review và chấm điểm tài liệu FE Screen Design |
 | `/doc-be-implement` | Viết/chuẩn hóa tài liệu BE API Design |
@@ -132,14 +154,15 @@ Toàn bộ workflow chạy trong **GitHub Copilot Chat** trên VS Code, không c
 ### Vòng lặp phát triển
 
 ```
-1. DOCS    → docs-agent chuẩn hóa tài liệu thiết kế (FE/BE)
-2. PLAN    → Orchestrator phân rã yêu cầu thành task
-3. CREATE  → be-agent / fe-agent implement
-4. REVIEW  → tự review hoặc cross-review
-5. CORRECT → fix finding Critical/High
-6. TEST    → test-agent viết test unit/integration
-7. E2E TEST→ playwright-agent viết/chạy test E2E
-8. QA GATE → qa-agent kiểm tra tổng, ra verdict PASS/FAIL
+1. DOCS       → docs-agent chuẩn hóa tài liệu thiết kế (FE/BE)
+2. PLAN       → Orchestrator phân rã yêu cầu thành task
+3. TEST DESIGN→ docs-agent tạo Test Case ITa/ITb từ tài liệu thiết kế
+4. CREATE     → be-agent / fe-agent implement
+5. REVIEW     → tự review hoặc cross-review
+6. CORRECT    → fix finding Critical/High
+7. TEST       → test-agent viết test unit/integration
+8. E2E TEST   → playwright-agent viết/chạy test E2E dựa trên Test Case ITa/ITb
+9. QA GATE    → qa-agent kiểm tra tổng, ra verdict PASS/FAIL
 ```
 
 ### Gate Rules

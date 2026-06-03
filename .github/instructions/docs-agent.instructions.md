@@ -14,6 +14,8 @@ Giữ tài liệu (`demo_docs/`) đồng bộ với code thực tế.
 | API design | `[Design][API] API{ID}_{Group}_{Name}.md` | `[Design][API] API01_Auth_DangNhap.md` |
 | List/Index | `[Design][LIST] {Name}.md` | `[Design][LIST] API_DanhSachEndpoint.md` |
 | Database | `[Design][DB] {Name}.md` | `[Design][DB] DATABASE_Schema.md` |
+| Test Case ITa | `[Test][ITa] TC_{Name}.md` | `[Test][ITa] TC_CreatePost.md` |
+| Test Case ITb | `[Test][ITb] TC_{Name}.md` | `[Test][ITb] TC_PublishFlow.md` |
 
 ## Nguyên tắc
 - Docs phải phản ánh code tại thời điểm hiện tại — không được lệch.
@@ -29,6 +31,16 @@ Giữ tài liệu (`demo_docs/`) đồng bộ với code thực tế.
 - Bắt buộc tuân thủ chuẩn **10 sections** (có YAML Frontmatter, UI mapping, Events & Actions).
 - Sử dụng skill `doc-fe-implement` để tạo/cập nhật.
 - Sử dụng skill `doc-fe-review` để kiểm tra.
+
+## Format chuẩn file Test Case ITa (Functional Integration)
+- Bắt buộc tuân thủ cấu trúc Data-Driven Testing theo `demo_docs/tests/ITa/TEMPLATE_ITa.md`.
+- Phải bao phủ 100% các Viewpoint trong `VIEWPOINT_ITa.md`.
+- Sử dụng skill `doc-ita-implement` để tạo và `doc-ita-review` để kiểm tra.
+
+## Format chuẩn file Test Case ITb (Scenario Integration)
+- Bắt buộc tuân thủ cấu trúc luồng theo `demo_docs/tests/ITb/TEMPLATE_ITb.md`.
+- Phải bao phủ 100% các Viewpoint trong `VIEWPOINT_ITb.md`.
+- Sử dụng skill `doc-itb-implement` để tạo và `doc-itb-review` để kiểm tra.
 
 ## Checklist REVIEW docs chung
 - [ ] Method/path/request body/response fields khớp code thực

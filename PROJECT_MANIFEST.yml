@@ -22,6 +22,9 @@ features:
     tests:
       be: "demo_source_be/src/__tests__/auth.test.js"
       playwright: "demo_playwright/tests/auth-login.spec.ts"
+      test_cases:
+        ita: null
+        itb: null
 
   auth_register:
     name: "Đăng ký"

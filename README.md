@@ -1,192 +1,233 @@
-# AI Full-Cycle Demo: Blog Hội An - Đà Nẵng
+# Blog Hội An / Đà Nẵng — AI Workflow Demo
 
-Dự án mã nguồn mở chia sẻ cách áp dụng **AI full cycle** để phát triển sản phẩm web theo vòng lặp:
-**plan → create → review → correct → verify → qa gate → report**.
+Dự án demo blog tin tức về Hội An và Đà Nẵng, đồng thời là **bộ khung AI workflow** chạy trên GitHub Copilot theo vòng lặp:
 
-Dự án này gồm 2 mục tiêu song song:
-- Sản phẩm demo blog tin tức (FE + BE + DB + auth + admin).
-- Bộ khung agent/orchestrator để tự động hóa quy trình phát triển, test, fix lỗi, cập nhật tài liệu.
+```
+plan → create → review → correct → qa gate
+```
 
-## Giá trị chính
-
-- Chia sẻ thực hành xây dựng AI workflow cho team dev.
-- Có sẵn task contract, scripts runtime, gate rule và report để tái sử dụng.
-- Có thể mở rộng khi thêm tính năng mới mà không cần xây lại từ đầu.
+Hai mục tiêu song song:
+- Sản phẩm thực: blog tin tức có FE + BE + DB + auth + admin panel.
+- Bộ khung: custom agents, skills, instructions cho GitHub Copilot để tự động hóa quy trình phát triển.
 
 ## Tech Stack
 
 | Layer | Công nghệ |
 |---|---|
 | Frontend | React 18 + Vite + TailwindCSS + React Router v6 |
-| Backend | Node.js + Express + JWT |
-| Database | PostgreSQL + Knex.js |
+| Backend | Node.js + Express + Knex.js + JWT |
+| Database | PostgreSQL |
 | Auth | JWT + bcryptjs |
 | Upload | Multer |
 | Test | Jest + Supertest |
-| Automation | Bash scripts + JSON task contracts |
+| AI Workflow | GitHub Copilot — custom agents, skills, instructions |
 
-## Cấu trúc thư mục (bản mới)
+## Cấu trúc thư mục
 
 ```text
-demo_workspace/
-├── demo_source_fe/                # Frontend source (public + admin)
-├── demo_source_be/                # Backend source (routes/controllers/db/tests)
-│   └── src/__tests__/             # Backend tests
-├── demo_docs/                     # Product/docs thiết kế nghiệp vụ
-├── docs/                          # Tài liệu vận hành agent và mapping
-├── agents/                        # Định nghĩa role agent
-├── skills/                        # Skill theo domain + phase
-├── scripts/
-│   ├── run_cycle.sh               # Full-cycle v4 (command-driven)
-│   ├── run_cycle_v5.sh            # Full-cycle v5 (AI-driven contract)
-│   └── agent_runner.sh            # Runner thực thi phase plan
-├── .agents/
-│   ├── tasks.json                 # Task contract v4
-│   ├── tasks.v5.json              # Task contract v5
-│   ├── ai_status.jsonl            # Timeline event cho AI cycle
-│   └── overall_gate_decision.json # Kết quả gate tổng
-└── reports/                       # Báo cáo mỗi lần cycle
+demo_ai_workspace/
+├── .github/
+│   ├── copilot-instructions.md    # Rules toàn workspace (auto-load)
+│   ├── agents/                    # Custom agents
+│   │   ├── orchestrator.agent.md  # Agent tổng — điều phối full cycle
+│   │   ├── be-agent.agent.md      # Backend specialist
+│   │   ├── fe-agent.agent.md      # Frontend specialist
+│   │   ├── test-agent.agent.md    # Test specialist
+│   │   └── qa-agent.agent.md      # QA / cross-domain verifier
+│   ├── instructions/              # Context tự động theo file path
+│   │   ├── be-agent.instructions.md     # applyTo: demo_source_be/**
+│   │   ├── fe-agent.instructions.md     # applyTo: demo_source_fe/**
+│   │   ├── docs-agent.instructions.md   # applyTo: demo_docs/**
+│   │   ├── test-agent.instructions.md   # applyTo: src/__tests__/**
+│   │   └── qa-gate.instructions.md      # applyTo: **
+│   ├── prompts/                   # Slash commands trong Copilot Chat
+│   │   ├── be-create.prompt.md
+│   │   ├── be-review.prompt.md
+│   │   ├── fe-create.prompt.md
+│   │   ├── fe-review.prompt.md
+│   │   ├── test-create.prompt.md
+│   │   └── qa-gate.prompt.md
+│   └── skills/                    # On-demand workflows
+│       ├── be-implement/SKILL.md
+│       ├── fe-implement/SKILL.md
+│       ├── test-suite/SKILL.md
+│       └── qa-gate/SKILL.md
+├── demo_docs/
+│   ├── database.md                # DB schema (3 bảng: users, categories, posts)
+│   ├── api/                       # 22 API endpoint specs
+│   └── fe/                        # 11 FE screen specs
+├── demo_source_be/                # Express backend
+│   └── src/
+│       ├── controllers/
+│       ├── routes/
+│       ├── middlewares/
+│       ├── db/migrations/
+│       └── __tests__/
+├── demo_source_fe/                # React frontend
+│   └── src/
+│       ├── context/AuthContext.jsx
+│       ├── services/api.js
+│       ├── components/
+│       └── pages/
+└── reports/                       # Báo cáo các cycle cũ
 ```
 
-## AI Full-Cycle Runtime
+## AI Workflow — GitHub Copilot Native
 
-### v4 (command-driven)
-- Dùng `scripts/run_cycle.sh`.
-- Có phase và gate, phù hợp để bootstrap nhanh.
+Toàn bộ workflow chạy trong **GitHub Copilot Chat** trên VS Code, không cần script ngoài.
 
-### v5 (AI-driven contract)
-- Dùng `scripts/run_cycle_v5.sh`.
-- Mỗi task khai báo đầy đủ hành động theo phase trong `.agents/tasks.v5.json`.
-- `scripts/agent_runner.sh` thực thi phase plan có cấu trúc (`purpose` + `cmd`).
-- Xuất timeline AI và report để audit.
+### Cách dùng
 
-Xem thêm: `docs/agent-v5-runtime.md`, `docs/agent-playbook.md`, `docs/skills-mapping.md`.
+**Chạy full cycle cho một feature** — chọn agent **Orchestrator** trong agent picker, mô tả feature cần implement. Orchestrator sẽ tự phân rã task, giao đúng sub-agent, enforce gate rule.
 
-## Domain Product
+**Dùng nhanh từng việc** — gõ `/` trong Copilot Chat để chọn prompt:
+
+| Lệnh | Tác dụng |
+|------|----------|
+| `/be-create` | Implement một backend endpoint |
+| `/be-review` | Review backend code |
+| `/fe-create` | Implement một màn hình FE |
+| `/fe-review` | Review frontend code |
+| `/test-create` | Viết test suite cho một module |
+| `/qa-gate` | Kiểm tra tổng trước khi merge |
+
+### Vòng lặp phát triển
+
+```
+1. PLAN    → Orchestrator phân rã yêu cầu thành task
+2. CREATE  → be-agent / fe-agent implement
+3. REVIEW  → tự review hoặc cross-review
+4. CORRECT → fix finding Critical/High
+5. TEST    → test-agent viết test
+6. QA GATE → qa-agent kiểm tra tổng, ra verdict PASS/FAIL
+```
+
+### Gate Rules
+
+| Severity | Quy tắc |
+|----------|---------|
+| Critical / High | Gate **FAIL** — bắt buộc fix trước khi pass |
+| Medium | Tạm pass nếu không ảnh hưởng luồng chính — ghi backlog |
+| Low | Defer — ghi backlog |
+
+### Context tự động theo file đang mở
+
+Khi mở file trong `demo_source_be/` → Copilot tự load BE rules.
+Khi mở file trong `demo_source_fe/` → Copilot tự load FE rules.
+Khi mở file trong `src/__tests__/` → Copilot tự load test rules.
+
+## Sản phẩm — Blog Tin Tức
 
 ### Public routes
-- `/`
-- `/category/:slug`
-- `/post/:slug`
-- `/about`
-- `/contact`
+- `/` — trang chủ, danh sách bài viết
+- `/category/:slug` — bài viết theo chuyên mục
+- `/post/:slug` — chi tiết bài viết
+- `/about` — giới thiệu
+- `/contact` — liên hệ
 
-### Admin routes
+### Admin routes (yêu cầu đăng nhập role admin)
 - `/admin/login`
 - `/admin/dashboard`
-- `/admin/posts`
-- `/admin/posts/new`
-- `/admin/posts/:id/edit`
-- `/admin/categories`
-- `/admin/users`
+- `/admin/posts` — quản lý bài viết
+- `/admin/posts/new` + `/admin/posts/:id/edit` — tạo/sửa bài
+- `/admin/categories` — quản lý chuyên mục
+- `/admin/users` — quản lý tài khoản
 
-### API core
-- Auth: `/api/auth/*`
+### API (22 endpoints)
+- Auth: `/api/auth/register`, `/api/auth/login`, `/api/auth/me`
 - Posts: `/api/posts/*`
 - Categories: `/api/categories/*`
 - Admin: `/api/admin/*`
 - Upload: `/api/upload`
 - Health: `/api/health`
 
+Xem đầy đủ tại `demo_docs/api/api-list.md`.
+
 ## Quick Start
 
-### 1) Cài đặt
+### Yêu cầu
+- Node.js 18+
+- PostgreSQL (tạo database tên `hoian_blog`)
 
-```bash
-cd demo_source_be && npm install
-cd ../demo_source_fe && npm install
-```
+### Cài đặt
 
-### 2) Chạy backend
-
-```bash
+```powershell
 cd demo_source_be
-npm run migrate
-npm run seed
-npm run dev
+npm install
+
+cd ..\demo_source_fe
+npm install
 ```
 
-### 3) Chạy frontend
+### Cấu hình backend
 
-```bash
+Tạo file `demo_source_be/.env`:
+```
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=hoian_blog
+DB_USER=postgres
+DB_PASSWORD=yourpassword
+JWT_SECRET=your_jwt_secret
+```
+
+### Khởi tạo database
+
+```powershell
+cd demo_source_be
+npx knex migrate:latest
+npx knex seed:run
+```
+
+### Chạy development
+
+```powershell
+# Terminal 1 — Backend (port 3000)
+cd demo_source_be
+npm run dev
+
+# Terminal 2 — Frontend (port 5173)
 cd demo_source_fe
 npm run dev
 ```
 
-## Chạy full-cycle automation
+### Chạy tests
 
-### V4
-
-```bash
-bash scripts/run_cycle.sh
+```powershell
+cd demo_source_be
+npm test
 ```
 
-### V5 (khuyến nghị cho demo AI full cycle)
+## Trạng thái hiện tại (2026-06-03)
 
-```bash
-bash scripts/run_cycle_v5.sh
-```
-
-Kết quả:
-- Gate tổng: `.agents/overall_gate_decision.json`
-- Report mới nhất: `reports/ai-cycle-*.md` hoặc `reports/cycle-*.md`
-
-## Mở rộng cho feature mới
-
-1. Thêm task mới vào `.agents/tasks.v5.json`.
-2. Định nghĩa actions cho `create/review/correct/verify`.
-3. Chạy `bash scripts/run_cycle_v5.sh`.
-4. Review report, tiếp tục tối ưu skill/task contract.
-
-## Lưu ý open-source
-
-- Không commit file secret local như `demo_source_be/.env`.
-- Có thể commit `agents/`, `skills/`, `.agents/` nếu mục tiêu là chia sẻ framework full-cycle cho cộng đồng.
-
-## Trạng thái hiện tại (2026-05-31)
-
-### Backend (`demo_source_be/`) — ✅ Hoàn chỉnh
+### Backend — ✅ Hoàn chỉnh
 | Phần | Status |
 |---|---|
-| Express app, health check | ✅ Xong |
-| Middlewares: auth (JWT), role, validate | ✅ Xong |
-| Routes: auth, posts, categories, admin, upload | ✅ Xong |
-| Controllers: đầy đủ logic, pagination, filter, join | ✅ Xong |
-| Migrations + Seeds (users, categories, posts) | ✅ Xong |
-| DB chạy thực (PostgreSQL `hoian_blog`) | ❌ Cần tạo DB và chạy migrate |
+| Express app, middlewares, routes, controllers | ✅ Xong |
+| Migrations + Seeds | ✅ Xong |
+| DB PostgreSQL chạy thực | ❌ Cần tạo DB và chạy migrate |
 
-### Frontend (`demo_source_fe/`) — ✅ ~85% hoàn chỉnh
+### Frontend — ⚠️ ~85%
 | Phần | Status |
 |---|---|
 | Routing, AuthContext, ProtectedRoute | ✅ Xong |
 | Navbar, Footer, PostCard | ✅ Xong |
-| Public: Home, Category, Post Detail | ✅ Xong |
-| Public: About, Contact | ⚠️ Placeholder tĩnh |
-| Admin: Login, Post List, Post Form | ✅ Xong |
-| Admin: Category List, User List | ✅ Xong |
-| Admin: Dashboard | ⚠️ Chỉ có heading |
+| Trang public: Home, Category, Post Detail | ✅ Xong |
+| Trang public: About, Contact | ⚠️ Placeholder tĩnh |
+| Admin: Login, Post List, Post Form, Category List, User List | ✅ Xong |
+| Admin: Dashboard stats | ⚠️ Chỉ có heading |
 
 ### Tests
 | Phần | Status |
 |---|---|
 | health.test.js | ✅ Xong |
-| Auth / Posts / Categories / Admin tests | ❌ Chưa làm |
+| auth / posts / categories / admin tests | ❌ Chưa làm |
 
-### AI Full-Cycle Framework — ✅ Hoàn chỉnh
-| Phần | Status |
-|---|---|
-| 7 agents (be, fe, test, docs, qa, orchestrator, verify) | ✅ Xong |
-| 15 skills (5 domain × 3 phase) | ✅ Xong |
-| scripts v4 + v5 + agent_runner | ✅ Xong |
-| Task contracts (4 tasks mỗi version) | ✅ Xong |
-| Docs vận hành (playbook, v5-runtime, skills-mapping) | ✅ Xong |
-
-### Bước tiếp theo
-1. Tạo DB PostgreSQL `hoian_blog` → `npm run migrate && npm run seed`
+### Việc cần làm tiếp
+1. Tạo DB PostgreSQL `hoian_blog` → chạy migrate + seed
 2. Hoàn thiện FE: About/Contact content, Dashboard stats
-3. Viết tests: auth, posts, categories, admin endpoints
-4. Chạy `bash scripts/run_cycle_v5.sh` để verify toàn bộ cycle
+3. Viết tests: auth, posts, categories, admin
 
-## Giấy phép và đóng góp
+## Đóng góp
 
-Dự án hướng tới chia sẻ cách làm, bạn có thể fork, mở rộng task contracts, thêm skill packs và gửi PR.
+Fork tự do. Không commit file `.env` hay secret local.

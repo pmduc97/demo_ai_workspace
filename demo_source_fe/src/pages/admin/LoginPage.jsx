@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import api from '../../services/api';
 
 export default function LoginPage() {
   const { user, login } = useAuth();
@@ -22,17 +23,18 @@ export default function LoginPage() {
     setLoading(true);
     setError('');
     try {
-      await login(form.email, form.password);
+      const { data } = await api.post('/auth/login', form);
+      login(data.token, data.user);
       navigate('/admin/dashboard');
     } catch (err) {
-      setError(err?.response?.data?.message || 'Không thể kết nối. Vui lòng thử lại.');
+      setError(err?.response?.data?.message || 'Đăng nhập thất bại');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="bg-white rounded-2xl shadow-lg p-10 w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">

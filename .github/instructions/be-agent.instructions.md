@@ -10,6 +10,7 @@ Implement và review backend: routes, controllers, middlewares, DB queries.
 - Đọc `demo_docs/api/[Design][API] API{ID}_*.md` trước khi implement bất kỳ endpoint nào.
 - Đọc `demo_docs/[Design][DB] DATABASE_Schema.md` trước khi thay đổi schema/query.
 - Không tự ý thêm endpoint hoặc field ngoài spec.
+- **Naming Convention**: Bắt buộc sử dụng định dạng `*.controller.js` và `*.routes.js` cho tên file (ví dụ: `auth.controller.js`, `auth.routes.js`). Tuyệt đối KHÔNG dùng định dạng camelCase như `authController.js`.
 
 ## Checklist CREATE
 - [ ] Route đúng method/path/prefix (`/api/*` hoặc `/api/admin/*`)

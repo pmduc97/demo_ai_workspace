@@ -67,7 +67,7 @@ demo_docs/        ← API specs (22 endpoints) + FE screen specs (11 màn hình)
 3. Với mỗi task, gọi đúng sub-agent kèm context đầy đủ.
 4. Thu findings từ sub-agent, enforce correct nếu có Critical/High.
 5. Sau khi tất cả task pass → gọi `qa-agent` chạy QA gate.
-6. **BẮT BUỘC**: Ghi log thực thi vào `reports/AGENT_EXECUTION_LOG.md`.
+6. **BẮT BUỘC**: Ghi log thực thi vào `reports/AGENT_EXECUTION_LOG.md`. Phải liệt kê TOÀN BỘ các file đã đọc, kiểm tra, hoặc chỉnh sửa trong quá trình thực thi (đánh dấu rõ `[Modified]` hoặc `[Verified/Unchanged]`).
 7. **BẮT BUỘC**: Cập nhật trạng thái và file mới vào `PROJECT_MANIFEST.yml`.
 8. Báo cáo kết quả cuối: PASS/FAIL + residual risks.
 

@@ -19,13 +19,13 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ message: 'Missing email or password' });
+    if (!email || !password) return res.status(400).json({ message: 'Email và mật khẩu là bắt buộc' });
     const user = await db('users').where({ email }).first();
-    if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+    if (!user) return res.status(401).json({ message: 'Email hoặc mật khẩu không đúng' });
     const ok = await bcrypt.compare(password, user.password_hash);
-    if (!ok) return res.status(401).json({ message: 'Invalid credentials' });
-    const token = jwt.sign({ id: user.id, email: user.email, role: user.role, name: user.name }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    return res.json({ token, user: { id: user.id, email: user.email, role: user.role, name: user.name, created_at: user.created_at } });
+    if (!ok) return res.status(401).json({ message: 'Email hoặc mật khẩu không đúng' });
+    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    return res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }

@@ -4,5 +4,25 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"chat.tools.terminal.autoApprove": {
+			"npm test": true,
+			"/^cmd\\.exe /c \"cd demo_source_be && npm test\"$/": {
+				"approve": true,
+				"matchCommandLine": true
+			},
+			"/^cmd\\.exe /c \"npm test\"$/": {
+				"approve": true,
+				"matchCommandLine": true
+			},
+			"/^cmd\\.exe /c \"npm install\"$/": {
+				"approve": true,
+				"matchCommandLine": true
+			},
+			"/^cmd\\.exe /c \"npm install -D jest-circus\"$/": {
+				"approve": true,
+				"matchCommandLine": true
+			}
+		}
+	}
 }

@@ -21,9 +21,9 @@ features:
       - "users"
     tests:
       be: "demo_source_be/src/__tests__/auth.test.js"
-      playwright: "demo_playwright/tests/auth-login.spec.ts"
+      playwright: "demo_playwright/tests/ITa_functional/auth-login.spec.ts"
       test_cases:
-        ita: null
+        ita: "demo_docs/tests/ITa/[Test][ITa] TC_AUTH_LOGIN.md"
         itb: null
 
   auth_register:

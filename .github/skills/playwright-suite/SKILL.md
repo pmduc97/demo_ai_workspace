@@ -33,10 +33,13 @@ Viết một bộ test E2E hoàn chỉnh cho một tính năng, áp dụng Page 
 6. Sử dụng `expect` để assert kết quả (UI, API response, DB state) đúng như "Kết quả mong đợi" trong tài liệu.
 7. Gọi `await captureEvidence(page, testInfo, 'Tên-Bước')` trước và sau các action chính để lưu lại bằng chứng UI.
 
-### Bước 4 — Chạy thử và Verify
+### Bước 4 — Chạy thử và Phân tích kết quả (Analysis & Retry Loop)
 1. Mở terminal, di chuyển vào `demo_playwright/`.
-2. Chạy lệnh: `npx playwright test tests/{tên-file}.spec.js`.
-3. Nếu test fail, đọc log lỗi và sửa lại code test hoặc POM cho đến khi pass.
+2. Chạy lệnh: `npx playwright test tests/{tên-file}.spec.ts`.
+3. Nếu có test case bị FAIL, **BẮT BUỘC** phải phân tích nguyên nhân dựa trên log lỗi, trace, hoặc screenshot:
+   - **Lỗi do Test Code (Flaky, sai locator, timeout, logic test sai):** Phải tiến hành fix lại code test (hoặc POM) và chạy lại riêng test case đó (`-g "Tên TC"`) cho đến khi PASS.
+   - **Lỗi do Bug App (FE/BE code không đúng spec):** Ghi nhận lại thành Bug Report. KHÔNG sửa test code để bypass lỗi của app.
+4. Lặp lại quá trình này cho đến khi tất cả các test case đều PASS, hoặc các test case FAIL đã được xác nhận chắc chắn là do Bug App.
 
 ## Output
 ```
@@ -48,6 +51,9 @@ Viết một bộ test E2E hoàn chỉnh cho một tính năng, áp dụng Page 
 1. ...
 2. ...
 
-### Verify result
-npx playwright test -> PASS
+### Phân tích kết quả (Test Execution Report)
+- Tổng số TC: X
+- PASS: Y
+- FAIL do Bug App: Z (Liệt kê chi tiết bug: TC ID, Expected, Actual)
+- Lỗi Test Code đã fix: (Liệt kê các lỗi test code đã phát hiện và fix trong quá trình chạy)
 ```

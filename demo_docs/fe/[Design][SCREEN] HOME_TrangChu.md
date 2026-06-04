@@ -1,104 +1,128 @@
-# HOME — Trang Chủ
+---
+version: 1.1
+created: 2026-06-03
+updated: 2026-06-05
+status: stable
+---
 
-## Tổng quan
-Trang chủ là điểm vào chính của blog. Hiển thị banner giới thiệu, 1 bài viết nổi bật và lưới bài mới nhất. Người dùng có thể điều hướng đến danh mục hoặc đọc chi tiết bài viết.
+# [Design][SCREEN] HOME_TrangChu
 
-## Route & Navigation
-- **Route**: `/`
-- Điều hướng đến: `/post/:slug`, `/category/:slug`
+## Change Log
+| Ver | Ngày | Nội dung | Người tạo |
+|---|---|---|---|
+| 1.1 | 2026-06-05 | Chuẩn hóa 12 sections, đồng bộ `HomePage.jsx` và API04 | docs-agent |
 
-## Layout & Components
+## 1. Tổng quan
+Trang chủ public hiển thị hero tĩnh, bài nổi bật lấy từ item đầu tiên của API04 và grid bài viết mới nhất.
 
-```
+## 2. Thông tin chung
+| Thuộc tính | Giá trị |
+|---|---|
+| Route | `/` |
+| Auth yêu cầu | Không |
+| Redirect nếu chưa login | Không |
+| URL Params | Không có |
+
+## 3. Navigation
+| Vào từ đâu | Điều kiện |
+|---|---|
+| Navbar / nhập URL | Public |
+
+| Đi đến đâu | Destination |
+|---|---|
+| Click Đọc bài viết / PostCard | `/post/:slug` |
+| Click Về blog | `/about` |
+
+## 4. Layout & Components
+```jsx
 <Navbar />
 <main>
-  <HeroBanner />
+  <HeroSection />
   <FeaturedPost />
-  <section> <!-- Bài mới nhất -->
-    <PostCard /> × N
-    <Pagination />
-  </section>
+  <LatestPostsGrid>
+    <PostCard />
+  </LatestPostsGrid>
 </main>
 <Footer />
 ```
+Components dùng lại: `Navbar`, `Footer`, `PostCard`.
 
-## Chi tiết UI từng section
+## 5. Ma trận trạng thái UI
+| Trạng thái | Hero | FeaturedPost | PostGrid | ErrorBanner |
+|---|---|---|---|---|
+| Init | Hiển thị | Ẩn | Ẩn | Ẩn |
+| Loading | Hiển thị | Skeleton | Skeleton | Ẩn |
+| Loaded có data | Hiển thị | Hiển thị item đầu | Hiển thị items còn lại hoặc toàn bộ | Ẩn |
+| Empty | Hiển thị | Ẩn | EmptyState | Ẩn |
+| Error | Hiển thị | Ẩn | Ẩn | Hiển thị |
 
-### Navbar
-- Logo bên trái: "Blog Du Lịch"
-- Menu: Trang chủ | Giới thiệu | Liên hệ
-- Không hiển thị nút "Đăng nhập" trên public header khi chưa đăng nhập vì login chỉ phục vụ khu vực quản trị.
-- Nếu đã đăng nhập, hiển thị nút "Quản trị" và "Đăng xuất".
-- Sticky top, nền trắng mờ, border amber nhẹ, backdrop blur.
+## 6. Chi tiết UI từng section
+| Control | Loại | I/O | Ràng buộc | Giá trị khởi tạo | Nguồn dữ liệu | Event ID | JSON Field | Ghi chú |
+|---|---|---|---|---|---|---|---|---|
+| Hero CTA Xem bài mới | Link | Input | N/A | `#latest-posts` | Static | E01 | N/A | Scroll nội trang |
+| Featured image | Image | Output | Fallback URL | N/A | API04 | N/A | `thumbnail_url` | Item đầu tiên |
+| Featured title | Text | Output | N/A | N/A | API04 | N/A | `title` | Link `/post/:slug` |
+| PostCard grid | List | Output | N/A | `[]` | API04 | E02 | `items[]` | Dùng `PostCard` |
+| Error banner | Text | Output | N/A | `''` | API error | N/A | N/A | Text hiện tại trong code |
 
-### HeroBanner
-- Ảnh nền full-width, chiều cao 400px (desktop) / 250px (mobile)
-- Overlay tối 40%
-- Tiêu đề: "Khám Phá Du Lịch Việt Nam"
-- Tagline: "Tin tức du lịch, ẩm thực và văn hóa các điểm đến"
-- Nội dung tĩnh (không gọi API)
+## 7. API Calls
+| Event ID | API | Endpoint | Khi gọi | Link |
+|---|---|---|---|---|
+| E02 | API04 | `GET /api/posts` | On mount | [[Design][API] API04_Posts_DanhSach.md](../api/[Design][API]%20API04_Posts_DanhSach.md) |
 
-### FeaturedPost
-- Lấy bài published mới nhất có thumbnail
-- Layout 2 cột: ảnh trái (60%) + nội dung phải (40%)
-- Nội dung: category badge (màu theo danh mục), tiêu đề (h2), excerpt (150 ký tự), tên tác giả, ngày đăng, nút "Đọc tiếp →"
-- Nền màu vàng nhạt (#FEF9C3) để nổi bật
+### Request Mapping
+| Event ID | Query |
+|---|---|
+| E02 | Không truyền query |
 
-### Lưới bài mới nhất
-- Tiêu đề section: "Bài Viết Mới Nhất"
-- Grid 3 cột desktop / 2 cột tablet / 1 cột mobile
-- Mỗi PostCard gồm:
-  - Thumbnail (aspect-ratio 16/9, object-cover)
-  - Category badge (top-left overlay)
-  - Tiêu đề (2 dòng, truncate)
-  - Excerpt (3 dòng, truncate)
-  - Avatar tác giả + tên + ngày đăng
-- Hover: shadow tăng, thumbnail scale nhẹ (transition)
-- Phân trang: hiển thị số trang, nút Trước/Sau
+### Response Mapping
+| API Field | UI State |
+|---|---|
+| `items` hoặc fallback `posts` | `items` |
+| `items[0]` | `featured` |
+| `items.slice(1)` | `latest` |
 
-### Footer
-- Logo + mô tả ngắn
-- Links: Trang chủ, Giới thiệu, Liên hệ
-- Danh mục nhanh
-- Copyright
-
-## API Calls
-
+## 8. State Management
 ```js
-// Lấy bài nổi bật (1 bài mới nhất có thumbnail)
-GET /api/posts?status=published&limit=1&sort=newest
-// Response: { posts: [Post], total: number }
-
-// Lấy danh sách bài mới nhất (phân trang)
-GET /api/posts?status=published&limit=9&page=1&sort=newest
-// Response: { posts: [Post], total: number, page: number, totalPages: number }
-
-// Lấy danh sách category cho Navbar dropdown
-GET /api/categories
-// Response: [Category]
-```
-
-## State Management
-
-```js
-const [featured, setFeatured] = useState(null);
-const [posts, setPosts] = useState([]);
-const [categories, setCategories] = useState([]);
+const [items, setItems] = useState([]);
 const [loading, setLoading] = useState(true);
-const [page, setPage] = useState(1);
-const [totalPages, setTotalPages] = useState(1);
+const [error, setError] = useState('');
 ```
 
-## Xử lý lỗi & Edge Cases
-- Loading: skeleton card (3 card placeholder với animate-pulse)
-- Lỗi API: hiển thị thông báo "Không thể tải bài viết. Vui lòng thử lại."
-- Không có bài: "Chưa có bài viết nào. Hãy quay lại sau!"
-- Bài không có thumbnail: dùng ảnh placeholder mặc định `/placeholder.jpg`
-- FeaturedPost không có bài: ẩn section, PostGrid chiếm toàn bộ
+## 9. Xử lý lỗi & Edge Cases
+| Tình huống | HTTP Status | Component | Xử lý |
+|---|---|---|---|
+| API lỗi | 500/N/A | ErrorBanner | Hiển thị `POST-E-005` |
+| Không có bài | 200 | EmptyState | Hiển thị `POST-I-001` |
+| Không có thumbnail | 200 | Image | Dùng fallback Unsplash |
 
-## Responsive
-| Breakpoint | PostGrid | FeaturedPost |
-|---|---|---|
-| mobile (<640px) | 1 cột | Stack dọc |
-| tablet (640-1024px) | 2 cột | Stack dọc |
-| desktop (>1024px) | 3 cột | 2 cột ngang |
+## 10. Responsive
+| Breakpoint | Layout |
+|---|---|
+| Mobile | Hero stack, grid 1 cột |
+| Tablet | Grid 2 cột |
+| Desktop | Hero 2 cột, grid 3 cột |
+
+## 11. Events & Actions
+| Event ID | Tên | Control | Trigger | API | Mô tả |
+|---|---|---|---|---|---|
+| E01 | Scroll latest | CTA | Click | N/A | Điều hướng anchor |
+| E02 | Load posts | Page | Mount | API04 | Load danh sách bài public |
+| E03 | Open detail | PostCard | Click | N/A | Điều hướng `/post/:slug` |
+
+```mermaid
+sequenceDiagram
+  participant User
+  participant UI as HomePage
+  participant API as API04
+  User->>UI: Mở /
+  UI->>API: GET /posts
+  API-->>UI: { items, page, pageSize, total }
+  UI->>UI: Render featured + grid
+```
+
+## 12. Message List
+| MessageId | Loại | Nội dung | Component hiển thị | Điều kiện |
+|---|---|---|---|---|
+| POST-E-005 | E | Không thể tải bài viết. Vui lòng thử lại. | ErrorBanner | API04 lỗi |
+| POST-I-001 | I | Chưa có bài viết nào. | EmptyState | API04 trả rỗng |

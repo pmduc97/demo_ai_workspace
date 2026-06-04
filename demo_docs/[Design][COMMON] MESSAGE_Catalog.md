@@ -91,3 +91,13 @@ Khi tạo hoặc cập nhật API docs / FE screen docs:
 | USER-C-003 | User | C | N/A | `Mở khóa tài khoản này? Người dùng có thể đăng nhập lại.` | ConfirmModal | `UserListPage.jsx` | Admin click mở khóa user |
 | USER-I-001 | User | I | N/A | `Chưa có người dùng nào.` | EmptyState | `UserListPage.jsx` | Danh sách rỗng |
 | USER-I-002 | User | I | N/A | `Không tìm thấy người dùng phù hợp` | EmptyState | `UserListPage.jsx` | Filter/search không có kết quả |
+| POST-E-001 | Post | E | 401 | `Unauthorized` | Toast / Redirect | `auth.js` | Thiếu token hoặc token không hợp lệ |
+| POST-E-002 | Post | E | 403 | `Forbidden` | Toast | `posts.controller.js` / `role.js` | User không có quyền thao tác bài viết |
+| POST-E-003 | Post | E | 404 | `Post not found` | Toast | `posts.controller.js` | Không tìm thấy bài viết theo ID/slug |
+| POST-E-004 | Post | E | 422 | `Validation failed` | InlineError / Toast | `posts.controller.js` | Dữ liệu bài viết không hợp lệ |
+| POST-S-001 | Post | S | 201 | `Tạo bài viết thành công` | Toast | `PostFormPage.jsx` | Tạo bài viết thành công |
+| POST-S-002 | Post | S | 200 | `Cập nhật bài viết thành công` | Toast | `PostFormPage.jsx` | Cập nhật bài viết thành công |
+| POST-S-003 | Post | S | 200 | `Deleted` | Toast | `posts.controller.js` | Xóa bài viết thành công |
+| POST-I-001 | Post | I | N/A | `Chưa có bài viết nào.` | EmptyState | `PostListPage.jsx` | Danh sách bài viết rỗng |
+| POST-E-005 | Post | E | N/A | `Không thể tải bài viết. Vui lòng thử lại.` | ErrorBanner | `HomePage.jsx` / `CategoryPage.jsx` / `PostDetailPage.jsx` | FE public fetch posts lỗi |
+| POST-I-002 | Post | I | N/A | `Đang tải bài viết...` | LoadingText | `PostDetailPage.jsx` | Đang fetch chi tiết bài viết |

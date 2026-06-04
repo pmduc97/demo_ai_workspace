@@ -1,96 +1,120 @@
-# ADMIN_POST_LIST — Danh Sách Bài Viết
+---
+version: 1.1
+created: 2026-06-03
+updated: 2026-06-05
+status: stable
+---
 
-## Tổng quan
-Trang quản lý bài viết. Admin thấy tất cả bài, Member chỉ thấy bài của mình. Có filter, search và phân trang.
+# [Design][SCREEN] ADMIN_POST_LIST_DanhSachBai
 
-## Route & Navigation
-- **Route**: `/admin/posts`
-- Role: Admin, Member
-- Điều hướng đến: `/admin/posts/new`, `/admin/posts/:id/edit`
+## Change Log
+| Ver | Ngày | Nội dung | Người tạo |
+|---|---|---|---|
+| 1.1 | 2026-06-05 | Chuẩn hóa 12 sections, đồng bộ layout master và `PostListPage.jsx` | docs-agent |
 
-## Layout & Components
+## 1. Tổng quan
+Màn quản lý bài viết trong admin. Code hiện tại hiển thị danh sách đơn giản từ API10 và link tạo/sửa bài. Layout target giữ pattern master: `AdminLayout`, toolbar, table/list, actions.
 
-```
+## 2. Thông tin chung
+| Thuộc tính | Giá trị |
+|---|---|
+| Route | `/admin/posts` |
+| Auth yêu cầu | Có (admin/member) |
+| Redirect nếu chưa login | `/admin/login` |
+| URL Params | Không có |
+
+## 3. Navigation
+| Vào từ đâu | Điều kiện |
+|---|---|
+| Sidebar Admin | Đã login |
+
+| Đi đến đâu | Destination |
+|---|---|
+| Click New | `/admin/posts/new` |
+| Click title | `/admin/posts/:id/edit` |
+
+## 4. Layout & Components
+```jsx
 <AdminLayout>
-  <PageHeader /> <!-- Tiêu đề + nút Tạo bài mới -->
-  <FilterBar />
-  <PostTable />
+  <PageHeader title="Quản Lý Bài Viết" />
+  <PostToolbar />
+  <PostTable>
+    <PostRow />
+  </PostTable>
   <Pagination />
 </AdminLayout>
 ```
+Components dùng lại: `AdminLayout`, `ProtectedRoute`, `Pagination`, `ConfirmModal`, `ErrorBanner`, `LoadingSpinner` theo pattern `ADMIN_CATEGORY_LIST`/`ADMIN_USER_LIST`. Code hiện tại đang render list đơn giản trong page.
 
-## Chi tiết UI từng section
+## 5. Ma trận trạng thái UI
+| Trạng thái | Toolbar | New | Row edit link | Pagination |
+|---|---|---|---|---|
+| Init | Enable | Enable | Enable nếu có row | Target ẩn nếu chưa phân trang |
+| Loading | Disable | Disable | Disable | Disable |
+| Empty | Enable | Enable | Ẩn | Ẩn |
+| No permission | Ẩn | Ẩn | Ẩn | Ẩn |
 
-### PageHeader
-- Tiêu đề: "Quản Lý Bài Viết"
-- Nút "＋ Tạo bài mới" (màu amber, góc phải) → `/admin/posts/new`
+## 6. Chi tiết UI từng section
+| Control | Loại | I/O | Ràng buộc | Giá trị khởi tạo | Nguồn dữ liệu | Event ID | JSON Field | Ghi chú |
+|---|---|---|---|---|---|---|---|---|
+| Tiêu đề màn | Text | Output | N/A | `Posts` hiện tại | Static | N/A | N/A | Target text `Quản Lý Bài Viết` |
+| New button | Link | Input | N/A | N/A | Static | E02 | N/A | `/admin/posts/new` |
+| Post row title | Link | Output/Input | N/A | N/A | API10 | E03 | `title`, `id` | Link edit |
+| Status | Text/Badge | Output | `draft/published` | N/A | API10 | N/A | `status` | Code hiện text |
 
-### FilterBar
-- Search input: tìm theo tiêu đề (debounce 400ms)
-- Dropdown trạng thái: Tất cả | Đã xuất bản | Bản nháp
-- Dropdown danh mục: Tất cả | [danh sách category]
-- Nút "Đặt lại" khi có filter đang áp dụng
+## 7. API Calls
+| Event ID | API | Endpoint | Khi gọi | Link |
+|---|---|---|---|---|
+| E01 | API10 | `GET /api/admin/posts` | On mount | [[Design][API] API10_AdminPosts_DanhSach.md](../api/[Design][API]%20API10_AdminPosts_DanhSach.md) |
 
-### PostTable
-- Bảng với các cột:
-
-| Cột | Mô tả |
+### Request Mapping
+| Event ID | Query |
 |---|---|
-| Thumbnail | Ảnh nhỏ 60×40px |
-| Tiêu đề | Tên bài + excerpt ngắn (1 dòng) |
-| Danh mục | Badge tên danh mục |
-| Tác giả | Tên tác giả (admin thấy, member không thấy cột này) |
-| Trạng thái | Badge: "Đã xuất bản" (xanh) / "Bản nháp" (xám) |
-| Ngày tạo | DD/MM/YYYY |
-| Hành động | Nút Sửa + Nút Xóa |
+| E01 | Không truyền query trong code hiện tại |
 
-- Admin: thấy cột Tác giả, có thể sửa/xóa bất kỳ bài nào, có thể đổi trạng thái
-- Member: không thấy cột Tác giả, chỉ sửa/xóa bài của mình
+### Response Mapping
+| API Field | UI State |
+|---|---|
+| `items` | `items` |
 
-### Xóa bài
-- Click Xóa: hiển thị modal confirm "Bạn có chắc muốn xóa bài này không?"
-- Confirm: gọi API xóa, reload danh sách
-- Cancel: đóng modal
-
-### Đổi trạng thái (admin)
-- Click badge trạng thái: toggle published ↔ draft ngay (optimistic update)
-
-## API Calls
-
+## 8. State Management
 ```js
-// Lấy danh sách (admin)
-GET /api/admin/posts?page=1&limit=10&status=&category=&search=
-// Response: { posts: [Post], total, page, totalPages }
-
-// Lấy danh sách (member - chỉ bài của mình)
-GET /api/posts/my?page=1&limit=10&status=&search=
-// Response: { posts: [Post], total, page, totalPages }
-
-// Xóa bài
-DELETE /api/posts/:id  (member - bài của mình)
-DELETE /api/admin/posts/:id  (admin - bất kỳ)
-
-// Đổi trạng thái (admin)
-PUT /api/admin/posts/:id/status
-Body: { status: 'published' | 'draft' }
+const [items, setItems] = useState([]);
 ```
 
-## State Management
+## 9. Xử lý lỗi & Edge Cases
+| Tình huống | HTTP Status | Component | Xử lý |
+|---|---|---|---|
+| Chưa login | 401 | ProtectedRoute | Redirect login |
+| Danh sách rỗng | 200 | EmptyState target | Dùng `POST-I-001` |
+| API lỗi | 500/N/A | ErrorBanner target | Dùng `POST-E-005` |
 
-```js
-const [posts, setPosts] = useState([]);
-const [loading, setLoading] = useState(true);
-const [page, setPage] = useState(1);
-const [totalPages, setTotalPages] = useState(1);
-const [filters, setFilters] = useState({ search: '', status: '', category: '' });
-const [deleteModal, setDeleteModal] = useState({ open: false, postId: null });
-const { user } = useContext(AuthContext);
+## 10. Responsive
+| Breakpoint | Layout |
+|---|---|
+| Mobile | List/table scroll ngang theo master target |
+| Desktop | AdminLayout sidebar, table full width |
+
+## 11. Events & Actions
+| Event ID | Tên | Control | Trigger | API | Mô tả |
+|---|---|---|---|---|---|
+| E01 | Load admin posts | Page | Mount | API10 | Load danh sách |
+| E02 | Create post | New | Click | N/A | Điều hướng form tạo |
+| E03 | Edit post | Row title | Click | N/A | Điều hướng form sửa |
+
+```mermaid
+sequenceDiagram
+  participant User
+  participant UI as PostListPage
+  participant API as API10
+  User->>UI: Mở /admin/posts
+  UI->>API: GET /admin/posts
+  API-->>UI: { items }
+  UI->>UI: Render list/table
 ```
 
-- Khi filter thay đổi: reset page = 1, fetch lại
-- Search: debounce 400ms trước khi fetch
-
-## Xử lý lỗi & Edge Cases
-- Không có bài: "Chưa có bài viết nào. Hãy tạo bài đầu tiên!"
-- Xóa thất bại: hiển thị toast lỗi, không xóa khỏi danh sách
-- Loading: skeleton table rows
+## 12. Message List
+| MessageId | Loại | Nội dung | Component hiển thị | Điều kiện |
+|---|---|---|---|---|
+| POST-I-001 | I | Chưa có bài viết nào. | EmptyState | List rỗng |
+| POST-E-005 | E | Không thể tải bài viết. Vui lòng thử lại. | ErrorBanner | API lỗi |

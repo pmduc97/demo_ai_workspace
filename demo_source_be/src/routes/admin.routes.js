@@ -11,6 +11,11 @@ router.get('/posts/:id', role('admin'), posts.getAdminById);
 router.put('/posts/:id/status', role('admin'), posts.updateStatus);
 router.delete('/posts/:id', role('admin'), posts.remove);
 router.get('/users', role('admin'), users.list);
+router.post('/users', role('admin'), users.createAdminUser);
 router.put('/users/:id/role', role('admin'), users.updateRole);
+router.get('/users/:id', role('admin'), users.getAdminUserDetail);
+router.put('/users/:id', role('admin'), users.updateAdminUserProfile);
+router.put('/users/:id/status', role('admin'), users.updateAdminUserStatus);
+router.delete('/users/:id', role('admin'), users.deleteAdminUser);
 
 module.exports = router;

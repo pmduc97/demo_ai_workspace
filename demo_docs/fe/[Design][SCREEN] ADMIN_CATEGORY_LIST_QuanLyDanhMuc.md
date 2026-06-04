@@ -235,6 +235,13 @@ sequenceDiagram
 
 ## 12. Message List
 
+## Master action sync
+
+- Table action chuẩn cho master: `Xem`, `Sửa`, `Xóa`.
+- Button `Xem` mở detail modal từ dữ liệu row hiện tại hoặc API detail nếu cần.
+- Toolbar giữ cùng pattern với User: Search, Reset, Export CSV, `+ Thêm danh mục`.
+
+
 | MessageId | Loại | Nội dung | Component hiển thị | Điều kiện |
 |-----------|------|----------|--------------------|-----------|
 | CATEGORY-E-001 | E | Dữ liệu danh mục không hợp lệ | InlineError / Toast | Validate fail |

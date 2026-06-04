@@ -214,8 +214,8 @@ features:
 
   admin_categories:
     name: "Quản lý danh mục"
-    status: "tested"
-    cycle_checkpoint: "correct"
+    status: "implemented"
+    cycle_checkpoint: "test"
     docs:
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md"
       be_api:
@@ -241,8 +241,8 @@ features:
 
   admin_users:
     name: "Quản lý người dùng"
-    status: "draft"
-    cycle_checkpoint: "correct"
+    status: "implemented"
+    cycle_checkpoint: "test"
     docs:
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md"
       be_api:
@@ -251,6 +251,8 @@ features:
         - "demo_docs/api/[Design][API] API23_AdminUsers_ChiTiet.md"
         - "demo_docs/api/[Design][API] API24_AdminUsers_CapNhat.md"
         - "demo_docs/api/[Design][API] API25_AdminUsers_DoiStatus.md"
+        - "demo_docs/api/[Design][API] API26_AdminUsers_Tao.md"
+        - "demo_docs/api/[Design][API] API27_AdminUsers_Xoa.md"
     code:
       fe:
         - "demo_source_fe/src/pages/admin/UserListPage.jsx"

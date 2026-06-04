@@ -44,6 +44,7 @@ export default function CategoryListPage() {
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [deleteModal, setDeleteModal] = useState({ open: false, id: null, name: '' });
+  const [detailCategory, setDetailCategory] = useState(null);
 
   const busy = loading || adding || saving || deleting || exporting;
   const canSubmitAdd = addForm.name.trim().length >= 2 && addForm.slug.trim().length > 0 && !adding;
@@ -322,6 +323,7 @@ export default function CategoryListPage() {
                       <td className="px-4 py-3 text-center text-gray-600">{cat.viewCount ?? 0}</td>
                       <td className="px-4 py-3 text-gray-500 text-xs"><div>Người tạo: {cat.createdByName || '—'}</div><div>Bài mới nhất: {cat.latestPost?.title || '—'}</div><div>Cập nhật: {formatDate(cat.updated_at)}</div></td>
                       <td className="px-4 py-3 text-right space-x-2">
+                        <button onClick={() => setDetailCategory(cat)} disabled={busy} className="text-xs bg-gray-100 hover:bg-gray-200 disabled:opacity-60 text-gray-700 px-3 py-1 rounded-lg">Xem</button>
                         <button onClick={() => startEdit(cat)} disabled={busy} className="text-xs bg-blue-50 hover:bg-blue-100 disabled:opacity-60 text-blue-600 px-3 py-1 rounded-lg">Sửa</button>
                         <button onClick={() => setDeleteModal({ open: true, id: cat.id, name: cat.name })} disabled={busy} className="text-xs bg-red-50 hover:bg-red-100 disabled:opacity-60 text-red-600 px-3 py-1 rounded-lg">Xóa mềm</button>
                       </td>
@@ -345,6 +347,22 @@ export default function CategoryListPage() {
       )}
 
       {/* Delete modal */}
+      {detailCategory && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-xl shadow-xl p-6 max-w-2xl w-full">
+            <div className="flex justify-between items-start gap-4 mb-4">
+              <h3 className="font-semibold text-gray-800">Chi tiết danh mục</h3>
+              <button onClick={() => setDetailCategory(null)} className="text-gray-400 hover:text-gray-600 text-xl leading-none">×</button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div className="rounded-lg bg-gray-50 p-4 space-y-1"><p><strong>Tên:</strong> {detailCategory.name}</p><p><strong>Slug:</strong> {detailCategory.slug}</p><p><strong>Mô tả:</strong> {detailCategory.description || '—'}</p><p><strong>Trạng thái:</strong> {detailCategory.status === 'hidden' ? 'Ẩn' : 'Hiển thị'}</p></div>
+              <div className="rounded-lg bg-gray-50 p-4 space-y-1"><p><strong>Số bài:</strong> {detailCategory.postCount ?? 0}</p><p><strong>Published:</strong> {detailCategory.publishedPostCount ?? 0}</p><p><strong>Lượt xem:</strong> {detailCategory.viewCount ?? 0}</p><p><strong>Người tạo:</strong> {detailCategory.createdByName || '—'}</p></div>
+              <div className="rounded-lg bg-gray-50 p-4 space-y-1 md:col-span-2"><p><strong>Thumbnail:</strong> {detailCategory.thumbnail_url || '—'}</p><p><strong>SEO Title:</strong> {detailCategory.seo_title || '—'}</p><p><strong>SEO Description:</strong> {detailCategory.seo_description || '—'}</p><p><strong>Bài mới nhất:</strong> {detailCategory.latestPost?.title || '—'}</p><p><strong>Ngày tạo:</strong> {formatDate(detailCategory.created_at)}</p><p><strong>Cập nhật:</strong> {formatDate(detailCategory.updated_at)}</p></div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {deleteModal.open && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-xl shadow-xl p-6 max-w-sm w-full">

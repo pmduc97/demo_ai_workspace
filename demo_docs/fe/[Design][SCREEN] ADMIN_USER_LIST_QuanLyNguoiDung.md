@@ -281,6 +281,15 @@ sequenceDiagram
 
 ## 12. Message List
 
+## 12. Message List
+
+- Toolbar phải có `+ Tạo mới`, Search, Reset, Export CSV.
+- Table action chuẩn: `Xem`, `Sửa`, `Xóa`, cộng action đặc thù `Đổi role`, `Khóa/Mở khóa`.
+- Tạo user dùng `POST /api/admin/users` (API26).
+- Xóa user dùng `DELETE /api/admin/users/:id` (API27), xóa mềm và không cho tự xóa chính mình.
+- Layout/action phải đồng bộ với màn `ADMIN_CATEGORY_LIST_QuanLyDanhMuc`.
+
+
 | MessageId | Loại | Nội dung | Component hiển thị | Điều kiện |
 |-----------|------|----------|--------------------|-----------|
 | USER-E-001 | E | Dữ liệu người dùng không hợp lệ | InlineError / Toast | Validate fail |

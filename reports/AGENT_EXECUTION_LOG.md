@@ -1,3 +1,44 @@
+### [2026-06-04 00:00:00] - Orchestrator
+- **Task**: Standardize master Users + Categories CRUD/actions
+- **Target Features**: admin_users, admin_categories
+- **Files Processed**:
+  - `demo_docs/api/[Design][API] API26_AdminUsers_Tao.md` [Created]
+  - `demo_docs/api/[Design][API] API27_AdminUsers_Xoa.md` [Created]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md` [Modified]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md` [Modified]
+  - `demo_source_be/src/controllers/users.controller.js` [Modified]
+  - `demo_source_be/src/routes/admin.routes.js` [Modified]
+  - `demo_source_fe/src/pages/admin/UserListPage.jsx` [Modified]
+  - `demo_source_fe/src/pages/admin/CategoryListPage.jsx` [Modified]
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Added User create/delete APIs, User create/delete UI, Category detail `Xem` modal. Frontend build PASS. Backend syntax check PASS.
+
+### [2026-06-04 00:00:00] - fe-agent
+- **Task**: Correct corrupted UserListPage and validate frontend build
+- **Target Feature**: admin_users
+- **Files Processed**:
+  - `demo_source_fe/src/pages/admin/UserListPage.jsx` [Modified]
+  - `demo_source_fe/src/pages/admin/UserListPage.fixed.jsx` [Temporary/Deleted]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Fixed duplicate declarations/corrupted partial patch in UserListPage. `npm run build` in `demo_source_fe` completed successfully with Vite.
+
+### [2026-06-04 00:00:00] - fe-agent
+- **Task**: Implement FE screen for Admin User Management
+- **Skill Used**: fe-implement, fe-review
+- **Target Feature**: admin_users
+- **Files Processed**:
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md` [Verified/Unchanged]
+  - `demo_source_fe/src/pages/admin/UserListPage.jsx` [Modified]
+  - `demo_source_fe/src/services/api.js` [Verified/Unchanged]
+  - `demo_source_fe/src/components/AdminLayout.jsx` [Verified/Unchanged]
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Implemented toolbar search/filter/sort/export, user table, pagination, detail modal, edit profile modal, role confirm modal, status lock/unlock modal, loading/error/success states, and self-action disabling. Updated PROJECT_MANIFEST.yml cycle_checkpoint to review.
+
 ### [2026-06-04 00:00:00] - docs-agent
 - **Task**: Fix review findings for Admin Users API/FE/DB docs only
 - **Skill Used**: doc-be-implement, doc-be-review, doc-fe-review

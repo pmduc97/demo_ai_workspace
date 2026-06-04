@@ -22,8 +22,8 @@ features:
 
   auth_login:
     name: "Đăng nhập"
-    status: "tested"
-    cycle_checkpoint: "done"
+    status: "implemented"
+    cycle_checkpoint: "test_design"
     docs:
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_LOGIN_DangNhap.md"
       be_api:
@@ -38,9 +38,9 @@ features:
       - "users"
     tests:
       be: "demo_source_be/src/__tests__/auth.test.js"
-      playwright: "demo_playwright/tests/ITa_functional/auth-login.spec.ts"
+      playwright: null
       test_cases:
-        ita: "demo_docs/tests/ITa/[Test][ITa] TC_AUTH_LOGIN.md"
+        ita: null
         itb: null
 
   auth_register:

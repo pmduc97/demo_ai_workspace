@@ -85,6 +85,9 @@ status: stable
 |---|---|---|---|---|---|
 | 19 | GET | `/admin/users` | Danh sách người dùng | Admin | [[Design][API] API19_AdminUsers_DanhSach.md]([Design][API] API19_AdminUsers_DanhSach.md) |
 | 20 | PUT | `/admin/users/:id/role` | Đổi role người dùng | Admin | [[Design][API] API20_AdminUsers_DoiRole.md]([Design][API] API20_AdminUsers_DoiRole.md) |
+| 23 | GET | `/admin/users/:id` | Chi tiết người dùng | Admin | [[Design][API] API23_AdminUsers_ChiTiet.md]([Design][API] API23_AdminUsers_ChiTiet.md) |
+| 24 | PUT | `/admin/users/:id` | Cập nhật profile người dùng | Admin | [[Design][API] API24_AdminUsers_CapNhat.md]([Design][API] API24_AdminUsers_CapNhat.md) |
+| 25 | PUT | `/admin/users/:id/status` | Đổi trạng thái khóa/mở khóa người dùng | Admin | [[Design][API] API25_AdminUsers_DoiStatus.md]([Design][API] API25_AdminUsers_DoiStatus.md) |
 
 ## Upload
 

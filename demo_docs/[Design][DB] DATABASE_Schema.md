@@ -23,7 +23,16 @@ Các bảng nghiệp vụ phải có nhóm cột audit/soft-delete sau:
 - `email` (varchar, unique, not null)
 - `password_hash` (varchar, not null)
 - `name` (varchar, not null)
+- `phone` (varchar(20), null)
+- `address` (varchar(255), null)
+- `avatar_url` (varchar(255), null)
 - `role` (enum: `admin|member`, default `member`)
+- `status` (enum: `active|locked`, default `active`)
+- `bio` (text, null)
+- `birthdate` (date, null)
+- `gender` (enum: `male|female|other|unknown`, default `unknown`)
+- `locked_reason` (text, null) — bắt buộc khi `status='locked'` ở tầng API; API validate tối đa 255 ký tự
+- `last_login_at` (timestamp, null)
 - common columns: `created_at`, `created_by`, `updated_at`, `updated_by`, `deleted_at`, `deleted_by`
 
 ### `categories`

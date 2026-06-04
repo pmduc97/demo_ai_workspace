@@ -153,7 +153,7 @@ await api.put(`/admin/users/${id}/role`, { role: newRole });
 await api.put(`/admin/users/${id}/status`, { status: nextStatus, locked_reason });
 ```
 
-> API19 Danh sách: [[Design][API] API19_AdminUsers_DanhSach.md](../api/[Design][API]%20API19_AdminUsers_DanhSach.md) — cần cập nhật contract để hỗ trợ query/pagination và field mở rộng.
+> API19 Danh sách: [[Design][API] API19_AdminUsers_DanhSach.md](../api/[Design][API]%20API19_AdminUsers_DanhSach.md) — contract chuẩn trả `{ items, pagination }` và đủ field row cho table/detail/export.
 > API20 Đổi Role: [[Design][API] API20_AdminUsers_DoiRole.md](../api/[Design][API]%20API20_AdminUsers_DoiRole.md) — hiện tại chỉ đổi role.
 > API bổ sung cần tạo: `API23_AdminUsers_ChiTiet`, `API24_AdminUsers_CapNhat`, `API25_AdminUsers_DoiStatus`.
 
@@ -300,4 +300,5 @@ sequenceDiagram
 
 ## Implementation Notes
 - Hiện code/API đang chỉ hỗ trợ danh sách user cơ bản và đổi role. Các field `phone`, `address`, `avatar_url`, `status`, `last_login_at`, `updated_at`, `publishedPostCount`, `draftPostCount`, `bio`, `birthdate`, `gender`, `locked_reason` cần được bổ sung ở DB/API trước khi implement đầy đủ UI.
-- API hiện tại trong `UserListPage.jsx` đang gọi `PATCH /api/admin/users/:id/role`, trong khi API20 docs ghi `PUT`; cần thống nhất khi bước implement/correct.
+- API contract trong tài liệu dùng `PUT` cho API20/API24/API25. Nếu code hiện tại ở BE/FE còn dùng `PATCH /api/admin/users/:id/role`, đó là việc cần correct trong phase implement/correct để đổi về `PUT`, không xem là mismatch của tài liệu thiết kế.
+- API23 là optional fresh-detail fetch khi cần reload dữ liệu mới nhất trước khi mở detail modal. Với luồng thông thường, API19 đã trả đủ full row fields (`id`, `name`, `email`, `phone`, `address`, `avatar_url`, `role`, `status`, `bio`, `birthdate`, `gender`, `locked_reason`, `last_login_at`, `created_at`, `updated_at`, `postCount`, `publishedPostCount`, `draftPostCount`) nên FE có thể mở detail từ selected row mà không gọi API23.

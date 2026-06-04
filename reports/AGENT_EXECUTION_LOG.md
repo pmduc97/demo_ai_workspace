@@ -1,3 +1,15 @@
+### [2026-06-04 00:00:00] - docs-agent
+- **Task**: Fix review findings for Admin Users API/FE/DB docs only
+- **Skill Used**: doc-be-implement, doc-be-review, doc-fe-review
+- **Target Feature**: admin_users
+- **Files Processed**:
+  - `demo_docs/api/[Design][API] API19_AdminUsers_DanhSach.md` [Modified]
+  - `demo_docs/api/[Design][API] API20_AdminUsers_DoiRole.md` [Modified]
+  - `demo_docs/[Design][DB] DATABASE_Schema.md` [Modified]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md` [Modified]
+  - `PROJECT_MANIFEST.yml` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Standardized target controller to `src/controllers/users.controller.js`; documented PUT as source-of-truth; noted API23 optional because API19 returns full row fields. Residual risk: current BE/FE source may still need implementation correction to target contract.
 # Agent Execution Log
 
 Tài liệu này ghi chú lại toàn bộ các hành động của AI Agents trong dự án để đảm bảo tính truy vết (Traceability).
@@ -13,6 +25,42 @@ Mỗi khi Orchestrator hoặc Sub-agent hoàn thành một task, **BẮT BUỘC*
 ```
 
 ---
+### [2026-06-04 00:00:00] - Orchestrator
+- **Task**: Thực hiện migration users profile/status và review đồng bộ FE/BE docs quản lý người dùng
+- **Skill Used**: be-implement, doc-fe-review, doc-be-review
+- **Target Feature**: admin_users
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+  - `.github/instructions/be-agent.instructions.md` [Verified/Unchanged]
+  - `demo_source_be/src/db/migrations/20260604_03_user_profile_status_enhancement.js` [Added]
+  - `demo_docs/[Design][DB] DATABASE_Schema.md` [Modified]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md` [Modified]
+  - `demo_docs/api/[Design][API] API19_AdminUsers_DanhSach.md` [Modified]
+  - `demo_docs/api/[Design][API] API20_AdminUsers_DoiRole.md` [Modified]
+  - `demo_docs/api/[Design][API] API23_AdminUsers_ChiTiet.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API24_AdminUsers_CapNhat.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API25_AdminUsers_DoiStatus.md` [Verified/Unchanged]
+- **Status**: SUCCESS
+- **Notes**: Đã thêm migration users cho `phone`, `address`, `avatar_url`, `status`, `bio`, `birthdate`, `gender`, `locked_reason`, `last_login_at` và indexes users role/status. Đã chạy `node --check` PASS, `npm run migrate` PASS, verify schema PASS. Review strict FE/BE mapping lần đầu FAIL do API19/API20 lệch contract; đã correct docs. Review cuối: API19 94 PASS, API20 95 PASS, DB Schema 100 PASS, FE mapping 96 PASS. Residual: source BE/FE hiện vẫn cần implement/correct để khớp target contracts.
+
+### [2026-06-04 00:00:00] - docs-agent
+- **Task**: Tạo/cập nhật BE API design docs cho Admin User Management target design
+- **Skill Used**: doc-be-implement, doc-be-review
+- **Target Feature**: admin_users
+- **Files Processed**:
+  - `demo_docs/api/[Design][API] API19_AdminUsers_DanhSach.md` [Modified]
+  - `demo_docs/api/[Design][API] API20_AdminUsers_DoiRole.md` [Modified]
+  - `demo_docs/api/[Design][API] API23_AdminUsers_ChiTiet.md` [Added]
+  - `demo_docs/api/[Design][API] API24_AdminUsers_CapNhat.md` [Added]
+  - `demo_docs/api/[Design][API] API25_AdminUsers_DoiStatus.md` [Added]
+  - `demo_docs/api/[Design][LIST] API_DanhSachEndpoint.md` [Modified]
+  - `demo_docs/[Design][DB] DATABASE_Schema.md` [Modified]
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Docs là target design cho upcoming implementation. Residual risks: source code/migrations hiện tại chưa chắc đã có đủ fields `phone/address/avatar_url/status/bio/birthdate/gender/locked_reason/last_login_at`, routes/controller target chưa implement đủ API23-25, auth flow cần chặn user `locked` ở phase BE implementation.
+
 ### [2026-06-04 00:00:00] - Orchestrator
 - **Task**: Tạo và review tài liệu thiết kế FE màn quản lý người dùng theo target design mở rộng
 - **Skill Used**: doc-fe-implement, doc-fe-review

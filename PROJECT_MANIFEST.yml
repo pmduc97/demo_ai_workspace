@@ -16,6 +16,7 @@ db_state:
     - "demo_source_be/src/db/migrations/20240101_03_posts.js"
     - "demo_source_be/src/db/migrations/20260604_01_audit_soft_delete_category_enhancement.js"
     - "demo_source_be/src/db/migrations/20260604_02_add_missing_created_at_common_columns.js"
+    - "demo_source_be/src/db/migrations/20260604_03_user_profile_status_enhancement.js"
   notes: "DB hoian_blog trên PostgreSQL local. .env đã cấu hình."
 
 features:
@@ -241,12 +242,15 @@ features:
   admin_users:
     name: "Quản lý người dùng"
     status: "draft"
-    cycle_checkpoint: "plan"
+    cycle_checkpoint: "correct"
     docs:
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md"
       be_api:
         - "demo_docs/api/[Design][API] API19_AdminUsers_DanhSach.md"
         - "demo_docs/api/[Design][API] API20_AdminUsers_DoiRole.md"
+        - "demo_docs/api/[Design][API] API23_AdminUsers_ChiTiet.md"
+        - "demo_docs/api/[Design][API] API24_AdminUsers_CapNhat.md"
+        - "demo_docs/api/[Design][API] API25_AdminUsers_DoiStatus.md"
     code:
       fe:
         - "demo_source_fe/src/pages/admin/UserListPage.jsx"

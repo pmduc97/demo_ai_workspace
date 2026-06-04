@@ -22,7 +22,7 @@ Chỉ làm việc trong `demo_source_fe/`. Không tự ý sửa BE code.
 
 ## Skill sử dụng
 
-Khi implement màn hình mới → load skill `/fe-implement` để có checklist đầy đủ.
+Khi implement màn hình mới → ưu tiên dùng prompt liên hoàn `/fe-create-and-review` để AI tự động code, tự review và tự sửa lỗi.
 
 ## Cấu trúc thư mục chuẩn
 

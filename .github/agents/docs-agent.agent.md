@@ -12,11 +12,9 @@ Nhiệm vụ của bạn là viết, cập nhật và review tài liệu thiết
 
 ## Nguyên tắc làm việc
 1. Luôn tuân thủ các quy tắc trong `docs-agent.instructions.md`.
-2. Đối với tài liệu Frontend Screen: Bắt buộc sử dụng skill `doc-fe-implement` (10 sections) và `doc-fe-review`.
-3. Đối với tài liệu Backend API: Bắt buộc sử dụng skill `doc-be-implement` (7 sections) và `doc-be-review`.
-4. Đối với Test Case ITa: Bắt buộc sử dụng skill `doc-ita-implement` và `doc-ita-review`.
-5. Đối với Test Case ITb: Bắt buộc sử dụng skill `doc-itb-implement` và `doc-itb-review`.
-6. Đảm bảo tài liệu luôn đồng bộ với code thực tế và Database Schema.
+2. Ưu tiên sử dụng các prompt liên hoàn (Create & Review) để đảm bảo chất lượng đầu ra.
+3. Khi tạo Test Case ITa/ITb, **BẮT BUỘC** phải gọi MCP Server (`mcp-db-sampler`) để lấy dữ liệu mẫu thực tế từ Database, tuyệt đối không tự bịa data.
+4. Đảm bảo tài liệu luôn đồng bộ với code thực tế và Database Schema.
 
 ## Workflow
 
@@ -24,19 +22,18 @@ Nhiệm vụ của bạn là viết, cập nhật và review tài liệu thiết
 1. Đọc `PROJECT_MANIFEST.yml` để xác định feature và file docs liên quan.
 2. Đọc file docs hiện tại (nếu có) để hiểu trạng thái.
 3. Đọc code thực tế (controller/route hoặc JSX page) để đảm bảo docs khớp code.
-4. Áp dụng đúng skill tương ứng (xem bảng dưới).
-5. Sau khi viết xong → chạy skill review tương ứng để tự kiểm tra.
-6. Ghi log vào `reports/AGENT_EXECUTION_LOG.md`.
-7. Cập nhật `cycle_checkpoint` trong `PROJECT_MANIFEST.yml`.
+4. Gọi prompt liên hoàn tương ứng (xem bảng dưới) để AI tự động viết và review.
+5. Ghi log vào `reports/AGENT_EXECUTION_LOG.md`.
+6. Cập nhật `cycle_checkpoint` trong `PROJECT_MANIFEST.yml`.
 
-### Bảng skill theo loại tài liệu
+### Bảng Prompt liên hoàn (Create & Review)
 
-| Loại tài liệu | Skill viết | Skill review |
-|---|---|---|
-| BE API spec | `doc-be-implement` | `doc-be-review` |
-| FE Screen spec | `doc-fe-implement` | `doc-fe-review` |
-| Test Case ITa | `doc-ita-implement` | `doc-ita-review` |
-| Test Case ITb | `doc-itb-implement` | `doc-itb-review` |
+| Loại tài liệu | Lệnh Prompt |
+|---|---|
+| BE API spec | `/doc-be-create-and-review` |
+| FE Screen spec | `/doc-fe-create-and-review` |
+| Test Case ITa | `/doc-ita-create-and-review` |
+| Test Case ITb | `/doc-itb-create-and-review` |
 
 ### Checklist đồng bộ docs ↔ code (chạy trước khi báo cáo xong)
 - [ ] Method / path / request body / response fields khớp code thực

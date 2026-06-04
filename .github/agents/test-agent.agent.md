@@ -21,7 +21,7 @@ Chỉ làm việc trong `demo_source_be/src/__tests__/`.
 
 ## Skill sử dụng
 
-Khi viết test suite mới → load skill `/test-suite` để có template chuẩn.
+Khi viết test suite mới → ưu tiên dùng prompt liên hoàn `/test-create-and-review` để AI tự động viết test, tự chạy lệnh `npm test` và tự sửa lỗi nếu fail.
 
 ## Cấu trúc chuẩn
 

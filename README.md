@@ -21,6 +21,7 @@ Hai mục tiêu song song:
 | Upload | Multer |
 | Test | Jest + Supertest |
 | AI Workflow | GitHub Copilot — custom agents, skills, instructions |
+| MCP Server | `mcp-db-sampler` (Query DB thật để sinh Test Data) |
 
 ## Cấu trúc thư mục
 
@@ -133,23 +134,33 @@ Toàn bộ workflow chạy trong **GitHub Copilot Chat** trên VS Code, không c
 
 **Dùng nhanh từng việc** — gõ `/` trong Copilot Chat để chọn prompt:
 
+### Lệnh Liên Hoàn (Automation Full-Cycle)
 | Lệnh | Tác dụng |
 |------|----------|
-| `/be-create` | Implement một backend endpoint |
-| `/be-review` | Review backend code |
-| `/fe-create` | Implement một màn hình FE |
-| `/fe-review` | Review frontend code |
-| `/test-create` | Viết test suite cho một module |
-| `/playwright-create` | Viết kịch bản test E2E bằng Playwright |
+| `/doc-fe-create-and-review` | Tạo tài liệu thiết kế FE (10 sections) và tự chấm điểm |
+| `/doc-be-create-and-review` | Tạo tài liệu thiết kế BE (7 sections) và tự chấm điểm |
+| `/doc-ita-create-and-review` | Tạo Test Case ITa (dùng MCP lấy data thật) và tự chấm điểm |
+| `/doc-itb-create-and-review` | Tạo Test Case ITb (có Mermaid, DB Matrix) và tự chấm điểm |
+| `/fe-create-and-review` | Code React component/page, tự review và sửa lỗi |
+| `/be-create-and-review` | Code Express/Knex, tự review và sửa lỗi |
+| `/test-create-and-review` | Viết Unit/Integration Test (Jest), tự chạy và tự sửa lỗi |
+| `/playwright-ita-full-cycle` | Viết code E2E Test ITa, tự chạy, tự sửa lỗi và xuất báo cáo |
+| `/playwright-itb-full-cycle` | Viết code E2E Test ITb, tự chạy, tự sửa lỗi và xuất báo cáo |
 | `/qa-gate` | Kiểm tra tổng trước khi merge |
-| `/doc-ita-create` | Viết tài liệu Test Case ITa (Functional Integration) |
-| `/doc-ita-review` | Review và chấm điểm tài liệu Test Case ITa |
-| `/doc-itb-create` | Viết tài liệu Test Case ITb (Scenario Integration) |
-| `/doc-itb-review` | Review và chấm điểm tài liệu Test Case ITb |
-| `/doc-fe-implement` | Viết/chuẩn hóa tài liệu FE Screen Design |
-| `/doc-fe-review` | Review và chấm điểm tài liệu FE Screen Design |
-| `/doc-be-implement` | Viết/chuẩn hóa tài liệu BE API Design |
-| `/doc-be-review` | Review và chấm điểm tài liệu BE API Design |
+
+### Lệnh Đơn Lẻ (Manual Control)
+| Lệnh | Tác dụng |
+|------|----------|
+| `/be-create` | Chỉ implement backend endpoint |
+| `/be-review` | Chỉ review backend code |
+| `/fe-create` | Chỉ implement màn hình FE |
+| `/fe-review` | Chỉ review frontend code |
+| `/test-create` | Chỉ viết test suite cho một module |
+| `/playwright-create` | Chỉ viết kịch bản test E2E bằng Playwright |
+| `/doc-ita-create` | Chỉ viết tài liệu Test Case ITa |
+| `/doc-ita-review` | Chỉ review tài liệu Test Case ITa |
+| `/doc-itb-create` | Chỉ viết tài liệu Test Case ITb |
+| `/doc-itb-review` | Chỉ review tài liệu Test Case ITb |
 
 ### Vòng lặp phát triển
 

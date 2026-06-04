@@ -29,32 +29,41 @@ demo_docs/        ← API specs (22 endpoints) + FE screen specs (11 màn hình)
 | `playwright-agent` | Viết và chạy test E2E bằng Playwright |
 | `qa-agent` | Cross-domain verification, QA gate cuối vòng |
 
-## Skills có thể dùng
+## Prompts / Lệnh có thể dùng
 
-| Skill | Khi nào dùng |
+### Lệnh Liên Hoàn (Automation)
+| Lệnh | Khi nào dùng |
 |-------|-------------|
-| `/doc-fe-implement` | Chuẩn hóa tài liệu FE Screen (10 sections) |
-| `/doc-fe-review` | Review và chấm điểm tài liệu FE Screen |
-| `/doc-be-implement` | Chuẩn hóa tài liệu BE API (7 sections) |
-| `/doc-be-review` | Review và chấm điểm tài liệu BE API |
-| `/be-implement` | Implement một backend feature cụ thể |
-| `/fe-implement` | Implement một màn hình FE cụ thể |
-| `/test-suite` | Tạo test suite cho một module |
-| `/playwright-suite` | Viết bộ test E2E cho một tính năng |
+| `/doc-fe-create-and-review` | Tạo tài liệu thiết kế FE (10 sections) và tự chấm điểm |
+| `/doc-be-create-and-review` | Tạo tài liệu thiết kế BE (7 sections) và tự chấm điểm |
+| `/doc-ita-create-and-review` | Tạo Test Case ITa (dùng MCP lấy data thật) và tự chấm điểm |
+| `/doc-itb-create-and-review` | Tạo Test Case ITb (có Mermaid, DB Matrix) và tự chấm điểm |
+| `/fe-create-and-review` | Code React component/page, tự review và sửa lỗi |
+| `/be-create-and-review` | Code Express/Knex, tự review và sửa lỗi |
+| `/test-create-and-review` | Viết Unit/Integration Test (Jest), tự chạy và tự sửa lỗi |
+| `/playwright-ita-full-cycle` | Viết code E2E Test ITa, tự chạy, tự sửa lỗi và xuất báo cáo |
+| `/playwright-itb-full-cycle` | Viết code E2E Test ITb, tự chạy, tự sửa lỗi và xuất báo cáo |
 | `/qa-gate` | Chạy QA gate trước khi chốt vòng |
 
-## Vòng lặp phát triển chuẩn
+### Lệnh Đơn Lẻ (Manual Control)
+| Lệnh | Khi nào dùng |
+|-------|-------------|
+| `/be-create`, `/be-review` | Khi chỉ muốn code hoặc chỉ muốn review Backend |
+| `/fe-create`, `/fe-review` | Khi chỉ muốn code hoặc chỉ muốn review Frontend |
+| `/doc-ita-create`, `/doc-ita-review` | Khi chỉ muốn tạo hoặc chỉ muốn review Test Case ITa |
+| `/doc-itb-create`, `/doc-itb-review` | Khi chỉ muốn tạo hoặc chỉ muốn review Test Case ITb |
+
+## Vòng lặp phát triển chuẩn (Automation)
 
 ```
-1. DOCS    → Giao docs-agent chuẩn hóa tài liệu thiết kế (FE/BE)
-2. PLAN    → Phân rã yêu cầu thành task có acceptance criteria rõ
-3. CREATE  → Giao be-agent / fe-agent implement
-4. REVIEW  → Giao be-agent / fe-agent review chính code của nhau hoặc tự review
-5. CORRECT → Fix các finding Critical/High
-6. TEST    → Giao test-agent viết/chạy test unit/integration
-7. E2E TEST→ Giao playwright-agent viết/chạy test E2E
-8. QA GATE → Giao qa-agent kiểm tra tổng
-9. REPORT  → Tóm tắt kết quả, ghi residual risks
+1. DOCS       → Gọi `/doc-fe-create-and-review` hoặc `/doc-be-create-and-review`
+2. PLAN       → Phân rã yêu cầu thành task có acceptance criteria rõ
+3. TEST DESIGN→ Gọi `/doc-ita-create-and-review` hoặc `/doc-itb-create-and-review`
+4. CREATE     → Gọi `/fe-create-and-review` hoặc `/be-create-and-review`
+5. TEST       → Gọi `/test-create-and-review`
+6. E2E TEST   → Gọi `/playwright-ita-full-cycle` hoặc `/playwright-itb-full-cycle`
+7. QA GATE    → Gọi `/qa-gate` kiểm tra tổng
+8. REPORT     → Tóm tắt kết quả, ghi residual risks
 ```
 
 ## Gate Rules (không ngoại lệ)

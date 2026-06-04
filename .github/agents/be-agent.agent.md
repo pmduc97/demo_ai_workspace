@@ -21,7 +21,7 @@ Chỉ làm việc trong `demo_source_be/`. Không tự ý sửa FE code.
 
 ## Skill sử dụng
 
-Khi implement feature mới → load skill `/be-implement` để có checklist đầy đủ.
+Khi implement feature mới → ưu tiên dùng prompt liên hoàn `/be-create-and-review` để AI tự động code, tự review và tự sửa lỗi.
 
 ## Quy tắc cứng
 

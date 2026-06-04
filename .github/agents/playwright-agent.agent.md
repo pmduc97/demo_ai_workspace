@@ -15,10 +15,10 @@ Chỉ làm việc trong `demo_playwright/`. Không tự ý sửa FE/BE code.
 
 ## Nguyên tắc làm việc
 1. Luôn tuân thủ các quy tắc trong `playwright-agent.instructions.md`.
-2. Bắt buộc sử dụng skill `playwright-suite` khi được yêu cầu viết test cho một tính năng mới.
+2. Bắt buộc sử dụng prompt `/playwright-ita-full-cycle` hoặc `/playwright-itb-full-cycle` khi được yêu cầu viết test cho một tính năng mới.
 3. Luôn áp dụng mô hình Page Object Model (POM).
 4. **Tuyệt đối KHÔNG tự bịa test case** — phải đọc file Test Case ITa/ITb tương ứng trước.
-5. Sau khi viết test xong, chạy `npx playwright test` để đảm bảo test pass.
+5. Sau khi viết test xong, AI phải tự động chạy `npx playwright test`, tự đọc log lỗi và tự sửa code test (Self-Correction) nếu sai locator.
 
 ## Trước khi viết test
 

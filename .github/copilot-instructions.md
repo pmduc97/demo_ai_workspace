@@ -58,17 +58,24 @@ Blog tin tức về Hội An và Đà Nẵng.
 ## Workflow AI (Full-Cycle)
 Workspace này dùng quy trình: **plan → docs → test_design → create → review → test_execution → qa_gate**
 
-Các prompt workflow có sẵn tại `.github/prompts/`:
-- `be-create.prompt.md` — Implement backend feature
-- `be-review.prompt.md` — Review backend code
-- `fe-create.prompt.md` — Implement frontend feature
-- `fe-review.prompt.md` — Review frontend code
-- `test-create.prompt.md` — Viết test suite
+Các prompt workflow liên hoàn (Create & Review) có sẵn tại `.github/prompts/`:
+- `doc-fe-create-and-review.prompt.md` — Tạo và review tài liệu FE
+- `doc-be-create-and-review.prompt.md` — Tạo và review tài liệu BE
+- `doc-ita-create-and-review.prompt.md` — Tạo và review Test Case ITa (dùng MCP)
+- `doc-itb-create-and-review.prompt.md` — Tạo và review Test Case ITb (dùng MCP)
+- `fe-create-and-review.prompt.md` — Code và review Frontend
+- `be-create-and-review.prompt.md` — Code và review Backend
+- `test-create-and-review.prompt.md` — Viết Unit Test, tự chạy và tự sửa lỗi
+- `playwright-ita-full-cycle.prompt.md` — Viết E2E Test ITa, tự chạy, tự sửa lỗi và xuất báo cáo
+- `playwright-itb-full-cycle.prompt.md` — Viết E2E Test ITb, tự chạy, tự sửa lỗi và xuất báo cáo
 - `qa-gate.prompt.md` — QA gate check trước khi merge
-- `doc-ita-create.prompt.md` — Viết tài liệu Test Case ITa (Functional Integration)
-- `doc-ita-review.prompt.md` — Review tài liệu Test Case ITa
-- `doc-itb-create.prompt.md` — Viết tài liệu Test Case ITb (Scenario Integration)
-- `doc-itb-review.prompt.md` — Review tài liệu Test Case ITb
+
+Ngoài ra, bạn vẫn có thể dùng các prompt đơn lẻ nếu chỉ muốn thực hiện một bước:
+- `be-create.prompt.md`, `be-review.prompt.md`
+- `fe-create.prompt.md`, `fe-review.prompt.md`
+- `test-create.prompt.md`, `playwright-create.prompt.md`
+- `doc-ita-create.prompt.md`, `doc-ita-review.prompt.md`
+- `doc-itb-create.prompt.md`, `doc-itb-review.prompt.md`
 
 ## Lệnh thường dùng (Windows)
 ```powershell

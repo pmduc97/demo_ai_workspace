@@ -12,6 +12,8 @@ Implement và review frontend: pages, components, auth flow, routing.
 - Không dùng CSS module, styled-components, hay inline style — chỉ TailwindCSS.
 - Button phải tuân thủ Ma trận trạng thái UI (Section 5): disable khi loading, ẩn khi không có quyền — không dùng message FE-only thay cho disabled.
 - Message hiển thị cho user phải khớp với Message List (Section 12) trong screen doc.
+- Trước khi implement message hiển thị cho user, bắt buộc đọc `demo_docs/[Design][COMMON] MESSAGE_Catalog.md`; ưu tiên map text theo `messageId` qua `parseApiError()`.
+- Nếu cần message mới, cập nhật Message Catalog và screen/API docs trước khi dùng trong code.
 
 ## Checklist CREATE
 - [ ] Route/component đúng theo screen-list (`demo_docs/fe/[Design][LIST] SCREEN_DanhSachManHinh.md`)

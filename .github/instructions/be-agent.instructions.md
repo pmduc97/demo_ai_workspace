@@ -11,6 +11,8 @@ Implement và review backend: routes, controllers, middlewares, DB queries.
 - Đọc `demo_docs/[Design][DB] DATABASE_Schema.md` trước khi thay đổi schema/query.
 - Không tự ý thêm endpoint hoặc field ngoài spec.
 - **Naming Convention**: Bắt buộc sử dụng định dạng `*.controller.js` và `*.routes.js` cho tên file (ví dụ: `auth.controller.js`, `auth.routes.js`). Tuyệt đối KHÔNG dùng định dạng camelCase như `authController.js`.
+- Trước khi implement response lỗi/thông báo, bắt buộc đọc `demo_docs/[Design][COMMON] MESSAGE_Catalog.md`; dùng lại Message ID đã có hoặc cập nhật catalog/docs trước khi thêm ID mới.
+- Error response chuẩn: `{ messageId: string, message: string, details?: any }`.
 
 ## Checklist CREATE
 - [ ] Route đúng method/path/prefix (`/api/*` hoặc `/api/admin/*`)
@@ -19,7 +21,7 @@ Implement và review backend: routes, controllers, middlewares, DB queries.
 - [ ] Auth + role guard đúng (public / member / admin)
 - [ ] Không expose `password_hash` hay secret trong response
 - [ ] Query có pagination/filter/sort theo spec
-- [ ] Error format: `{ message, details? }`
+- [ ] Error format: `{ messageId, message, details? }`
 - [ ] Cập nhật migration/seed nếu đổi schema
 
 ## Checklist REVIEW

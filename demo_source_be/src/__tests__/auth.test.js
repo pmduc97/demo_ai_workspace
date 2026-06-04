@@ -57,6 +57,7 @@ describe('POST /api/auth/login', () => {
       });
 
     expect(res.statusCode).toBe(400);
+    expect(res.body.messageId).toBe('AUTH-E-001');
     expect(res.body.message).toBe('Email và mật khẩu là bắt buộc');
   });
 
@@ -68,6 +69,7 @@ describe('POST /api/auth/login', () => {
       });
 
     expect(res.statusCode).toBe(400);
+    expect(res.body.messageId).toBe('AUTH-E-001');
     expect(res.body.message).toBe('Email và mật khẩu là bắt buộc');
   });
 
@@ -80,6 +82,7 @@ describe('POST /api/auth/login', () => {
       });
 
     expect(res.statusCode).toBe(401);
+    expect(res.body.messageId).toBe('AUTH-E-002');
     expect(res.body.message).toBe('Email hoặc mật khẩu không đúng');
   });
 
@@ -92,6 +95,7 @@ describe('POST /api/auth/login', () => {
       });
 
     expect(res.statusCode).toBe(401);
+    expect(res.body.messageId).toBe('AUTH-E-002');
     expect(res.body.message).toBe('Email hoặc mật khẩu không đúng');
   });
 });

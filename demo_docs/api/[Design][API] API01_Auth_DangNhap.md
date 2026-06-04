@@ -1,7 +1,7 @@
 ---
 version: 1.0
 created: 2026-06-03
-updated: 2026-06-03
+updated: 2026-06-04
 status: stable
 ---
 
@@ -18,7 +18,8 @@ status: stable
 | Endpoint | `/api/auth/login` |
 | Auth yêu cầu | Không |
 | Role cho phép | Public |
-| Controller | `src/controllers/authController.js` -> `login` |
+| Controller | `src/controllers/auth.controller.js` -> `login` |
+| Message Catalog | [`[Design][COMMON] MESSAGE_Catalog.md`](../[Design][COMMON]%20MESSAGE_Catalog.md) |
 
 ## 3. Request
 
@@ -65,18 +66,34 @@ status: stable
 ```
 
 ### 4.2 Lỗi & Exceptions
-| HTTP Code | Message / Error Code | Điều kiện xảy ra |
-|-----------|----------------------|------------------|
-| 400 | `Email và mật khẩu là bắt buộc` | Thiếu field `email` hoặc `password` |
-| 401 | `Email hoặc mật khẩu không đúng` | Không tìm thấy user theo email, hoặc sai mật khẩu |
+| HTTP Code | Message ID | Message | Điều kiện xảy ra |
+|-----------|------------|---------|------------------|
+| 400 | `AUTH-E-001` | `Email và mật khẩu là bắt buộc` | Thiếu field `email` hoặc `password` |
+| 401 | `AUTH-E-002` | `Email hoặc mật khẩu không đúng` | Không tìm thấy user theo email, hoặc sai mật khẩu |
+
+**Ví dụ Response lỗi 400:**
+```json
+{
+  "messageId": "AUTH-E-001",
+  "message": "Email và mật khẩu là bắt buộc"
+}
+```
+
+**Ví dụ Response lỗi 401:**
+```json
+{
+  "messageId": "AUTH-E-002",
+  "message": "Email hoặc mật khẩu không đúng"
+}
+```
 
 ## 5. Logic xử lý (Business Logic)
 1. Validate request body (`email`, `password` không được rỗng).
-   - Nếu thiếu -> throw `400 Bad Request`.
+  - Nếu thiếu -> trả `400 Bad Request` với `messageId=AUTH-E-001`.
 2. Thực hiện **[Q1]** để tìm user theo `email`.
-   - Nếu không tìm thấy -> throw `401 Unauthorized`.
+  - Nếu không tìm thấy -> trả `401 Unauthorized` với `messageId=AUTH-E-002`.
 3. Dùng `bcrypt.compare(password, user.password_hash)` để kiểm tra mật khẩu.
-   - Nếu sai -> throw `401 Unauthorized`.
+  - Nếu sai -> trả `401 Unauthorized` với `messageId=AUTH-E-002`.
 4. Tạo JWT token: `jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: '7d' })`.
 5. Trả về `token` và thông tin `user` (loại bỏ `password_hash`).
 

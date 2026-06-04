@@ -20,9 +20,11 @@ Viết mới hoặc cập nhật một FE screen design doc đúng format chuẩ
 1. Xem danh sách tại `demo_docs/fe/[Design][LIST] SCREEN_DanhSachManHinh.md`
 2. Đọc thư viện UI tại `demo_docs/fe/[Design][LIST] COMPONENT_DanhSach.md` để biết các component đã có sẵn (bắt buộc dùng lại nếu phù hợp).
 3. Đọc thư viện Utils tại `demo_docs/fe/[Design][LIST] UTILS_DanhSach.md` để biết các hàm logic dùng chung (format, parse lỗi...).
-4. **QUAN TRỌNG**: Nếu màn hình yêu cầu tạo một component mới hoặc hàm logic mới có khả năng tái sử dụng, bạn **BẮT BUỘC** phải cập nhật thêm vào file `COMPONENT_DanhSach.md` hoặc `UTILS_DanhSach.md` tương ứng.
-5. File đích: `demo_docs/fe/[Design][SCREEN] {ScreenCode}_{ScreenName}.md`
-6. Nếu màn hình gọi API, đọc trước các file API liên quan tại `demo_docs/api/`
+4. Đọc `demo_docs/[Design][COMMON] MESSAGE_Catalog.md` trước khi định nghĩa lỗi, success, confirm hoặc info message.
+5. **QUAN TRỌNG**: Nếu message đã có trong Message Catalog thì dùng lại đúng Message ID; nếu chưa có thì thêm mới vào Message Catalog trước khi reference trong Screen doc.
+6. **QUAN TRỌNG**: Nếu màn hình yêu cầu tạo một component mới hoặc hàm logic mới có khả năng tái sử dụng, bạn **BẮT BUỘC** phải cập nhật thêm vào file `COMPONENT_DanhSach.md` hoặc `UTILS_DanhSach.md` tương ứng.
+7. File đích: `demo_docs/fe/[Design][SCREEN] {ScreenCode}_{ScreenName}.md`
+8. Nếu màn hình gọi API, đọc trước các file API liên quan tại `demo_docs/api/`
 
 ### Bước 2 — Áp dụng 12-section template
 Xem template đầy đủ tại [screen-template.md](./references/screen-template.md).
@@ -59,6 +61,7 @@ Checklist nhanh:
 - [ ] Section 9 phân biệt lỗi interceptor vs lỗi màn hình tự xử lý
 - [ ] Section 11 có Event ID nhất quán (E00, E01...) + Sequence Diagram cho event phức tạp
 - [ ] Section 12 có Message List đầy đủ (E/C/S/I)
+- [ ] Section 12 dùng Message ID từ `demo_docs/[Design][COMMON] MESSAGE_Catalog.md`; nếu có message mới thì catalog đã được cập nhật.
 - [ ] Không có section trống (ghi "Không có" nếu không dùng)
 - [ ] Bảng Thông tin chung có đủ 4 trường
 

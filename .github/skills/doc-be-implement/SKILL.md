@@ -19,9 +19,11 @@ Viết mới hoặc cập nhật một BE API design doc đúng format chuẩn 1
 ### Bước 1 — Xác định API và Utils
 1. Xem danh sách tại `demo_docs/api/[Design][LIST] API_DanhSachEndpoint.md`.
 2. Đọc thư viện Utils tại `demo_docs/api/[Design][LIST] UTILS_DanhSach.md` để biết các hàm logic dùng chung và middlewares đã có sẵn.
-3. **QUAN TRỌNG**: Nếu API yêu cầu tạo một hàm logic mới có khả năng tái sử dụng (ví dụ: hash password, format response...), bạn **BẮT BUỘC** phải cập nhật thêm vào file `UTILS_DanhSach.md`.
-4. File đích: `demo_docs/api/[Design][API] API{ID}_{Group}_{Name}.md`.
-5. Đọc file Database Schema tại `demo_docs/[Design][DB] DATABASE_Schema.md` để nắm cấu trúc bảng trước khi viết query.
+3. Đọc `demo_docs/[Design][COMMON] MESSAGE_Catalog.md` trước khi định nghĩa Validation Rules, Error Response hoặc Message List.
+4. **QUAN TRỌNG**: Nếu message đã có trong Message Catalog thì dùng lại đúng Message ID; nếu chưa có thì thêm mới vào Message Catalog trước khi reference trong API doc.
+5. **QUAN TRỌNG**: Nếu API yêu cầu tạo một hàm logic mới có khả năng tái sử dụng (ví dụ: hash password, format response...), bạn **BẮT BUỘC** phải cập nhật thêm vào file `UTILS_DanhSach.md`.
+6. File đích: `demo_docs/api/[Design][API] API{ID}_{Group}_{Name}.md`.
+7. Đọc file Database Schema tại `demo_docs/[Design][DB] DATABASE_Schema.md` để nắm cấu trúc bảng trước khi viết query.
 
 ### Bước 2 — Áp dụng 10-section template
 Xem template đầy đủ tại [api-template.md](./references/api-template.md).
@@ -59,6 +61,7 @@ Checklist nhanh:
 - [ ] Section 7 và 8 có sử dụng Query IDs mapping + Điều kiện OK/NG.
 - [ ] Section 8 có Data Mapping (Request→SQL và DB→Response).
 - [ ] Section 9 có Message List đầy đủ.
+- [ ] Section 9 dùng Message ID từ `demo_docs/[Design][COMMON] MESSAGE_Catalog.md`; nếu có message mới thì catalog đã được cập nhật.
 - [ ] Không có section trống (ghi "Không có" nếu không dùng).
 
 ## Output

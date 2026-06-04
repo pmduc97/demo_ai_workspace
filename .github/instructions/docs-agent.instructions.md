@@ -21,6 +21,9 @@ Giữ tài liệu (`demo_docs/`) đồng bộ với code thực tế.
 - Docs phải phản ánh code tại thời điểm hiện tại — không được lệch.
 - Nếu code đổi contract (endpoint, field, status code) → docs phải đổi theo ngay.
 - Không tự ý thêm endpoint/field vào docs nếu code chưa có.
+- Trước khi tạo/cập nhật API docs hoặc FE screen docs có message hiển thị cho user, bắt buộc đọc `demo_docs/[Design][COMMON] MESSAGE_Catalog.md`.
+- Nếu Message ID đã tồn tại trong Message Catalog thì phải dùng lại; nếu chưa có thì thêm mới vào Message Catalog trước, sau đó reference lại trong API/FE docs.
+- API docs phải mô tả response lỗi có `messageId` và `message`; FE screen docs Section 12 phải dùng Message ID từ Message Catalog, không tự tạo ID local trùng nghĩa.
 
 ## Format chuẩn file API doc (Backend)
 - Bắt buộc tuân thủ chuẩn **10 sections + Change Log** (có YAML Frontmatter, Bảng DB liên quan, Validation Rules dạng V-xx, Sequence Diagram, Data Mapping, Message List, Query IDs mapping với Knex.js).

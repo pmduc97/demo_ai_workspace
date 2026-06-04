@@ -21,6 +21,7 @@ Implement hoặc fix một backend feature đúng spec, an toàn phân quyền, 
 1. Tìm file API spec: `demo_docs/api/[Design][API] API{ID}_{Group}_{Name}.md`
 2. Đọc `demo_docs/[Design][DB] DATABASE_Schema.md` nếu thay đổi schema
 3. Xem danh sách API tại `demo_docs/api/[Design][LIST] API_DanhSachEndpoint.md`
+4. Đọc `demo_docs/[Design][COMMON] MESSAGE_Catalog.md`; dùng lại Message ID đã có, nếu chưa có thì cập nhật catalog và API doc trước khi code.
 
 ### Bước 2 — Implement theo checklist
 Xem đầy đủ tại [checklist](./references/checklist.md).
@@ -31,7 +32,7 @@ Tóm tắt bắt buộc:
 - Validate input → 422 khi sai
 - Auth + role guard đúng (public / member / admin)
 - Không expose `password_hash` hay secret
-- Error format: `{ message, details? }`
+- Error format: `{ messageId, message, details? }`
 
 ### Bước 3 — Self-review
 Chạy checklist review tại [review criteria](./references/review-criteria.md) trước khi báo xong.

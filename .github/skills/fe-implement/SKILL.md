@@ -24,6 +24,7 @@ Implement màn hình hoặc component đúng spec, ổn định khi gọi API, �
 4. Đọc `src/services/api.js` để tái dùng hàm đã có
 5. Đọc `src/context/AuthContext.jsx` để lấy auth state đúng cách
 6. Đọc `demo_docs/fe/[Design][LIST] COMPONENT_DanhSach.md` để tái dùng component đã có
+7. Đọc `demo_docs/[Design][COMMON] MESSAGE_Catalog.md`; dùng lại Message ID đã có và ưu tiên `parseApiError()` khi hiển thị lỗi từ API.
 
 ### Bước 2 — Implement theo checklist
 Xem đầy đủ tại [checklist](./references/checklist.md).
@@ -37,6 +38,7 @@ Tóm tắt bắt buộc:
 - Admin route có `ProtectedRoute` guard
 - Form disable submit khi đang loading
 - Lỗi API hiển thị rõ cho user
+- Message hiển thị phải map từ Message Catalog hoặc từ `messageId` API response.
 
 ### Bước 3 — Self-review
 Trước khi báo xong, check lại:

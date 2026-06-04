@@ -19,6 +19,51 @@ Mỗi khi Orchestrator hoặc Sub-agent hoàn thành một task, **BẮT BUỘC*
 ---
 ## Lịch sử thực thi
 
+### [2026-06-04 00:00:00] - Orchestrator
+- **Task**: Implement Message Catalog dùng chung FE/BE cho luồng đăng nhập và cập nhật rule agent/skill
+- **Skill Used**: doc-fe-implement, doc-be-implement, be-implement, fe-implement
+- **Target Feature**: auth_login
+- **Files Processed**:
+  - `demo_docs/[Design][COMMON] MESSAGE_Catalog.md` [Modified]
+  - `demo_docs/api/[Design][API] API01_Auth_DangNhap.md` [Modified]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_LOGIN_DangNhap.md` [Modified]
+  - `demo_source_be/src/controllers/auth.controller.js` [Modified]
+  - `demo_source_be/src/__tests__/auth.test.js` [Modified]
+  - `demo_source_fe/src/services/api.js` [Modified]
+  - `demo_source_fe/src/constants/messages.js` [Modified]
+  - `demo_source_fe/src/pages/admin/LoginPage.jsx` [Modified]
+  - `.github/instructions/docs-agent.instructions.md` [Modified]
+  - `.github/instructions/be-agent.instructions.md` [Modified]
+  - `.github/instructions/fe-agent.instructions.md` [Modified]
+  - `.github/skills/doc-be-implement/SKILL.md` [Modified]
+  - `.github/skills/doc-fe-implement/SKILL.md` [Modified]
+  - `.github/skills/be-implement/SKILL.md` [Modified]
+  - `.github/skills/fe-implement/SKILL.md` [Modified]
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Backend login trả `{ messageId, message }`; FE `parseApiError()` ưu tiên Message Catalog; API/FE docs đã reference catalog. Verify: backend `npm test -- --runInBand` PASS, frontend `npm run build` PASS, VS Code errors none. `auth_login` cập nhật `status=tested`, `cycle_checkpoint=test`.
+
+### [2026-06-04 00:00:00] - docs-agent
+- **Task**: Tạo/review và chuẩn hóa tài liệu design FE cho màn hình đăng nhập
+- **Skill Used**: doc-fe-implement, doc-fe-review
+- **Target Feature**: auth_login
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_LOGIN_DangNhap.md` [Modified]
+  - `demo_docs/fe/[Design][LIST] SCREEN_DanhSachManHinh.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][LIST] COMPONENT_DanhSach.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][LIST] UTILS_DanhSach.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API01_Auth_DangNhap.md` [Verified/Unchanged]
+  - `demo_source_fe/src/pages/admin/LoginPage.jsx` [Verified/Unchanged]
+  - `demo_source_fe/src/context/AuthContext.jsx` [Verified/Unchanged]
+  - `.github/skills/doc-fe-implement/SKILL.md` [Verified/Unchanged]
+  - `.github/skills/doc-fe-review/SKILL.md` [Verified/Unchanged]
+  - `.github/instructions/docs-agent.instructions.md` [Verified/Unchanged]
+- **Status**: SUCCESS
+- **Notes**: Document cũ thiếu Change Log, thiếu 12-section format, thiếu state matrix, Request/Response Mapping, Event ID/Sequence Diagram và Message List. Đã cập nhật hoàn chỉnh và review lại đạt PASS. cycle_checkpoint cập nhật thành `plan`.
+
 ### [2026-06-03 10:00:00] - Orchestrator
 - **Task**: Khởi tạo hệ thống Manifest và Execution Log
 - **Skill Used**: N/A

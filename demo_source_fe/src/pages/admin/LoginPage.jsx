@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../services/api';
+import api, { parseApiError } from '../../services/api';
 
 export default function LoginPage() {
   const { user, login } = useAuth();
@@ -17,7 +17,7 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.email || !form.password) {
-      setError('Vui lòng nhập đầy đủ email và mật khẩu.');
+      setError(parseApiError({ response: { data: { messageId: 'AUTH-E-001' } } }));
       return;
     }
     setLoading(true);
@@ -27,7 +27,7 @@ export default function LoginPage() {
       login(data.token, data.user);
       navigate('/admin/dashboard');
     } catch (err) {
-      setError(err?.response?.data?.message || 'Đăng nhập thất bại');
+      setError(parseApiError(err, 'AUTH-E-003'));
     } finally {
       setLoading(false);
     }

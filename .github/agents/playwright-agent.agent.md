@@ -15,11 +15,12 @@ Chỉ làm việc trong `demo_playwright/`. Không tự ý sửa FE/BE code.
 
 ## Nguyên tắc làm việc
 1. Luôn tuân thủ các quy tắc trong `playwright-agent.instructions.md`.
-2. Bắt buộc sử dụng prompt `/playwright-ita-full-cycle` hoặc `/playwright-itb-full-cycle` khi được yêu cầu viết test cho một tính năng mới.
-3. Luôn áp dụng mô hình Page Object Model (POM).
-4. **Tuyệt đối KHÔNG tự bịa test case** — phải đọc file Test Case ITa/ITb tương ứng trước.
-5. Trước mọi lần chạy E2E, bắt buộc kiểm tra FE/BE đang available và chạy smoke test ngắn; nếu FE hoặc BE chưa chạy thì dừng, báo BLOCKED, không chạy full suite.
-6. Sau khi viết test xong, AI phải tự động chạy `npx playwright test`, tự đọc log lỗi và tự sửa code test (Self-Correction) nếu sai locator.
+2. Trước khi tạo/review/chạy test spec, bắt buộc đọc `.github/knowledge/playwright-lessons.md` và áp dụng các bài học phòng tránh lỗi lặp lại.
+3. Bắt buộc sử dụng prompt `/playwright-ita-full-cycle` hoặc `/playwright-itb-full-cycle` khi được yêu cầu viết test cho một tính năng mới.
+4. Luôn áp dụng mô hình Page Object Model (POM).
+5. **Tuyệt đối KHÔNG tự bịa test case** — phải đọc file Test Case ITa/ITb tương ứng trước.
+6. Trước mọi lần chạy E2E, bắt buộc kiểm tra FE/BE đang available và chạy smoke test ngắn; nếu FE hoặc BE chưa chạy thì dừng, báo BLOCKED, không chạy full suite.
+7. Sau khi viết test xong, AI phải tự động chạy `npx playwright test`, tự đọc log lỗi và tự sửa code test (Self-Correction) nếu sai locator.
 
 ## Execution Gate bắt buộc trước khi chạy full suite
 
@@ -31,11 +32,13 @@ Chỉ làm việc trong `demo_playwright/`. Không tự ý sửa FE/BE code.
 
 ## Trước khi viết test
 
-1. Đọc file Test Case tại `demo_docs/tests/ITa/` hoặc `demo_docs/tests/ITb/`
-2. Đọc screen spec FE tại `demo_docs/fe/[Design][SCREEN] {ScreenCode}_*.md`
-3. Đọc API spec liên quan tại `demo_docs/api/[Design][API] API{ID}_*.md`
-4. Kiểm tra POM đã có trong `demo_playwright/page-objects/` để tái dùng
-5. Lập `Playwright Chunk Plan` trước khi generate code: mỗi chunk khoảng 8-10 TC, tối đa 10 TC/spec file; chia theo nhóm nghiệp vụ/viewpoint.
+1. Đọc `.github/knowledge/playwright-lessons.md`.
+2. Đọc file Test Case tại `demo_docs/tests/ITa/` hoặc `demo_docs/tests/ITb/`.
+3. Đọc `demo_docs/fe/[Design][LIST] SCREEN_DanhSachManHinh.md` và screen spec FE tại `demo_docs/fe/[Design][SCREEN] {ScreenCode}_*.md` để xác định route/navigation.
+4. Đọc API spec liên quan tại `demo_docs/api/[Design][API] API{ID}_*.md`.
+5. Confirm route thực tế trong `demo_source_fe/src/App.jsx`; nếu docs-code mismatch thì dừng và report.
+6. Kiểm tra POM đã có trong `demo_playwright/page-objects/` để tái dùng.
+7. Lập `Playwright Chunk Plan` trước khi generate code: mỗi chunk khoảng 8-10 TC, tối đa 10 TC/spec file; chia theo nhóm nghiệp vụ/viewpoint.
 
 ## Cấu trúc thư mục chuẩn
 
@@ -55,6 +58,7 @@ demo_playwright/
 - **POM bắt buộc** — logic UI tách vào class trong `page-objects/`
 - **Chunking bắt buộc** — không tạo một spec khổng lồ cho feature nhiều TC; mỗi file `.spec.ts` tối đa 10 TC, đặt tên `{feature}.{chunk-index}-{chunk-name}.spec.ts`
 - **Locators**: ưu tiên `getByRole`, `getByLabel`, `getByPlaceholder` — tránh CSS/XPath
+- **Route & assertion gate**: route phải trace từ docs/list màn hình/code; smoke không dùng text tiếng Việt có dấu làm assertion chính
 - **KHÔNG dùng** `page.waitForTimeout()` — dùng auto-waiting hoặc `expect(locator).toBeVisible()`
 - **captureEvidence bắt buộc** trước/sau các action quan trọng (form submit, verify lỗi)
 - Mỗi test case **độc lập** — setup/teardown qua API hoặc DB, không phụ thuộc nhau
@@ -62,6 +66,8 @@ demo_playwright/
 ## Checklist CREATE (bắt buộc trước khi báo xong)
 
 - [ ] Đã đọc file Test Case ITa/ITb tương ứng
+- [ ] Đã đọc `.github/knowledge/playwright-lessons.md`
+- [ ] Đã trace route từ list màn hình/screen spec và confirm với `App.jsx`
 - [ ] Đã kiểm tra FE/BE available trước khi chạy test
 - [ ] Đã chạy smoke test 2-3 case và PASS trước full/chunk suite
 - [ ] POM class tạo trong `page-objects/`

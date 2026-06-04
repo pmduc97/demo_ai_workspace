@@ -15,6 +15,13 @@ argument-hint: "Đường dẫn file test spec cần review"
 
 ## Checklist Review (Bắt buộc kiểm tra từng mục)
 
+### 0. Knowledge Base phòng lỗi lặp lại
+- [ ] Đã đọc và áp dụng `.github/knowledge/playwright-lessons.md`.
+- [ ] Route/navigation đã được trace từ `SCREEN_DanhSachManHinh.md`, screen spec FE và confirm với `demo_source_fe/src/App.jsx`.
+- [ ] Nếu docs-code mismatch về route/field/API, đã report thay vì tự đoán.
+- [ ] Smoke/navigation assertion không phụ thuộc text tiếng Việt có dấu; ưu tiên URL, role, placeholder, button/input chức năng hoặc API response.
+- [ ] Lệnh chạy Playwright được thực thi từ `demo_playwright/`.
+
 ### 1. Cấu trúc thư mục (Folder Structure)
 - [ ] File test spec phải nằm đúng thư mục phân loại:
   - Test chức năng (ITa): `demo_playwright/tests/ITa_functional/`

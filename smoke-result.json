@@ -1,0 +1,73 @@
+﻿{
+  "config": {
+    "rootDir": "D:/Projects/demo_ai_workspace",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/Projects/demo_ai_workspace/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "",
+        "name": "",
+        "testDir": "D:/Projects/demo_ai_workspace",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.60.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [],
+  "errors": [
+    {
+      "message": "Error: Playwright Test did not expect test.describe() to be called here.\nMost common reasons include:\n- You are calling test.describe() in a configuration file.\n- You are calling test.describe() in a file that is imported by the configuration file.\n- You have two different versions of @playwright/test. This usually happens\n  when one of the dependencies in your package.json depends on @playwright/test.",
+      "stack": "Error: Playwright Test did not expect test.describe() to be called here.\nMost common reasons include:\n- You are calling test.describe() in a configuration file.\n- You are calling test.describe() in a file that is imported by the configuration file.\n- You have two different versions of @playwright/test. This usually happens\n  when one of the dependencies in your package.json depends on @playwright/test.\n    at _TestTypeImpl._currentSuite (D:\\Projects\\demo_ai_workspace\\demo_playwright\\node_modules\\playwright\\lib\\common\\index.js:2221:13)\n    at _TestTypeImpl._describe (D:\\Projects\\demo_ai_workspace\\demo_playwright\\node_modules\\playwright\\lib\\common\\index.js:2261:24)\n    at Function.describe (D:\\Projects\\demo_ai_workspace\\demo_playwright\\node_modules\\playwright\\lib\\common\\index.js:1111:12)\n    at Object.<anonymous> (D:\\Projects\\demo_ai_workspace\\demo_playwright\\tests\\smoke\\admin-users.smoke.spec.ts:5:6)",
+      "location": {
+        "file": "D:\\Projects\\demo_ai_workspace\\demo_playwright\\tests\\smoke\\admin-users.smoke.spec.ts",
+        "column": 6,
+        "line": 5
+      },
+      "snippet": "\u001b[90m   at \u001b[39mdemo_playwright\\tests\\smoke\\admin-users.smoke.spec.ts:5\n\n\u001b[0m \u001b[90m 3 |\u001b[39m \u001b[36mimport\u001b[39m { \u001b[33mAdminUserListPage\u001b[39m } \u001b[36mfrom\u001b[39m \u001b[32m'../../page-objects/AdminUserListPage'\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 4 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 5 |\u001b[39m test\u001b[33m.\u001b[39mdescribe(\u001b[32m'Smoke - Admin Users environment gate'\u001b[39m\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m   |\u001b[39m      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 6 |\u001b[39m   test(\u001b[32m'SMOKE_001 backend public API available'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ request }) \u001b[33m=>\u001b[39m {\n \u001b[90m 7 |\u001b[39m     \u001b[36mconst\u001b[39m response \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m request\u001b[33m.\u001b[39m\u001b[36mget\u001b[39m(\u001b[32m`${API_BASE}/categories`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 8 |\u001b[39m     expect(response\u001b[33m.\u001b[39mstatus())\u001b[33m.\u001b[39mtoBe(\u001b[35m200\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+    },
+    {
+      "message": "Error: No tests found.\nMake sure that arguments are regular expressions matching test files.\nYou may need to escape symbols like \"$\" or \"*\" and quote the arguments.",
+      "stack": "Error: No tests found.\nMake sure that arguments are regular expressions matching test files.\nYou may need to escape symbols like \"$\" or \"*\" and quote the arguments."
+    }
+  ],
+  "stats": {
+    "startTime": "2026-06-04T14:22:55.992Z",
+    "duration": 1051.1550000000002,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -43,8 +43,10 @@ export class AdminUserListPage {
 
   async openWithAdmin() {
     await this.loginAs('admin@hoianblog.vn', 'password123');
-    await this.goto();
-    await expect(this.page.getByText(/Quản Lý Người Dùng/)).toBeVisible();
+    await this.page.locator('a[href="/admin/users"]').first().click();
+    await expect(this.page).toHaveURL(/\/admin\/users/);
+    await expect(this.searchInput).toBeVisible();
+    await expect(this.createButton).toBeVisible();
   }
 
   async search(keyword: string) {
@@ -57,6 +59,8 @@ export class AdminUserListPage {
   }
 
   async openEditByEmail(email: string) {
+    await this.search(email);
+    await expect(this.rowByEmail(email)).toBeVisible();
     await this.rowByEmail(email).getByRole('button', { name: 'Sửa' }).click();
     await expect(this.page.getByText('Cập nhật người dùng')).toBeVisible();
   }

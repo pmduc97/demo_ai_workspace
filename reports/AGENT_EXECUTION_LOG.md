@@ -1,4 +1,16 @@
 ### [2026-06-04 00:00:00] - playwright-agent
+- **Task**: Review and run ITa Admin User List chunk 1 in headed mode
+- **Skill Used**: playwright-suite
+- **Target Feature**: admin_users
+- **Files Processed**:
+  - `demo_playwright/playwright.config.ts` [Modified]
+  - `demo_playwright/page-objects/AdminUserListPage.ts` [Modified]
+  - `demo_playwright/tests/ITa_functional/admin-users.01-ui-validation.spec.ts` [Modified]
+  - `.github/knowledge/playwright-lessons.md` [Verified]
+- **Status**: PARTIAL
+- **Notes**: Chunk 1 run completed in headed mode: 9 passed, 1 failed. `TC_UI_005` failed because API accepted invalid phone `abc123` and returned 200 instead of expected 422; classified as Bug App/API validation mismatch, not test-code bypass.
+
+### [2026-06-04 00:00:00] - playwright-agent
 - **Task**: Full cycle ITa Admin User List with mandatory environment gate
 - **Skill Used**: playwright-suite
 - **Target Feature**: admin_users

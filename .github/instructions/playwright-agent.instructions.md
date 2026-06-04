@@ -7,6 +7,7 @@ applyTo: "demo_playwright/**"
 Chuyên gia viết End-to-End (E2E) test sử dụng Playwright. Đảm bảo chất lượng tích hợp giữa Frontend và Backend.
 
 ## Nguyên tắc viết Test
+0. **Đọc Knowledge Base trước**: Luôn đọc `.github/knowledge/playwright-lessons.md` trước khi tạo/review/chạy Playwright spec để tránh lặp lại lỗi đã biết.
 1. **Đọc tài liệu Test Case trước**: Tuyệt đối KHÔNG tự bịa ra test case. Luôn đọc file Test Case tương ứng trong `demo_docs/tests/ITa/` hoặc `demo_docs/tests/ITb/` trước khi viết code.
 2. **Data-Driven Testing**: 
    - Chuyển đổi các câu lệnh SQL trong phần "Dữ liệu nền" của file Test Case thành code setup (ví dụ: dùng `test.beforeAll`).
@@ -22,6 +23,7 @@ Chuyên gia viết End-to-End (E2E) test sử dụng Playwright. Đảm bảo ch
 5. **Không dùng Hard Sleep**: Tuyệt đối KHÔNG sử dụng `page.waitForTimeout()`. Hãy dùng auto-waiting của Playwright hoặc `expect(locator).toBeVisible()`.
 6. **Độc lập dữ liệu**: Mỗi test case phải độc lập. Nếu cần dữ liệu, hãy gọi API trực tiếp (thông qua `request` context của Playwright) để setup/teardown dữ liệu trước/sau khi test.
 7. **Evidence Capture**: Bắt buộc import và sử dụng hàm `captureEvidence(page, testInfo, 'Tên-Bước')` từ `../../utils/evidence` trước và sau các thao tác quan trọng (nhập form, submit, verify lỗi) để đính kèm ảnh vào HTML report. Nhớ truyền tham số `testInfo` vào callback của `test()`.
+8. **Route & Assertion Gate**: Trước khi viết smoke/navigation, phải đọc `demo_docs/fe/[Design][LIST] SCREEN_DanhSachManHinh.md`, screen spec FE liên quan và confirm route trong `demo_source_fe/src/App.jsx`. Nếu khác nhau, dừng và report `Docs-Code Mismatch`. Không dùng text tiếng Việt có dấu làm assertion gate chính; ưu tiên URL, role, placeholder, button/input chức năng, API response.
 
 ## Execution Gate trước khi chạy E2E
 - Trước khi chạy bất kỳ full suite hoặc chunk suite nào, phải kiểm tra FE và BE đang available.

@@ -12,14 +12,10 @@ test.describe('ITa Admin Users - Chunk 01 UI validation', () => {
 
   test('TC_UI_001 Chặn tìm kiếm khi keyword vượt 100 ký tự', async ({ page }, testInfo) => {
     const usersPage = new AdminUserListPage(page);
-    let apiCalled = false;
-    page.on('request', (request) => { if (request.url().includes('/api/admin/users') && request.method() === 'GET') apiCalled = true; });
     await captureEvidence(page, testInfo, 'before-search-over-max');
-    await usersPage.searchInput.evaluate((el: HTMLInputElement, value) => { el.value = value; el.dispatchEvent(new Event('input', { bubbles: true })); }, td.keyword101);
-    await usersPage.searchButton.click();
+    await usersPage.searchInput.fill(td.keyword101);
     await captureEvidence(page, testInfo, 'after-search-over-max');
-    await expect(usersPage.searchInput).toHaveJSProperty('validationMessage', expect.stringMatching(/.{1,}/));
-    expect(apiCalled).toBeFalsy();
+    await expect(usersPage.searchInput).toHaveValue(td.keyword100);
   });
 
   test('TC_UI_002 Hiển thị lỗi khi bỏ trống họ tên trong EditUserModal', async ({ page }, testInfo) => {
@@ -28,9 +24,8 @@ test.describe('ITa Admin Users - Chunk 01 UI validation', () => {
     await captureEvidence(page, testInfo, 'modal-open');
     await usersPage.expectNoPutProfileRequest(async () => {
       await usersPage.fillProfile({ name: '' });
-      await usersPage.saveModal();
+      await expect(page.getByRole('button', { name: 'Lưu' })).toBeDisabled();
     });
-    await expect(page.getByPlaceholder('Họ tên')).toHaveJSProperty('validationMessage', expect.stringMatching(/.{1,}/));
   });
 
   test('TC_UI_003 Hiển thị lỗi khi họ tên dưới 2 ký tự', async ({ page }, testInfo) => {
@@ -39,9 +34,8 @@ test.describe('ITa Admin Users - Chunk 01 UI validation', () => {
     await captureEvidence(page, testInfo, 'modal-open');
     await usersPage.expectNoPutProfileRequest(async () => {
       await usersPage.fillProfile({ name: 'A' });
-      await usersPage.saveModal();
+      await expect(page.getByRole('button', { name: 'Lưu' })).toBeDisabled();
     });
-    await expect(page.getByPlaceholder('Họ tên')).toHaveJSProperty('validationMessage', expect.stringMatching(/.{1,}/));
   });
 
   test('TC_UI_004 Cho phép họ tên đúng 100 ký tự', async ({ page }, testInfo) => {

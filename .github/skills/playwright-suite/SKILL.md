@@ -16,9 +16,15 @@ Viết một bộ test E2E hoàn chỉnh cho một tính năng, áp dụng Page 
 ## Procedure
 
 ### Bước 1 — Đọc tài liệu Test Case (ITa/ITb)
+0. Đọc `.github/knowledge/playwright-lessons.md` trước để áp dụng các bài học phòng tránh lỗi lặp lại.
 1. Tìm và đọc file Test Case tương ứng trong `demo_docs/tests/ITa/` hoặc `demo_docs/tests/ITb/`.
 2. **Tuyệt đối không tự bịa ra test case.** Phải bám sát 100% các kịch bản (UI Validation, Happy Path, Negative Path) và dữ liệu test (Test Data) đã được định nghĩa trong file Markdown.
-3. **Bắt buộc chia nhỏ test theo chunk trước khi viết code:**
+3. **Bắt buộc xác định route/navigation từ tài liệu và code trước khi viết smoke/spec:**
+   - Đọc `demo_docs/fe/[Design][LIST] SCREEN_DanhSachManHinh.md` và FE screen spec tương ứng.
+   - Confirm route thực tế trong `demo_source_fe/src/App.jsx`.
+   - Nếu route docs khác code, dừng và report `Docs-Code Mismatch` thay vì tự chọn route.
+   - Không dùng text tiếng Việt có dấu làm assertion gate chính trong smoke/navigation; ưu tiên URL, role, placeholder, button/input chức năng, API response.
+4. **Bắt buộc chia nhỏ test theo chunk trước khi viết code:**
    - Lập bảng `Playwright Chunk Plan` từ danh sách TC trong tài liệu.
    - Mỗi chunk khoảng **8-10 TC**, tối đa **10 TC/spec file**. Nếu feature có nhiều hơn 10 TC thì phải tạo nhiều file `.spec.ts` riêng.
    - Ưu tiên chia theo nhóm nghiệp vụ/viewpoint: `list-filter-pagination`, `profile-edit`, `role-status`, `create-delete`, `permission-auth`, `security-error`, `concurrency`.
@@ -52,6 +58,7 @@ Viết một bộ test E2E hoàn chỉnh cho một tính năng, áp dụng Page 
 3. **Smoke test bắt buộc trước full/chunk suite:** chạy 2-3 case nhỏ để xác nhận môi trường ổn định, tối thiểu gồm home page render, login/admin auth hoặc API public trả 200, và điều hướng tới màn hình target nếu có.
    - Nếu smoke FAIL: dừng, phân tích Environment/App/Test Code, ghi report; không chạy full suite để tránh lỗi hàng loạt.
    - Chỉ khi smoke PASS mới chạy tiếp từng chunk/spec.
+   - Smoke phải tuân thủ `.github/knowledge/playwright-lessons.md`: route trace từ docs/code, assertion gate không phụ thuộc text tiếng Việt có dấu, fail fast khi API/environment treo.
 4. Chạy test theo từng chunk/spec file, không chạy cả feature lớn ngay từ đầu: `npx playwright test tests/{ITa_functional|ITb_scenarios}/{tên-file}.spec.ts`.
 5. Nếu có test case bị FAIL, **BẮT BUỘC** phải phân tích nguyên nhân dựa trên log lỗi, trace, hoặc screenshot:
    - **Lỗi do Test Code (Flaky, sai locator, timeout, logic test sai):** Phải tiến hành fix lại code test (hoặc POM) và chạy lại riêng test case đó (`-g "Tên TC"`) cho đến khi PASS.

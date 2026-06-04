@@ -1,0 +1,160 @@
+﻿{
+  "config": {
+    "configFile": "D:\\Projects\\demo_ai_workspace\\demo_playwright\\playwright.config.ts",
+    "rootDir": "D:/Projects/demo_ai_workspace/demo_playwright/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/Projects/demo_ai_workspace/demo_playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "D:/Projects/demo_ai_workspace/demo_playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.60.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "ITa_functional\\admin-users.02-ui-security-error.spec.ts",
+      "file": "ITa_functional/admin-users.02-ui-security-error.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "ITa Admin Users - Chunk 02 UI security error",
+          "file": "ITa_functional/admin-users.02-ui-security-error.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC_UI_012 Chß║╖n email tß║ío mß╗¢i sai format",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 12940,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveJSProperty\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('form').filter({ has: locator('input[type=\"password\"]') }).locator('input[type=\"email\"]')\nExpected: \u001b[32mStringMatching /.{1,}/\u001b[39m\nReceived: \u001b[31m\"Please include an '@' in the email address. 'invalid-email' is missing an '@'.\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveJSProperty\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('form').filter({ has: locator('input[type=\"password\"]') }).locator('input[type=\"email\"]')\u001b[22m\n\u001b[2m    13 ├ù locator resolved to <input required=\"\" type=\"email\" placeholder=\"Email\" value=\"invalid-email\" class=\"w-full rounded-lg border border-gray-200 px-3 py-2 text-sm\"/>\u001b[22m\n\u001b[2m       - unexpected value \"Please include an '@' in the email address. 'invalid-email' is missing an '@'.\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveJSProperty\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('form').filter({ has: locator('input[type=\"password\"]') }).locator('input[type=\"email\"]')\nExpected: \u001b[32mStringMatching /.{1,}/\u001b[39m\nReceived: \u001b[31m\"Please include an '@' in the email address. 'invalid-email' is missing an '@'.\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveJSProperty\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('form').filter({ has: locator('input[type=\"password\"]') }).locator('input[type=\"email\"]')\u001b[22m\n\u001b[2m    13 ├ù locator resolved to <input required=\"\" type=\"email\" placeholder=\"Email\" value=\"invalid-email\" class=\"w-full rounded-lg border border-gray-200 px-3 py-2 text-sm\"/>\u001b[22m\n\u001b[2m       - unexpected value \"Please include an '@' in the email address. 'invalid-email' is missing an '@'.\"\u001b[22m\n\n    at D:\\Projects\\demo_ai_workspace\\demo_playwright\\tests\\ITa_functional\\admin-users.02-ui-security-error.spec.ts:26:55",
+                        "location": {
+                          "file": "D:\\Projects\\demo_ai_workspace\\demo_playwright\\tests\\ITa_functional\\admin-users.02-ui-security-error.spec.ts",
+                          "column": 55,
+                          "line": 26
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 24 |\u001b[39m     \u001b[36mawait\u001b[39m captureEvidence(page\u001b[33m,\u001b[39m testInfo\u001b[33m,\u001b[39m \u001b[32m'invalid-email'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 25 |\u001b[39m     \u001b[36mawait\u001b[39m usersPage\u001b[33m.\u001b[39msaveModal()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 26 |\u001b[39m     \u001b[36mawait\u001b[39m expect(form\u001b[33m.\u001b[39mlocator(\u001b[32m'input[type=\"email\"]'\u001b[39m))\u001b[33m.\u001b[39mtoHaveJSProperty(\u001b[32m'validationMessage'\u001b[39m\u001b[33m,\u001b[39m expect\u001b[33m.\u001b[39mstringMatching(\u001b[35m/.{1,}/\u001b[39m))\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 27 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m\n \u001b[90m 29 |\u001b[39m   test(\u001b[32m'TC_UI_013 Chß║╖n mß║¡t khß║⌐u tß║ío mß╗¢i d╞░ß╗¢i 6 k├╜ tß╗▒'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page\u001b[33m,\u001b[39m request }\u001b[33m,\u001b[39m testInfo) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\Projects\\demo_ai_workspace\\demo_playwright\\tests\\ITa_functional\\admin-users.02-ui-security-error.spec.ts",
+                            "column": 55,
+                            "line": 26
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveJSProperty\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('form').filter({ has: locator('input[type=\"password\"]') }).locator('input[type=\"email\"]')\nExpected: \u001b[32mStringMatching /.{1,}/\u001b[39m\nReceived: \u001b[31m\"Please include an '@' in the email address. 'invalid-email' is missing an '@'.\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveJSProperty\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('form').filter({ has: locator('input[type=\"password\"]') }).locator('input[type=\"email\"]')\u001b[22m\n\u001b[2m    13 ├ù locator resolved to <input required=\"\" type=\"email\" placeholder=\"Email\" value=\"invalid-email\" class=\"w-full rounded-lg border border-gray-200 px-3 py-2 text-sm\"/>\u001b[22m\n\u001b[2m       - unexpected value \"Please include an '@' in the email address. 'invalid-email' is missing an '@'.\"\u001b[22m\n\n\n  24 |     await captureEvidence(page, testInfo, 'invalid-email');\n  25 |     await usersPage.saveModal();\n> 26 |     await expect(form.locator('input[type=\"email\"]')).toHaveJSProperty('validationMessage', expect.stringMatching(/.{1,}/));\n     |                                                       ^\n  27 |   });\n  28 |\n  29 |   test('TC_UI_013 Chß║╖n mß║¡t khß║⌐u tß║ío mß╗¢i d╞░ß╗¢i 6 k├╜ tß╗▒', async ({ page, request }, testInfo) => {\n    at D:\\Projects\\demo_ai_workspace\\demo_playwright\\tests\\ITa_functional\\admin-users.02-ui-security-error.spec.ts:26:55"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-04T15:22:44.482Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "Evidence: invalid-email",
+                          "contentType": "image/png",
+                          "path": "D:\\Projects\\demo_ai_workspace\\demo_playwright\\test-results\\ITa_functional-admin-users-dda21-ß║╖n-email-tß║ío-mß╗¢i-sai-format-chromium\\attachments\\Evidence-invalid-email-671cd98a7ed3b73828460cdedc559ea8ec4d6907.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\Projects\\demo_ai_workspace\\demo_playwright\\test-results\\ITa_functional-admin-users-dda21-ß║╖n-email-tß║ío-mß╗¢i-sai-format-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\Projects\\demo_ai_workspace\\demo_playwright\\test-results\\ITa_functional-admin-users-dda21-ß║╖n-email-tß║ío-mß╗¢i-sai-format-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\Projects\\demo_ai_workspace\\demo_playwright\\test-results\\ITa_functional-admin-users-dda21-ß║╖n-email-tß║ío-mß╗¢i-sai-format-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\Projects\\demo_ai_workspace\\demo_playwright\\tests\\ITa_functional\\admin-users.02-ui-security-error.spec.ts",
+                        "column": 55,
+                        "line": 26
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "e5fe6942a2ac2410396a-62af7f982b5dca870e86",
+              "file": "ITa_functional/admin-users.02-ui-security-error.spec.ts",
+              "line": 15,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-06-04T15:22:39.536Z",
+    "duration": 18711.919,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

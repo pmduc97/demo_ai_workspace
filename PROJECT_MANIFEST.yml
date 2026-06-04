@@ -242,7 +242,14 @@ features:
   admin_users:
     name: "Quản lý người dùng"
     status: "implemented"
-    cycle_checkpoint: "e2e"
+    cycle_checkpoint: "qa_gate"
+    e2e_verdict: "FAIL"
+    e2e_pass_rate: "43/48 (89.6%)"
+    open_bugs:
+      - "[High] TC_API_006: page=0 returns 200 — BE thiếu page>=1 validation"
+      - "[Medium] TC_UI_005/TC_API_013: phone format không validate ở BE"
+      - "[Medium] TC_UI_015/TC_API_019: future birthdate không validate ở BE"
+    e2e_report: "test-results/ITa/Report_ITa_ADMIN_USER_LIST_20260604.md"
     docs:
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md"
       be_api:

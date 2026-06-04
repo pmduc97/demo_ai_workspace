@@ -1,3 +1,35 @@
+### [2026-06-04 15:30:00] - playwright-agent
+- **Task**: Full ITa Playwright cycle Admin User List — Tất cả 5 chunks + Report
+- **Skill Used**: playwright-suite
+- **Target Feature**: admin_users
+- **Files Processed**:
+  - `demo_playwright/playwright.config.ts` [Modified — headless:false, viewport 1920x1080, localhost]
+  - `demo_playwright/page-objects/AdminUserListPage.ts` [Modified — openWithAdmin nav fix, openEditByEmail search-first]
+  - `demo_playwright/utils/adminUsersFixtures.ts` [Modified — API_BASE localhost:3001]
+  - `demo_playwright/tests/smoke/admin-users.smoke.spec.ts` [Modified — fixed race condition]
+  - `demo_playwright/tests/ITa_functional/admin-users.01-ui-validation.spec.ts` [Modified — maxLength + disabled assertions]
+  - `demo_playwright/tests/ITa_functional/admin-users.02-ui-security-error.spec.ts` [Modified — scoped email locator, error text]
+  - `demo_playwright/tests/ITa_functional/admin-users.03-api-list-detail.spec.ts` [Verified/Unchanged]
+  - `demo_playwright/tests/ITa_functional/admin-users.04-api-profile-status-create.spec.ts` [Verified/Unchanged]
+  - `demo_playwright/tests/ITa_functional/admin-users.05-api-auth-security-concurrency.spec.ts` [Verified/Unchanged]
+  - `.github/knowledge/playwright-lessons.md` [Modified — lessons 1-7]
+  - `test-results/ITa/Report_ITa_ADMIN_USER_LIST_20260604.md` [Created]
+  - `PROJECT_MANIFEST.yml` [Pending]
+- **Status**: SUCCESS
+- **Results**:
+  - Smoke: 3/3 PASS
+  - Chunk 01 (TC_UI_001-010): 9/10 PASS — 1 Bug App (TC_UI_005 phone validation)
+  - Chunk 02 (TC_UI_011-020): 9/10 PASS — 1 Bug App (TC_UI_015 future birthdate)
+  - Chunk 03 (TC_API_001-010): 9/10 PASS — 1 Bug App (TC_API_006 page=0)
+  - Chunk 04 (TC_API_011-020): 8/10 PASS — 2 Bug App (TC_API_013 phone, TC_API_019 birthdate)
+  - Chunk 05 (TC_API_021-028): 8/8 PASS
+  - **TOTAL: 43/48 PASS (89.6%) — VERDICT: FAIL (1 High bug open)**
+- **Bug App**:
+  - [High] TC_API_006: `GET /api/admin/users?page=0` returns 200 (BE thiếu page>=1 validation)
+  - [Medium] TC_UI_005 / TC_API_013: Phone format không validate ở BE
+  - [Medium] TC_UI_015 / TC_API_019: Future birthdate không validate ở BE
+- **Test Code Fixes**: 8 fixes (smoke race, maxLength, disabled btn, scoped locator, error text, double-click)
+
 ### [2026-06-04 00:00:00] - playwright-agent
 - **Task**: Review and run ITa Admin User List chunk 1 in headed mode
 - **Skill Used**: playwright-suite

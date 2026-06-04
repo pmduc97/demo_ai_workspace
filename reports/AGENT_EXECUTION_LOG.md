@@ -19,6 +19,68 @@ Mỗi khi Orchestrator hoặc Sub-agent hoàn thành một task, **BẮT BUỘC*
 ---
 ## Lịch sử thực thi
 
+### [2026-06-04 00:00:00] - docs-agent
+- **Task**: Create, review, correct tài liệu API đăng nhập liên quan màn hình đăng nhập
+- **Skill Used**: doc-be-implement, doc-be-review
+- **Target Feature**: auth_login
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+  - `.github/prompts/doc-be-create-and-review.prompt.md` [Verified/Unchanged]
+  - `.github/skills/doc-be-implement/SKILL.md` [Verified/Unchanged]
+  - `.github/skills/doc-be-implement/references/api-template.md` [Verified/Unchanged]
+  - `.github/skills/doc-be-review/SKILL.md` [Verified/Unchanged]
+  - `.github/skills/doc-be-review/references/review-checklist.md` [Verified/Unchanged]
+  - `.github/skills/doc-be-review/references/scoring.md` [Verified/Unchanged]
+  - `.github/skills/doc-be-review/references/report-template.md` [Verified/Unchanged]
+  - `.github/instructions/docs-agent.instructions.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API01_Auth_DangNhap.md` [Modified]
+  - `demo_docs/api/[Design][LIST] API_DanhSachEndpoint.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][LIST] UTILS_DanhSach.md` [Verified/Unchanged]
+  - `demo_docs/[Design][DB] DATABASE_Schema.md` [Verified/Unchanged]
+  - `demo_docs/[Design][COMMON] MESSAGE_Catalog.md` [Verified/Unchanged]
+  - `demo_source_be/src/controllers/auth.controller.js` [Verified/Unchanged]
+  - `demo_source_be/src/routes/auth.routes.js` [Verified/Unchanged]
+- **Status**: SUCCESS
+- **Notes**: API01 ban đầu chỉ có 7 sections, thiếu Change Log, Validation Rules, Sequence Diagram, Error Code, Data Mapping và Message List. Đã chuẩn hóa thành 10 sections theo skill hiện hành, đồng bộ code BE và Message Catalog. Review sau correct đạt 100/100 PASS. `auth_login` giữ `status=tested`, cập nhật `cycle_checkpoint=plan`.
+
+### [2026-06-04 00:00:00] - Orchestrator
+- **Task**: Fix Low finding Q4 trong tài liệu FE màn hình đăng nhập
+- **Skill Used**: doc-fe-review
+- **Target Feature**: auth_login
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+  - `.github/instructions/docs-agent.instructions.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_LOGIN_DangNhap.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Đã bổ sung Change Log v1.3 và ghi chú implementation tại Section 4 để phân biệt component registry (`ErrorBanner`, `LoadingSpinner`) với markup Tailwind inline hiện tại. Low finding Q4 resolved. `auth_login` giữ `status=tested`, cập nhật `cycle_checkpoint=correct`.
+
+### [2026-06-04 00:00:00] - Orchestrator
+- **Task**: Review tài liệu FE màn hình đăng nhập
+- **Skill Used**: doc-fe-review
+- **Target Feature**: auth_login
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+  - `.github/prompts/doc-fe-review.prompt.md` [Verified/Unchanged]
+  - `.github/skills/doc-fe-review/SKILL.md` [Verified/Unchanged]
+  - `.github/skills/doc-fe-review/references/review-checklist.md` [Verified/Unchanged]
+  - `.github/skills/doc-fe-review/references/scoring.md` [Verified/Unchanged]
+  - `.github/skills/doc-fe-review/references/report-template.md` [Verified/Unchanged]
+  - `.github/instructions/docs-agent.instructions.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_LOGIN_DangNhap.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][LIST] SCREEN_DanhSachManHinh.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][LIST] COMPONENT_DanhSach.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][LIST] UTILS_DanhSach.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API01_Auth_DangNhap.md` [Verified/Unchanged]
+  - `demo_docs/[Design][COMMON] MESSAGE_Catalog.md` [Verified/Unchanged]
+  - `demo_source_fe/src/pages/admin/LoginPage.jsx` [Verified/Unchanged]
+  - `demo_source_fe/src/services/api.js` [Verified/Unchanged]
+  - `demo_source_fe/src/constants/messages.js` [Verified/Unchanged]
+- **Status**: SUCCESS
+- **Notes**: Doc đạt chuẩn 12 sections + Change Log, đồng bộ API01, Message Catalog và code FE hiện tại. Score 99/100, Verdict PASS. `auth_login` giữ `status=tested`, cập nhật `cycle_checkpoint=review`.
+
 ### [2026-06-04 00:00:00] - Orchestrator
 - **Task**: Implement Message Catalog dùng chung FE/BE cho luồng đăng nhập và cập nhật rule agent/skill
 - **Skill Used**: doc-fe-implement, doc-be-implement, be-implement, fe-implement

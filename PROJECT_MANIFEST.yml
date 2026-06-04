@@ -23,7 +23,7 @@ features:
   auth_login:
     name: "Đăng nhập"
     status: "tested"
-    cycle_checkpoint: "test"
+    cycle_checkpoint: "plan"
     docs:
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_LOGIN_DangNhap.md"
       be_api:

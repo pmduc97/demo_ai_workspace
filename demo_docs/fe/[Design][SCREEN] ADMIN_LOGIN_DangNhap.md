@@ -14,6 +14,7 @@ status: stable
 | 1.0 | Tạo tài liệu ban đầu cho màn hình đăng nhập | 2026-06-03 | GitHub Copilot |
 | 1.1 | Chuẩn hóa 12 sections, bổ sung state matrix, mappings, events, message list | 2026-06-04 | GitHub Copilot |
 | 1.2 | Đồng bộ Message List với common Message Catalog và API `messageId` | 2026-06-04 | GitHub Copilot |
+| 1.3 | Làm rõ component registry là định hướng tái sử dụng, code hiện tại render inline Tailwind | 2026-06-04 | GitHub Copilot |
 
 ## 1. Tổng quan
 
@@ -68,11 +69,13 @@ Màn hình `ADMIN_LOGIN` cho phép người dùng role `admin` hoặc `member` �
 </main>
 ```
 
+Ghi chú implementation: JSX tree trên thể hiện cấu trúc logic và các component tái sử dụng theo registry. Code hiện tại trong `LoginPage.jsx` vẫn render phần lỗi và spinner trực tiếp bằng Tailwind; khi tách UI dùng chung, có thể thay bằng `ErrorBanner` và `LoadingSpinner` mà không đổi luồng xử lý.
+
 | Component / Hook | Registry | Cách dùng trong màn hình |
 |------------------|----------|--------------------------|
 | `AuthContext` / `useAuth()` | `demo_docs/fe/[Design][LIST] COMPONENT_DanhSach.md` | Lấy `user`, gọi `login(token, user)` sau khi API thành công |
-| `ErrorBanner` | `demo_docs/fe/[Design][LIST] COMPONENT_DanhSach.md` | Hiển thị lỗi phía trên form; hiện code đang render trực tiếp bằng Tailwind |
-| `LoadingSpinner` | `demo_docs/fe/[Design][LIST] COMPONENT_DanhSach.md` | Hiển thị spinner trong button khi `loading=true`; hiện code đang render trực tiếp bằng Tailwind |
+| `ErrorBanner` | `demo_docs/fe/[Design][LIST] COMPONENT_DanhSach.md` | Component registry dự kiến/tái sử dụng để hiển thị lỗi phía trên form; implementation hiện tại tương đương bằng markup Tailwind inline |
+| `LoadingSpinner` | `demo_docs/fe/[Design][LIST] COMPONENT_DanhSach.md` | Component registry dự kiến/tái sử dụng để hiển thị spinner khi `loading=true`; implementation hiện tại tương đương bằng `<span>` Tailwind inline |
 | `Navigate`, `useNavigate` | React Router v6 | Redirect khi đã login hoặc login thành công |
 | `api` | `demo_docs/fe/[Design][LIST] UTILS_DanhSach.md` | Axios instance gọi `api.post('/auth/login', form)` |
 

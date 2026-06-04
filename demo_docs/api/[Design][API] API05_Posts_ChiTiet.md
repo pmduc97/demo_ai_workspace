@@ -17,9 +17,9 @@
 ```json
 {
   "id": 1,
-  "title": "Khám phá phố cổ Hội An về đêm",
+  "title": "Khám phá điểm đến Việt Nam về đêm",
   "slug": "kham-pha-pho-co-hoi-an-ve-dem",
-  "content": "<p>Hội An về đêm lung linh...</p>",
+  "content": "<p>Các điểm đến du lịch Việt Nam về đêm lung linh...</p>",
   "thumbnail_url": "/uploads/thumbnail.jpg",
   "status": "published",
   "created_at": "2024-01-01T00:00:00.000Z",

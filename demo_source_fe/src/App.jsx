@@ -17,11 +17,11 @@ import UserListPage from './pages/admin/UserListPage';
 
 function AppShell() {
   const location = useLocation();
-  const isLoginPage = location.pathname === '/admin/login';
+  const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
     <>
-      {!isLoginPage && <Navbar />}
+      {!isAdminRoute && <Navbar />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/category/:slug" element={<CategoryPage />} />
@@ -37,7 +37,7 @@ function AppShell() {
         <Route path="/admin/categories" element={<ProtectedRoute role="admin"><CategoryListPage /></ProtectedRoute>} />
         <Route path="/admin/users" element={<ProtectedRoute role="admin"><UserListPage /></ProtectedRoute>} />
       </Routes>
-      {!isLoginPage && <Footer />}
+      {!isAdminRoute && <Footer />}
     </>
   );
 }

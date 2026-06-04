@@ -1,8 +1,8 @@
 # GitHub Copilot — Workspace Instructions
-# Blog Hội An / Đà Nẵng
+# Blog Du Lịch
 
 ## Dự án
-Blog tin tức về Hội An và Đà Nẵng.
+Blog tin tức về du lịch Việt Nam và các điểm đến du lịch.
 - **Frontend**: React 18 + Vite + TailwindCSS + React Router v6 (`demo_source_fe/`)
 - **Backend**: Node.js + Express + Knex.js + JWT (`demo_source_be/`)
 - **Database**: PostgreSQL, 3 bảng: `users`, `categories`, `posts`

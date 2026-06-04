@@ -11,7 +11,7 @@
 **Body** (`application/json`):
 ```json
 {
-  "title": "Khám phá phố cổ Hội An",
+  "title": "Khám phá điểm đến du lịch Việt Nam",
   "slug": "kham-pha-pho-co-hoi-an",
   "content": "<p>Nội dung bài viết...</p>",
   "thumbnail_url": "/uploads/abc.jpg",
@@ -35,7 +35,7 @@
 ```json
 {
   "id": 10,
-  "title": "Khám phá phố cổ Hội An",
+  "title": "Khám phá điểm đến du lịch Việt Nam",
   "slug": "kham-pha-pho-co-hoi-an",
   "status": "draft",
   "created_at": "2024-01-10T00:00:00.000Z"

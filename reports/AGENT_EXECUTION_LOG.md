@@ -6,10 +6,6 @@ Mỗi khi Orchestrator hoặc Sub-agent hoàn thành một task, **BẮT BUỘC*
 ## Format Log
 ```markdown
 ### [YYYY-MM-DD HH:mm:ss] - {Agent Name}
-- **Task**: {Mô tả ngắn gọn}
-- **Skill Used**: {Tên skill nếu có}
-- **Target Feature**: {Key trong PROJECT_MANIFEST.yml}
-- **Files Processed**:
   - `path/to/file1` [Modified]
   - `path/to/file2` [Verified/Unchanged]
 - **Status**: SUCCESS | FAILED
@@ -17,7 +13,200 @@ Mỗi khi Orchestrator hoặc Sub-agent hoàn thành một task, **BẮT BUỘC*
 ```
 
 ---
-## Lịch sử thực thi
+### [2026-06-04 00:00:00] - Orchestrator
+- **Task**: Tạo và review tài liệu thiết kế FE màn quản lý người dùng theo target design mở rộng
+- **Skill Used**: doc-fe-implement, doc-fe-review
+- **Target Feature**: admin_users
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+  - `.github/skills/doc-fe-implement/SKILL.md` [Verified/Unchanged]
+  - `.github/skills/doc-fe-review/SKILL.md` [Verified/Unchanged]
+  - `.github/instructions/docs-agent.instructions.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md` [Modified]
+  - `demo_docs/[Design][COMMON] MESSAGE_Catalog.md` [Modified]
+  - `demo_docs/fe/[Design][LIST] COMPONENT_DanhSach.md` [Modified]
+  - `demo_docs/api/[Design][API] API19_AdminUsers_DanhSach.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API20_AdminUsers_DoiRole.md` [Verified/Unchanged]
+  - `demo_source_fe/src/pages/admin/UserListPage.jsx` [Verified/Unchanged]
+  - `demo_source_be/src/controllers/users.controller.js` [Verified/Unchanged]
+- **Status**: SUCCESS
+- **Notes**: Đã tạo doc target design 12 sections cho user management, bổ sung các field phone/address/avatar/status/last_login/audit/post counters/bio/birthdate/gender/locked_reason, toolbar search/filter/sort/pagination/export, detail/edit/role/lock modals. Review lần cuối Score 91/100, Verdict PASS. Residual: cần tạo/cập nhật API19/API23/API24/API25 và DB/API implementation trước khi code đầy đủ; cần thống nhất PUT/PATCH endpoint đổi role.
+
+### [2026-06-04 00:00:00] - docs-agent
+- **Task**: Re-review FE screen design doc quản lý người dùng sau corrections
+- **Skill Used**: doc-fe-review
+- **Target Feature**: admin_users
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md` [Verified/Unchanged]
+  - `demo_docs/[Design][COMMON] MESSAGE_Catalog.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][LIST] COMPONENT_DanhSach.md` [Verified/Unchanged]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Re-review xác nhận 12 sections đầy đủ, Message IDs khớp catalog, component registry đã có các component user. API/DB chưa đồng bộ được ghi rõ là target design gap, không chấm critical theo context user.
+
+### [2026-06-04 00:00:00] - docs-agent
+- **Task**: Review FE screen design doc quản lý người dùng và đối chiếu Message Catalog
+- **Skill Used**: doc-fe-review
+- **Target Feature**: admin_users
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md` [Verified/Unchanged]
+  - `demo_docs/[Design][COMMON] MESSAGE_Catalog.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API19_AdminUsers_DanhSach.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API20_AdminUsers_DoiRole.md` [Verified/Unchanged]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Review ghi nhận đây là target design có đánh dấu cần cập nhật DB/API cho profile fields, status lock và post counts. Verdict CONDITIONAL PASS; finding chính là API sync chưa đủ link/API specs và method PATCH/PUT cần thống nhất với code khi implement.
+
+### [2026-06-04 00:00:00] - Docs Agent
+- **Task**: Tổng quát hóa tên dự án/nội dung từ Hội An/Đà Nẵng sang Blog Du Lịch trong tài liệu và agent customization
+  - `.github/agents/*.agent.md` [Modified]
+  - `.github/skills/*/SKILL.md` [Modified]
+  - `demo_docs/[Design][DB] DATABASE_Schema.md` [Modified]
+  - `demo_docs/api/*.md` [Modified]
+  - `demo_docs/fe/*.md` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Chỉ cập nhật docs và agent customization trong `d:\Project\demo_ai_workspace`. Không đổi technical DB name `hoian_blog` hoặc seeded credential emails `*@hoianblog.vn` theo yêu cầu tránh đổi tên kỹ thuật/credential.
+
+### [2026-06-04 00:00:00] - Orchestrator
+- **Task**: Đổi page size mặc định màn quản lý danh mục xuống 5 record/page
+- **Skill Used**: fe-implement
+- **Target Feature**: admin_categories
+- **Files Processed**:
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+  - `demo_source_fe/src/pages/admin/CategoryListPage.jsx` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Đã đổi `pagination.limit` mặc định từ 10 xuống 5 và cập nhật tính STT theo page size mới. Tài liệu FE/DB đã đồng bộ. Verify: `npm run build` PASS, VS Code errors none.
+### [2026-06-04 00:00:00] - Orchestrator
+- **Task**: Fix lỗi Export CSV danh mục trả 422 do vượt giới hạn `limit` của API14
+- **Skill Used**: fe-implement
+- **Target Feature**: admin_categories
+- **Files Processed**:
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+  - `PROJECT_MANIFEST.yml` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API14_Categories_DanhSach.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md` [Modified]
+  - `demo_source_be/src/controllers/categories.controller.js` [Verified/Unchanged]
+  - `demo_source_fe/src/pages/admin/CategoryListPage.jsx` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Nguyên nhân 422 là API14 validate `limit` chỉ cho phép `1..100`, trong khi FE export gọi `limit=1000`. Đã sửa export CSV gọi tuần tự `/api/categories` với `limit=100` theo `pagination.totalPages`, giữ nguyên điều kiện keyword/status/sort hiện tại. Verify: `npm run build` PASS, VS Code errors none.
+
+### [2026-06-04 00:00:00] - Orchestrator
+- **Task**: Điều chỉnh UI quản lý danh mục với Search button, Reset đúng hành vi, Add modal, reload sau CRUD và Export CSV
+- **Skill Used**: fe-implement
+- **Target Feature**: admin_categories
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+  - `.github/instructions/fe-agent.instructions.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md` [Modified]
+  - `demo_source_fe/src/pages/admin/CategoryListPage.jsx` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Search input không auto-call API nữa, chỉ áp dụng khi bấm Search hoặc Enter. Reset clear keyword/status/sort về mặc định và search lại page 1. Add category chuyển sang modal. Create/update/delete reload lại danh sách theo điều kiện search/filter/sort hiện tại. Export CSV gọi API14 với điều kiện hiện tại và tải file UTF-8 BOM. Verify: `npm run build` PASS, VS Code errors none.
+
+### [2026-06-04 00:00:00] - Orchestrator
+- **Task**: Bổ sung seed data danh mục để kiểm thử pagination 10 record/page
+- **Skill Used**: be-implement
+- **Target Feature**: admin_categories
+- **Files Processed**:
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+  - `.github/instructions/be-agent.instructions.md` [Verified/Unchanged]
+  - `demo_source_be/src/db/seeds/01_initial_data.js` [Modified]
+  - `demo_docs/[Design][DB] DATABASE_Schema.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Seed categories tăng lên 24 bản ghi gồm 22 active và 2 hidden, đủ tạo 3 trang khi `limit=10`. Đã chạy `npm run migrate` PASS, `npm run seed` PASS và verify count `{ categories: 24, hidden: 2 }`.
+
+### [2026-06-04 00:00:00] - Orchestrator
+- **Task**: Fix dashboard admin trống, hiển thị AdminLayout/sidebar và nâng cấp UI tổng quan quản trị
+- **Skill Used**: fe-implement
+- **Target Feature**: admin_dashboard
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+  - `.github/instructions/fe-agent.instructions.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_DASHBOARD_TongQuan.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API22_AdminStats_ThongKe.md` [Verified/Unchanged]
+  - `demo_source_fe/src/components/AdminLayout.jsx` [Verified/Unchanged]
+  - `demo_source_fe/src/components/ProtectedRoute.jsx` [Verified/Unchanged]
+  - `demo_source_fe/src/App.jsx` [Modified]
+  - `demo_source_fe/src/pages/admin/DashboardPage.jsx` [Modified]
+  - `demo_source_be/src/routes/admin.routes.js` [Verified/Unchanged]
+- **Status**: SUCCESS
+- **Notes**: Dashboard trước đó chỉ render text nên không có menu admin. Đã wrap bằng `AdminLayout`, thêm hero, stats cards, recent posts, quick links quản lý bài viết/danh mục/user và loading/error/empty states. `App.jsx` ẩn Navbar/Footer public cho toàn bộ `/admin/*` để layout admin hiển thị đúng. Verify: `npm run build` PASS, VS Code errors none. `admin_dashboard` cập nhật `cycle_checkpoint=correct`.
+
+### [2026-06-04 00:00:00] - Orchestrator
+- **Task**: Nâng cấp quản lý danh mục với filter/sort/pagination, metadata, audit fields và soft delete; review bằng skills và correct findings
+- **Skill Used**: doc-fe-implement, doc-fe-review, doc-be-implement, doc-be-review, be-implement, fe-implement
+- **Target Feature**: admin_categories
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+  - `.github/instructions/docs-agent.instructions.md` [Verified/Unchanged]
+  - `.github/skills/doc-fe-implement/SKILL.md` [Verified/Unchanged]
+  - `.github/skills/doc-fe-review/SKILL.md` [Verified/Unchanged]
+  - `.github/skills/doc-be-implement/SKILL.md` [Verified/Unchanged]
+  - `.github/skills/doc-be-review/SKILL.md` [Verified/Unchanged]
+  - `demo_docs/[Design][DB] DATABASE_Schema.md` [Modified]
+  - `demo_docs/[Design][COMMON] MESSAGE_Catalog.md` [Modified]
+  - `demo_docs/fe/[Design][LIST] COMPONENT_DanhSach.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][LIST] UTILS_DanhSach.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][LIST] UTILS_DanhSach.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md` [Modified]
+  - `demo_docs/api/[Design][API] API14_Categories_DanhSach.md` [Modified]
+  - `demo_docs/api/[Design][API] API16_Categories_Tao.md` [Modified]
+  - `demo_docs/api/[Design][API] API17_Categories_CapNhat.md` [Modified]
+  - `demo_docs/api/[Design][API] API18_Categories_Xoa.md` [Modified]
+  - `demo_source_be/src/db/migrations/20260604_01_audit_soft_delete_category_enhancement.js` [Added]
+  - `demo_source_be/src/db/migrations/20260604_02_add_missing_created_at_common_columns.js` [Added]
+  - `demo_source_be/src/controllers/categories.controller.js` [Modified]
+  - `demo_source_be/src/routes/categories.routes.js` [Modified]
+  - `demo_source_be/src/__tests__/category.test.js` [Modified]
+  - `demo_source_fe/src/pages/admin/CategoryListPage.jsx` [Modified]
+  - `demo_source_fe/src/constants/messages.js` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Review đầu FAIL vì docs vượt code; đã implement BE/FE, bổ sung migration, correct review findings controller refs/response message/duplicate load. Verify: `npx knex migrate:latest` PASS, `npm test -- --runInBand category.test.js` PASS. Review sau correct không còn Critical; còn residual Medium về API16/API17 format chưa chuẩn tuyệt đối. `admin_categories` cập nhật `status=tested`, `cycle_checkpoint=test`.
+
+### [2026-06-04 00:00:00] - fe-agent
+- **Task**: Implement frontend admin category enhancement with toolbar filters, pagination, form fields, metadata columns, soft-delete wording, and message mapping
+- **Skill Used**: fe-implement
+- **Target Feature**: admin_categories
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+  - `.github/instructions/fe-agent.instructions.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API14_Categories_DanhSach.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API16_Categories_Tao.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API17_Categories_CapNhat.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API18_Categories_Xoa.md` [Verified/Unchanged]
+  - `demo_docs/[Design][COMMON] MESSAGE_Catalog.md` [Verified/Unchanged]
+  - `demo_source_fe/src/pages/admin/CategoryListPage.jsx` [Modified]
+  - `demo_source_fe/src/constants/messages.js` [Modified]
+- **Status**: SUCCESS
+- **Notes**: VS Code diagnostics report no errors for modified FE files. Terminal execution tool is unavailable in this session, so `npm run build` was not run. `admin_categories` checkpoint updated to `correct`.
+
+### [2026-06-04 00:00:00] - be-agent
+- **Task**: Implement backend admin category enhancement with audit fields, soft delete, filters, metadata, and tests
+- **Skill Used**: be-implement
+- **Target Feature**: admin_categories
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+  - `demo_docs/api/[Design][API] API14_Categories_DanhSach.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API16_Categories_Tao.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API17_Categories_CapNhat.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API18_Categories_Xoa.md` [Verified/Unchanged]
+  - `demo_docs/[Design][DB] DATABASE_Schema.md` [Verified/Unchanged]
+  - `demo_docs/[Design][COMMON] MESSAGE_Catalog.md` [Verified/Unchanged]
+  - `demo_source_be/src/db/migrations/20260604_01_audit_soft_delete_category_enhancement.js` [Added]
+  - `demo_source_be/src/controllers/categories.controller.js` [Modified]
+  - `demo_source_be/src/routes/categories.routes.js` [Modified]
+  - `demo_source_be/src/__tests__/category.test.js` [Added]
+- **Status**: PARTIAL
+- **Notes**: Implemented code and static validation via VS Code errors passed. Terminal execution tool is unavailable in this session, so migrations/tests were not run. `admin_categories` checkpoint updated to `review`.
 
 ### [2026-06-04 00:00:00] - docs-agent
 - **Task**: Audit FE/BE docs sau khi chuyển login validation sang tiếng Việt custom

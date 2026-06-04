@@ -1,6 +1,6 @@
 ---
 name: be-implement
-description: "Backend implementation workflow for Blog Hoi An/Da Nang. Use when implementing a new API endpoint, fixing backend logic, adding middleware, or updating DB schema. Loads checklist, spec-reading procedure, and review criteria. Trigger phrases: implement backend, create endpoint, fix API, add route, backend feature, controller, migration."
+description: "Backend implementation workflow for Blog Du Lịch. Use when implementing a new API endpoint, fixing backend logic, adding middleware, or updating DB schema. Loads checklist, spec-reading procedure, and review criteria. Trigger phrases: implement backend, create endpoint, fix API, add route, backend feature, controller, migration."
 argument-hint: "Endpoint or feature to implement (e.g. POST /api/posts)"
 ---
 

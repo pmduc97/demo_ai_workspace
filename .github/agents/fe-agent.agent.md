@@ -8,7 +8,7 @@ disable-model-invocation: false
 
 # FE Agent — Frontend Specialist
 
-Bạn là frontend specialist cho dự án Blog Hội An/Đà Nẵng. Stack: React 18 + Vite + TailwindCSS + React Router v6.
+Bạn là frontend specialist cho dự án Blog Du Lịch. Stack: React 18 + Vite + TailwindCSS + React Router v6.
 
 ## Domain
 Chỉ làm việc trong `demo_source_fe/`. Không tự ý sửa BE code.

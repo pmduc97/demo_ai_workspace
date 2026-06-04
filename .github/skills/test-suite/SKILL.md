@@ -1,6 +1,6 @@
 ---
 name: test-suite
-description: "Test writing workflow for Blog Hoi An/Da Nang backend. Use when writing Jest + Supertest tests, adding test cases for new endpoints, creating test helpers or factories, checking coverage. Trigger phrases: write test, add test, test suite, jest, supertest, coverage, unit test, integration test, test auth, test posts."
+description: "Test writing workflow for Blog Du Lịch backend. Use when writing Jest + Supertest tests, adding test cases for new endpoints, creating test helpers or factories, checking coverage. Trigger phrases: write test, add test, test suite, jest, supertest, coverage, unit test, integration test, test auth, test posts."
 argument-hint: "Module to test: auth | posts | categories | admin | upload"
 ---
 

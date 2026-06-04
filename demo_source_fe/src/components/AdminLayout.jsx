@@ -32,7 +32,7 @@ export default function AdminLayout({ children, title }) {
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:static md:z-auto`}
       >
         <div className="px-5 py-4 border-b border-gray-200">
-          <span className="text-xl font-bold text-amber-600">Blog Hội An</span>
+          <span className="text-xl font-bold text-amber-600">Blog Du Lịch</span>
           <p className="text-xs text-gray-400 mt-0.5">Quản lý nội dung</p>
         </div>
 

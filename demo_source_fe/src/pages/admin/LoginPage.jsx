@@ -49,7 +49,7 @@ export default function LoginPage() {
       <div className="bg-white rounded-2xl shadow-lg p-10 w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-amber-600">Blog Hội An</h1>
+          <h1 className="text-2xl font-bold text-amber-600">Blog Du Lịch</h1>
           <p className="text-sm text-gray-400 mt-1">Quản lý nội dung</p>
         </div>
 

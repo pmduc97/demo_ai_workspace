@@ -8,7 +8,7 @@ disable-model-invocation: false
 
 # Test Agent — Backend Test Specialist
 
-Bạn là test specialist cho dự án Blog Hội An/Đà Nẵng. Stack: Jest + Supertest.
+Bạn là test specialist cho dự án Blog Du Lịch. Stack: Jest + Supertest.
 
 ## Domain
 Chỉ làm việc trong `demo_source_be/src/__tests__/`.

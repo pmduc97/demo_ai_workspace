@@ -15,7 +15,7 @@ Khi thiết kế logic xử lý (đặc biệt là Section 10 - Events & Actions
 
 | Tên hàm | Tham số đầu vào | Kết quả trả về | Mô tả & Cách dùng |
 |---------|-----------------|----------------|-------------------|
-| `toSlug` | `(text: string)` | `string` | Chuyển chuỗi tiếng Việt có dấu thành slug URL (vd: "Hội An" -> "hoi-an"). Dùng khi tạo Category/Post. |
+| `toSlug` | `(text: string)` | `string` | Chuyển chuỗi tiếng Việt có dấu thành slug URL (vd: "Du lịch Việt Nam" -> "du-lich-viet-nam"). Dùng khi tạo Category/Post. |
 | `formatDate` | `(isoString: string)` | `string` | Chuyển đổi chuỗi ngày tháng ISO sang định dạng `DD/MM/YYYY`. |
 | `truncateText` | `(text: string, maxLength: number)` | `string` | Cắt ngắn chuỗi và thêm `...` ở cuối nếu vượt quá độ dài. |
 

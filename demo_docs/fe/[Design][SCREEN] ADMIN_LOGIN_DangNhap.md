@@ -20,7 +20,7 @@ status: stable
 
 ## 1. Tổng quan
 
-Màn hình `ADMIN_LOGIN` cho phép người dùng role `admin` hoặc `member` đăng nhập vào khu vực quản trị Blog Hội An / Đà Nẵng. Khi đăng nhập thành công, frontend lưu JWT và thông tin user thông qua `AuthContext`, sau đó điều hướng tới `/admin/dashboard`. Nếu người dùng đã có trạng thái đăng nhập trong context, màn hình tự redirect và không hiển thị form.
+Màn hình `ADMIN_LOGIN` cho phép người dùng role `admin` hoặc `member` đăng nhập vào khu vực quản trị Blog Du Lịch. Khi đăng nhập thành công, frontend lưu JWT và thông tin user thông qua `AuthContext`, sau đó điều hướng tới `/admin/dashboard`. Nếu người dùng đã có trạng thái đăng nhập trong context, màn hình tự redirect và không hiển thị form.
 
 ## 2. Thông tin chung
 
@@ -55,7 +55,7 @@ Màn hình `ADMIN_LOGIN` cho phép người dùng role `admin` hoặc `member` �
 <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
   <section className="bg-white rounded-2xl shadow-lg p-10 w-full max-w-md">
     <header className="text-center mb-8">
-      <h1>Blog Hội An</h1>
+      <h1>Blog Du Lịch</h1>
       <p>Quản lý nội dung</p>
     </header>
     <ErrorBanner message={error} />
@@ -98,7 +98,7 @@ Ghi chú implementation: JSX tree trên thể hiện cấu trúc logic và các 
 |---------|------|-----|-----------|------------------|---------------|----------|------------|---------|
 | Page Container | Layout | Output | Full height, căn giữa, nền `bg-gray-50`, padding ngang `px-4` | Render mặc định | Static JSX | Không có | N/A | Wrapper toàn màn hình |
 | Login Card | Layout | Output | `rounded-2xl`, `shadow-lg`, `p-10`, `w-full`, `max-w-md` | Render mặc định | Static JSX | Không có | N/A | Card chứa logo, lỗi và form |
-| Logo Title | Text | Output | Text `Blog Hội An`, màu amber, font bold | `Blog Hội An` | Static content | Không có | N/A | Tiêu đề thương hiệu |
+| Logo Title | Text | Output | Text `Blog Du Lịch`, màu amber, font bold | `Blog Du Lịch` | Static content | Không có | N/A | Tiêu đề thương hiệu |
 | Logo Subtitle | Text | Output | Text `Quản lý nội dung`, màu xám | `Quản lý nội dung` | Static content | Không có | N/A | Mô tả khu vực quản trị |
 | Error Banner | Alert | Output | Chỉ hiển thị khi `error` khác rỗng | `''` | State `error` | Không có | N/A | Hiển thị validation/API error |
 | Email Label | Label | Output | Gắn với input email về mặt hiển thị | `Email` | Static content | Không có | N/A | Label hiện tại chưa dùng `htmlFor` |

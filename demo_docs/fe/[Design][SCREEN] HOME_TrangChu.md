@@ -25,7 +25,7 @@ Trang chủ là điểm vào chính của blog. Hiển thị banner giới thi�
 ## Chi tiết UI từng section
 
 ### Navbar
-- Logo bên trái: "Blog Hội An"
+- Logo bên trái: "Blog Du Lịch"
 - Menu: Trang chủ | Giới thiệu | Liên hệ
 - Không hiển thị nút "Đăng nhập" trên public header khi chưa đăng nhập vì login chỉ phục vụ khu vực quản trị.
 - Nếu đã đăng nhập, hiển thị nút "Quản trị" và "Đăng xuất".
@@ -34,8 +34,8 @@ Trang chủ là điểm vào chính của blog. Hiển thị banner giới thi�
 ### HeroBanner
 - Ảnh nền full-width, chiều cao 400px (desktop) / 250px (mobile)
 - Overlay tối 40%
-- Tiêu đề: "Khám Phá Hội An & Đà Nẵng"
-- Tagline: "Tin tức du lịch, ẩm thực và văn hóa miền Trung"
+- Tiêu đề: "Khám Phá Du Lịch Việt Nam"
+- Tagline: "Tin tức du lịch, ẩm thực và văn hóa các điểm đến"
 - Nội dung tĩnh (không gọi API)
 
 ### FeaturedPost

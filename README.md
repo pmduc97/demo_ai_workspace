@@ -1,6 +1,6 @@
-# Blog Hội An / Đà Nẵng — AI Workflow Demo
+# Blog Du Lịch — AI Workflow Demo
 
-Dự án demo blog tin tức về Hội An và Đà Nẵng, đồng thời là **bộ khung AI workflow** chạy trên GitHub Copilot theo vòng lặp:
+Dự án demo blog tin tức về du lịch Việt Nam và các điểm đến du lịch, đồng thời là **bộ khung AI workflow** chạy trên GitHub Copilot theo vòng lặp:
 
 ```
 plan → create → review → correct → qa gate

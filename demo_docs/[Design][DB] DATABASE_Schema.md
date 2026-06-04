@@ -1,4 +1,4 @@
-# Tài Liệu Database (PostgreSQL) - Blog Hội An/Đà Nẵng
+# Tài Liệu Database (PostgreSQL) - Blog Du Lịch
 
 ## 1) Tổng quan
 - DB name: `hoian_blog`
@@ -7,19 +7,38 @@
 
 ## 2) Lược đồ bảng
 
+## 2.1 Common columns
+Các bảng nghiệp vụ phải có nhóm cột audit/soft-delete sau:
+- `created_at` (timestamp, default now)
+- `created_by` (FK -> users.id, null với dữ liệu hệ thống/seed)
+- `updated_at` (timestamp, default now)
+- `updated_by` (FK -> users.id, null nếu chưa cập nhật)
+- `deleted_at` (timestamp, null) — soft delete, record active khi `deleted_at IS NULL`
+- `deleted_by` (FK -> users.id, null nếu chưa xóa)
+
+> Quy ước: dùng `deleted_at` thay vì boolean `is_delete` để vừa xác định trạng thái xóa mềm vừa lưu được thời điểm xóa.
+
 ### `users`
 - `id` (PK, serial)
 - `email` (varchar, unique, not null)
 - `password_hash` (varchar, not null)
 - `name` (varchar, not null)
 - `role` (enum: `admin|member`, default `member`)
-- `created_at` (timestamp, default now)
+- common columns: `created_at`, `created_by`, `updated_at`, `updated_by`, `deleted_at`, `deleted_by`
 
 ### `categories`
 - `id` (PK, serial)
 - `name` (varchar, not null)
-- `slug` (varchar, unique, not null)
+- `slug` (varchar, not null)
 - `description` (text, null)
+- `status` (enum: `active|hidden`, default `active`)
+- `thumbnail_url` (varchar, null)
+- `seo_title` (varchar, null)
+- `seo_description` (varchar, null)
+- common columns: `created_at`, `created_by`, `updated_at`, `updated_by`, `deleted_at`, `deleted_by`
+
+Index/constraint:
+- Unique slug chỉ áp dụng cho record chưa xóa: `UNIQUE(slug) WHERE deleted_at IS NULL`
 
 ### `posts`
 - `id` (PK, serial)
@@ -28,14 +47,15 @@
 - `content` (text, null)
 - `thumbnail_url` (varchar, null)
 - `status` (enum: `draft|published`, default `draft`)
+- `view_count` (integer, default 0)
 - `author_id` (FK -> users.id, on delete cascade)
 - `category_id` (FK -> categories.id, on delete set null)
-- `created_at` (timestamp, default now)
-- `updated_at` (timestamp, default now)
+- common columns: `created_at`, `created_by`, `updated_at`, `updated_by`, `deleted_at`, `deleted_by`
 
 ## 3) Quan hệ
 - 1 user có nhiều posts (`users.id` -> `posts.author_id`)
 - 1 category có nhiều posts (`categories.id` -> `posts.category_id`)
+- 1 user có thể tạo/cập nhật/xóa nhiều categories qua `created_by`, `updated_by`, `deleted_by`
 
 ## 4) Migration & Seed
 ```bash
@@ -48,8 +68,8 @@ npm run seed
 - Users:
   - `admin@hoianblog.vn` / `password123` (admin)
   - `member@hoianblog.vn` / `password123` (member)
-- Categories: du-lich, am-thuc, van-hoa
-- Posts: 3 bản ghi mẫu (published + draft)
+- Categories: 24 bản ghi mẫu để kiểm thử filter/sort/pagination với màn admin mặc định `limit=5`, gồm 22 `active` và 2 `hidden`.
+- Posts: 3 bản ghi mẫu (published + draft) có `view_count`, `created_by`, `updated_by`.
 
 ## 6) Index/khuyến nghị tối ưu
 - Đã có unique index tự nhiên qua `email`, `slug`
@@ -57,6 +77,9 @@ npm run seed
   - `posts(status, created_at)`
   - `posts(author_id, created_at)`
   - `posts(category_id, created_at)`
+  - `posts(category_id, status, deleted_at)`
+  - `categories(status, deleted_at, created_at)`
+  - `categories(slug) WHERE deleted_at IS NULL`
 
 ## 7) Quy ước cho unit test DB
 - Mỗi test suite chạy transaction riêng và rollback sau test

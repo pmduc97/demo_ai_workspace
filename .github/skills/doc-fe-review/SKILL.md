@@ -1,6 +1,6 @@
 ---
 name: doc-fe-review
-description: "FE screen design doc review workflow for Blog Hoi An/Da Nang. Use when reviewing a frontend screen specification document for correctness, completeness, and format compliance. Produces a scored checklist (0-100) and PASS/FAIL release verdict. Trigger phrases: review screen doc, check doc format, validate screen spec, doc review, review design doc, kiểm tra tài liệu, review fe doc."
+description: "FE screen design doc review workflow for Blog Du Lịch. Use when reviewing a frontend screen specification document for correctness, completeness, and format compliance. Produces a scored checklist (0-100) and PASS/FAIL release verdict. Trigger phrases: review screen doc, check doc format, validate screen spec, doc review, review design doc, kiểm tra tài liệu, review fe doc."
 argument-hint: "ScreenCode hoặc đường dẫn file cần review (e.g. ADMIN_LOGIN, hoặc demo_docs/fe/[Design][SCREEN] HOME_TrangChu.md)"
 ---
 

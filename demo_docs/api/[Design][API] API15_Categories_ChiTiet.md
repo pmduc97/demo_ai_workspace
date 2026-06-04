@@ -19,7 +19,7 @@
   "id": 1,
   "name": "Du lịch",
   "slug": "du-lich",
-  "description": "Tin tức du lịch Hội An - Đà Nẵng",
+  "description": "Tin tức du lịch Việt Nam",
   "postCount": 5
 }
 ```

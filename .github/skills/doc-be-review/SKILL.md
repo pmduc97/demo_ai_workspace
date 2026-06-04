@@ -1,6 +1,6 @@
 ---
 name: doc-be-review
-description: "BE API design doc review workflow for Blog Hoi An/Da Nang. Use when reviewing a backend API specification document for correctness, completeness, and format compliance. Produces a scored checklist (0-100) and PASS/FAIL release verdict. Trigger phrases: review api doc, check api format, validate api spec, doc review, review be design doc, kiểm tra tài liệu api."
+description: "BE API design doc review workflow for Blog Du Lịch. Use when reviewing a backend API specification document for correctness, completeness, and format compliance. Produces a scored checklist (0-100) and PASS/FAIL release verdict. Trigger phrases: review api doc, check api format, validate api spec, doc review, review be design doc, kiểm tra tài liệu api."
 argument-hint: "Tên file API cần review (e.g. API01_Auth_DangNhap, hoặc demo_docs/api/[Design][API] API01_Auth_DangNhap.md)"
 ---
 

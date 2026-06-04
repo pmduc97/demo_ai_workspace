@@ -1,6 +1,6 @@
 ---
 name: fe-implement
-description: "Frontend implementation workflow for Blog Hoi An/Da Nang. Use when building React screens, components, auth flow, route guards, or fixing UI bugs. Loads screen specs, checklist, and component patterns. Trigger phrases: implement screen, React page, frontend component, auth context, protected route, admin UI, home page, category page, post form."
+description: "Frontend implementation workflow for Blog Du Lịch. Use when building React screens, components, auth flow, route guards, or fixing UI bugs. Loads screen specs, checklist, and component patterns. Trigger phrases: implement screen, React page, frontend component, auth context, protected route, admin UI, home page, category page, post form."
 argument-hint: "Screen name or component to implement (e.g. HOME, ADMIN_POST_FORM, AuthContext)"
 ---
 

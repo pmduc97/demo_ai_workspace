@@ -24,16 +24,16 @@ Trang tĩnh giới thiệu về blog, sứ mệnh và các chủ đề nội dun
 ## Chi tiết UI từng section
 
 ### PageHeader
-- Ảnh banner Hội An (ảnh tĩnh trong `/public/images/about-banner.jpg`)
+- Ảnh banner du lịch (ảnh tĩnh trong `/public/images/about-banner.jpg`)
 - Overlay tối 50%
 - Tiêu đề: "Về Chúng Tôi" (h1, trắng, căn giữa)
-- Tagline: "Chia sẻ vẻ đẹp Hội An và Đà Nẵng đến mọi người"
+- Tagline: "Chia sẻ vẻ đẹp du lịch Việt Nam đến mọi người"
 
 ### MissionSection
 - Layout 2 cột: ảnh trái + text phải (desktop) / stack dọc (mobile)
 - Tiêu đề: "Sứ Mệnh Của Chúng Tôi"
-- Nội dung: đoạn văn giới thiệu blog, mục tiêu chia sẻ văn hóa miền Trung
-- Ảnh minh họa phố cổ Hội An
+- Nội dung: đoạn văn giới thiệu blog, mục tiêu chia sẻ văn hóa và điểm đến du lịch Việt Nam
+- Ảnh minh họa điểm đến du lịch
 
 ### TopicsSection
 - Tiêu đề: "Chủ Đề Nội Dung"

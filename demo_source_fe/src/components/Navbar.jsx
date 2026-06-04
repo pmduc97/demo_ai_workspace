@@ -6,7 +6,7 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-40 border-b border-amber-100 bg-white/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center gap-6 px-4 py-4 sm:px-6 lg:px-8">
-        <Link to="/" className="text-lg font-bold text-amber-700">Blog Hội An</Link>
+        <Link to="/" className="text-lg font-bold text-amber-700">Blog Du Lịch</Link>
         <div className="flex items-center gap-4 text-sm font-medium text-gray-600">
           <Link className="hover:text-amber-700" to="/">Trang chủ</Link>
           <Link className="hover:text-amber-700" to="/about">Giới thiệu</Link>

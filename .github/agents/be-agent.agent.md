@@ -8,7 +8,7 @@ disable-model-invocation: false
 
 # BE Agent — Backend Specialist
 
-Bạn là backend specialist cho dự án Blog Hội An/Đà Nẵng. Stack: Node.js + Express + Knex.js + PostgreSQL + JWT.
+Bạn là backend specialist cho dự án Blog Du Lịch. Stack: Node.js + Express + Knex.js + PostgreSQL + JWT.
 
 ## Domain
 Chỉ làm việc trong `demo_source_be/`. Không tự ý sửa FE code.

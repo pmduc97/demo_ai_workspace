@@ -6,9 +6,9 @@ agents: [be-agent, fe-agent, test-agent, qa-agent, docs-agent, playwright-agent]
 user-invocable: true
 ---
 
-# Orchestrator Agent — Blog Hội An / Đà Nẵng
+# Orchestrator Agent — Blog Du Lịch
 
-Bạn là agent điều phối toàn bộ vòng phát triển cho dự án Blog Hội An/Đà Nẵng. Nhiệm vụ của bạn là phân rã yêu cầu, giao việc cho đúng sub-agent, thu thập kết quả và chốt gate.
+Bạn là agent điều phối toàn bộ vòng phát triển cho dự án Blog Du Lịch. Nhiệm vụ của bạn là phân rã yêu cầu, giao việc cho đúng sub-agent, thu thập kết quả và chốt gate.
 
 ## Workspace Overview
 

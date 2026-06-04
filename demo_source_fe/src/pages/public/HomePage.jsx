@@ -35,7 +35,7 @@ export default function HomePage() {
         <div className="relative mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-24">
           <div className="flex flex-col justify-center">
             <span className="mb-4 w-fit rounded-full bg-white px-4 py-2 text-sm font-semibold text-amber-700 shadow-sm">Tin tức du lịch • Ẩm thực • Văn hóa</span>
-            <h1 className="text-4xl font-extrabold tracking-tight text-gray-950 sm:text-5xl lg:text-6xl">Khám phá Hội An & Đà Nẵng</h1>
+            <h1 className="text-4xl font-extrabold tracking-tight text-gray-950 sm:text-5xl lg:text-6xl">Khám phá du lịch Việt Nam</h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-600">Cập nhật những câu chuyện mới nhất, gợi ý trải nghiệm và góc nhìn địa phương về miền Trung.</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a href="#latest-posts" className="rounded-full bg-amber-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-amber-200 transition hover:bg-amber-700">Xem bài mới</a>
@@ -43,7 +43,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="rounded-[2rem] bg-white p-3 shadow-2xl shadow-amber-100">
-            <img className="h-72 w-full rounded-[1.5rem] object-cover sm:h-96" src="https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=1200&q=80" alt="Hội An về đêm" />
+            <img className="h-72 w-full rounded-[1.5rem] object-cover sm:h-96" src="https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=1200&q=80" alt="Du lịch Việt Nam" />
           </div>
         </div>
       </section>
@@ -67,7 +67,7 @@ export default function HomePage() {
             <div className="flex flex-col justify-center p-8 lg:p-10">
               <span className="mb-4 w-fit rounded-full bg-amber-200 px-3 py-1 text-xs font-bold uppercase tracking-wide text-amber-900">Bài nổi bật</span>
               <h2 className="text-3xl font-extrabold text-gray-950">{featured.title}</h2>
-              <p className="mt-4 text-gray-600">{featured.excerpt || featured.content?.replace(/<[^>]*>/g, '').slice(0, 180) || 'Câu chuyện nổi bật mới nhất từ Blog Hội An / Đà Nẵng.'}</p>
+              <p className="mt-4 text-gray-600">{featured.excerpt || featured.content?.replace(/<[^>]*>/g, '').slice(0, 180) || 'Câu chuyện nổi bật mới nhất từ Blog Du Lịch.'}</p>
               <a className="mt-6 w-fit rounded-full bg-gray-950 px-5 py-3 text-sm font-semibold text-white hover:bg-amber-700" href={`/post/${featured.slug}`}>Đọc bài viết →</a>
             </div>
           </div>

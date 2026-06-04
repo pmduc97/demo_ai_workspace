@@ -14,6 +14,8 @@ db_state:
     - "demo_source_be/src/db/migrations/20240101_01_users.js"
     - "demo_source_be/src/db/migrations/20240101_02_categories.js"
     - "demo_source_be/src/db/migrations/20240101_03_posts.js"
+    - "demo_source_be/src/db/migrations/20260604_01_audit_soft_delete_category_enhancement.js"
+    - "demo_source_be/src/db/migrations/20260604_02_add_missing_created_at_common_columns.js"
   notes: "DB hoian_blog trên PostgreSQL local. .env đã cấu hình."
 
 features:
@@ -211,8 +213,8 @@ features:
 
   admin_categories:
     name: "Quản lý danh mục"
-    status: "implemented"
-    cycle_checkpoint: "test"
+    status: "tested"
+    cycle_checkpoint: "correct"
     docs:
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md"
       be_api:
@@ -238,8 +240,8 @@ features:
 
   admin_users:
     name: "Quản lý người dùng"
-    status: "implemented"
-    cycle_checkpoint: "test"
+    status: "draft"
+    cycle_checkpoint: "plan"
     docs:
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md"
       be_api:
@@ -263,7 +265,7 @@ features:
   admin_dashboard:
     name: "Dashboard thống kê"
     status: "implemented"
-    cycle_checkpoint: "create"
+    cycle_checkpoint: "correct"
     docs:
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_DASHBOARD_TongQuan.md"
       be_api:
@@ -271,6 +273,7 @@ features:
     code:
       fe:
         - "demo_source_fe/src/pages/admin/DashboardPage.jsx"
+        - "demo_source_fe/src/App.jsx"
       be:
         - "demo_source_be/src/routes/admin.routes.js"
     db_tables:

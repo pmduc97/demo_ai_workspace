@@ -14,7 +14,7 @@ status: stable
 
 ---
 
-# Danh Sách Màn Hình - Blog Hội An / Đà Nẵng
+# Danh Sách Màn Hình - Blog Du Lịch
 
 ## Public Site
 

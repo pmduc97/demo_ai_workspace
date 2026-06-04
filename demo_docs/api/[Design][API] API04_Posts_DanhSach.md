@@ -26,10 +26,10 @@ Chỉ trả về bài có `status = 'published'`.
   "posts": [
     {
       "id": 1,
-      "title": "Khám phá phố cổ Hội An về đêm",
+      "title": "Khám phá điểm đến Việt Nam về đêm",
       "slug": "kham-pha-pho-co-hoi-an-ve-dem",
       "thumbnail_url": "/uploads/thumbnail.jpg",
-      "excerpt": "Hội An về đêm lung linh với hàng nghìn chiếc đèn lồng...",
+      "excerpt": "Các điểm đến du lịch Việt Nam về đêm lung linh với nhiều trải nghiệm đặc sắc...",
       "created_at": "2024-01-01T00:00:00.000Z",
       "author": { "id": 1, "name": "Admin" },
       "category": { "id": 1, "name": "Du lịch", "slug": "du-lich" }

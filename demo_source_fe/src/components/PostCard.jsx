@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 export default function PostCard({ post }) {
   const image = post.thumbnail_url || 'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=900&q=80';
-  const excerpt = post.excerpt || post.content?.replace(/<[^>]*>/g, '').slice(0, 140) || 'Khám phá thêm những câu chuyện mới nhất về Hội An, Đà Nẵng và văn hóa miền Trung.';
+  const excerpt = post.excerpt || post.content?.replace(/<[^>]*>/g, '').slice(0, 140) || 'Khám phá thêm những câu chuyện mới nhất về du lịch Việt Nam và văn hóa địa phương.';
 
   return (
     <article className="group overflow-hidden rounded-2xl border border-amber-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">

@@ -38,6 +38,12 @@ Khi thiết kế (viết spec) hoặc implement màn hình mới, **BẮT BUỘC
 | Tên Component | Đường dẫn | Props chính | Mô tả & Cách dùng |
 |---------------|-----------|-------------|-------------------|
 | `PostCard` | `src/components/PostCard.jsx` | `post` (object) | Card hiển thị tóm tắt bài viết (Thumbnail, Tiêu đề, Excerpt, Tác giả, Ngày đăng). Dùng ở trang Chủ và trang Danh mục. |
+| `UserToolbar` | `src/pages/admin/UserListPage.jsx` hoặc `src/components/admin/UserToolbar.jsx` | `filters`, `onSearch`, `onReset`, `onExport` | Toolbar quản lý người dùng: search, role/status filter, sort và export CSV. Có thể tách component khi implement. |
+| `UserTable` | `src/pages/admin/UserListPage.jsx` hoặc `src/components/admin/UserTable.jsx` | `users`, `currentUser`, `onView`, `onEdit`, `onChangeRole`, `onChangeStatus` | Bảng quản lý người dùng với avatar, role/status badge, thống kê bài viết và actions. Có thể tách component khi implement. |
+| `UserDetailModal` | `src/pages/admin/UserListPage.jsx` hoặc `src/components/admin/UserDetailModal.jsx` | `user`, `isOpen`, `onClose` | Modal xem đầy đủ thông tin profile và thống kê tài khoản người dùng. |
+| `EditUserModal` | `src/pages/admin/UserListPage.jsx` hoặc `src/components/admin/EditUserModal.jsx` | `user`, `isOpen`, `onSubmit`, `onCancel` | Modal chỉnh sửa profile mở rộng của người dùng. |
+| `RoleConfirmModal` | `src/components/ui/ConfirmModal.jsx` | `user`, `newRole`, `onConfirm`, `onCancel` | Biến thể ConfirmModal để xác nhận đổi role user. |
+| `LockConfirmModal` | `src/components/ui/ConfirmModal.jsx` | `user`, `nextStatus`, `lockedReason`, `onConfirm`, `onCancel` | Biến thể ConfirmModal để xác nhận khóa/mở khóa user. |
 
 ## 4. Context & State Management
 > Các Provider cung cấp global state cho toàn bộ ứng dụng.

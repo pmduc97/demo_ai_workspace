@@ -1,6 +1,6 @@
 ---
 name: doc-fe-implement
-description: "FE screen design doc workflow for Blog Hoi An/Da Nang. Use when writing, updating, or standardizing a frontend screen specification document. Ensures consistent 10-section format with YAML frontmatter, navigation, layout tree, API links, state snippets, error handling, responsive table, and events mapping. Trigger phrases: write screen doc, update screen spec, standardize doc, create design doc, doc fe, screen design, spec màn hình."
+description: "FE screen design doc workflow for Blog Du Lịch. Use when writing, updating, or standardizing a frontend screen specification document. Ensures consistent 10-section format with YAML frontmatter, navigation, layout tree, API links, state snippets, error handling, responsive table, and events mapping. Trigger phrases: write screen doc, update screen spec, standardize doc, create design doc, doc fe, screen design, spec màn hình."
 argument-hint: "ScreenCode cần viết/update (e.g. ADMIN_LOGIN, HOME, ADMIN_CATEGORY_LIST)"
 ---
 

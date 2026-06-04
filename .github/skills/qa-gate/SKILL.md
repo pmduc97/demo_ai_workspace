@@ -1,6 +1,6 @@
 ﻿---
 name: qa-gate
-description: "QA gate verification workflow for Blog Hoi An/Da Nang. Use when running final cross-domain check before merging, verifying all flows work end-to-end, checking docs sync, producing PASS/FAIL verdict. Trigger phrases: QA gate, final check, ready to merge, smoke test, end-to-end verify, check all flows, docs sync."
+description: "QA gate verification workflow for Blog Du Lịch. Use when running final cross-domain check before merging, verifying all flows work end-to-end, checking docs sync, producing PASS/FAIL verdict. Trigger phrases: QA gate, final check, ready to merge, smoke test, end-to-end verify, check all flows, docs sync."
 argument-hint: "Scope to verify: all | public | auth | admin | upload | docs"
 ---
 

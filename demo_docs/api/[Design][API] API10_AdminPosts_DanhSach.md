@@ -25,7 +25,7 @@
   "posts": [
     {
       "id": 1,
-      "title": "Khám phá phố cổ Hội An",
+      "title": "Khám phá điểm đến du lịch Việt Nam",
       "slug": "kham-pha-pho-co-hoi-an",
       "thumbnail_url": "/uploads/thumb.jpg",
       "status": "published",

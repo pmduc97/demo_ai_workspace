@@ -53,8 +53,8 @@ Trang liên hệ với form gửi tin nhắn và thông tin liên lạc của bl
 ### ContactInfo
 - Tiêu đề: "Thông Tin Liên Hệ"
 - Các mục (icon + label + value):
-  - 📍 Địa chỉ: Phố Cổ Hội An, Quảng Nam
-  - ✉️ Email: contact@hoianblog.vn
+  - 📍 Địa chỉ: Việt Nam
+  - ✉️ Email: contact@blogdulich.vn
   - 🕐 Giờ làm việc: Thứ 2 - Thứ 6, 8:00 - 17:00
 - Mạng xã hội: Facebook, Instagram (icon + link, href="#" placeholder)
 - Nền xám nhạt (#F9FAFB), padding 32px, border-radius

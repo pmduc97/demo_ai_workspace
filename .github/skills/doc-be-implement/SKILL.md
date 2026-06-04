@@ -1,6 +1,6 @@
 ---
 name: doc-be-implement
-description: "BE API design doc workflow for Blog Hoi An/Da Nang. Use when writing, updating, or standardizing a backend API specification document. Ensures consistent 7-section format with YAML frontmatter, request/response mapping, business logic with Query IDs, and Knex.js snippets. Trigger phrases: write api doc, update api spec, standardize api doc, create api design, doc be, api spec."
+description: "BE API design doc workflow for Blog Du Lịch. Use when writing, updating, or standardizing a backend API specification document. Ensures consistent 7-section format with YAML frontmatter, request/response mapping, business logic with Query IDs, and Knex.js snippets. Trigger phrases: write api doc, update api spec, standardize api doc, create api design, doc be, api spec."
 argument-hint: "Tên file API cần viết/update (e.g. API01_Auth_DangNhap)"
 ---
 

@@ -71,7 +71,7 @@ const [copied, setCopied] = useState(false);
 ```
 
 - Khi `slug` thay đổi: fetch lại post và related posts
-- `useEffect` cập nhật `document.title = post.title + " | Blog Hội An"`
+- `useEffect` cập nhật `document.title = post.title + " | Blog Du Lịch"`
 
 ## Xử lý lỗi & Edge Cases
 - Slug không tồn tại hoặc bài là draft: hiển thị trang 404 ("Bài viết không tồn tại hoặc chưa được xuất bản")

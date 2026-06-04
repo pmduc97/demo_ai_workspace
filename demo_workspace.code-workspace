@@ -29,14 +29,16 @@
 			"/^node D:\\\\Project\\\\demo_ai_workspace\\\\demo_tools\\\\mcp-db-sampler\\\\test-db\\.js$/": {
 				"approve": true,
 				"matchCommandLine": true
-			}
+			},
+			"npx knex": true,
+			"Add-Content": true
 		},
 		"mcp": {
 			"servers": {
 				"mcp-db-sampler": {
 					"command": "node",
 					"args": [
-						"D:/Project/demo_ai_workspace/demo_tools/mcp-db-sampler/build/index.js"
+						"D:\\Projects\\demo_ai_workspace\\demo_tools\\mcp-db-sampler\\build\\index.js"
 					]
 				}
 			},

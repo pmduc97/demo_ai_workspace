@@ -242,7 +242,7 @@ features:
   admin_users:
     name: "Quản lý người dùng"
     status: "implemented"
-    cycle_checkpoint: "test"
+    cycle_checkpoint: "correct"
     docs:
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md"
       be_api:

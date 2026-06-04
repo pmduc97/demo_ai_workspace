@@ -627,3 +627,64 @@ Mỗi khi Orchestrator hoặc Sub-agent hoàn thành một task, **BẮT BUỘC*
   - `PROJECT_MANIFEST.yml` [Modified]
 - **Status**: SUCCESS
 - **Notes**: Manifest v1.1. Thêm: posts_public, posts_member, public_about_contact, admin_posts, upload, admin_dashboard. Thêm cycle_checkpoint cho tất cả features. Thêm db_state section.
+
+### [2026-06-04 00:00:00] - Orchestrator
+- **Task**: Diagnose MCP DB sampler error for ITa test data
+- **Skill Used**: N/A
+- **Target Feature**: admin_users
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Verified/Unchanged]
+  - `demo_tools/mcp-db-sampler/package.json` [Verified/Unchanged]
+  - `demo_tools/mcp-db-sampler/src/index.ts` [Verified/Unchanged]
+  - `demo_tools/mcp-db-sampler/README.md` [Verified/Unchanged]
+  - `demo_tools/mcp-db-sampler/test-db.js` [Verified/Unchanged]
+  - `.vscode/tasks.json` [Verified/Unchanged]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Direct DB connection works from `demo_tools/mcp-db-sampler/.env`; MCP tool calls still return blank `Error:`. Likely MCP server instance launched by VS Code/Copilot is stale/misconfigured or running from another command/env. Additional finding: raw schema query without table_schema returns duplicate `users` columns across schemas; MCP should filter `table_schema = 'public'` and/or expose detailed errors.
+
+### [2026-06-04 00:00:00] - Orchestrator
+- **Task**: Fix MCP DB sampler for public schema and clearer errors
+- **Skill Used**: N/A
+- **Target Feature**: admin_users
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `demo_tools/mcp-db-sampler/src/index.ts` [Modified]
+  - `demo_tools/mcp-db-sampler/build/index.js` [Modified]
+  - `demo_tools/mcp-db-sampler/test-db.js` [Verified/Unchanged]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Added identifier validation, forced `public` schema for sample/FK/schema tools, filtered schema by `table_schema`, and improved unknown error formatting. `npm run build` PASS. Direct public schema query PASS. Copilot MCP tool still returns stale blank `Error:` until VS Code/Copilot restarts or reloads MCP server instance.
+
+### [2026-06-04 00:00:00] - Orchestrator
+- **Task**: Retest MCP DB sampler after VS Code reload
+- **Skill Used**: N/A
+- **Target Feature**: admin_users
+- **Files Processed**:
+  - `demo_tools/mcp-db-sampler/test-db.js` [Verified/Unchanged]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+- **Status**: PARTIAL
+- **Notes**: Copilot MCP tool now returns detailed `Error: {"code":"ECONNREFUSED"}` for schema/sample/query calls. Direct `node test-db.js` from `demo_tools/mcp-db-sampler` still connects successfully, so PostgreSQL is available and `.env` works. Remaining issue is MCP server runtime launched by VS Code/Copilot is not receiving the same DB host/port/env or cannot reach that host from its process context.
+
+### [2026-06-04 00:00:00] - Orchestrator
+- **Task**: Add SSL/env-path support and retest MCP DB sampler
+- **Skill Used**: N/A
+- **Target Feature**: admin_users
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Verified/Unchanged]
+  - `demo_tools/mcp-db-sampler/src/index.ts` [Modified]
+  - `demo_tools/mcp-db-sampler/test-db.js` [Modified]
+  - `demo_tools/mcp-db-sampler/.env.example` [Verified/Unchanged]
+  - `demo_tools/mcp-db-sampler/build/index.js` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+- **Status**: PARTIAL
+- **Notes**: Added `DB_SSL=true` support with `rejectUnauthorized: false`; MCP server now loads `.env` from its own directory with override. `npm run build` PASS and direct `node test-db.js` PASS. Copilot MCP calls still return `Error: {"code":"ECONNREFUSED"}`, indicating the active MCP process still needs reload/restart or is using a different server registration/path than this workspace build.
+
+### [2026-06-04 00:00:00] - Orchestrator
+- **Task**: Retest MCP DB sampler after full VS Code restart
+- **Skill Used**: N/A
+- **Target Feature**: admin_users
+- **Files Processed**:
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: MCP tools are now operational after VS Code restart. `get_live_schema_info(users)`, `get_sample_data(users)`, and `execute_read_query(SELECT id, email, name, role, status FROM public.users ORDER BY id LIMIT 2)` all returned valid Supabase data. Test data available: admin user id 3 (`admin@hoianblog.vn`) and member user id 4 (`member@hoianblog.vn`).

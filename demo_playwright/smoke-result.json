@@ -1,0 +1,155 @@
+﻿{
+  "config": {
+    "configFile": "D:\\Projects\\demo_ai_workspace\\demo_playwright\\playwright.config.ts",
+    "rootDir": "D:/Projects/demo_ai_workspace/demo_playwright/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/Projects/demo_ai_workspace/demo_playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "D:/Projects/demo_ai_workspace/demo_playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.60.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "smoke\\admin-users.smoke.spec.ts",
+      "file": "smoke/admin-users.smoke.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Smoke - Admin Users environment gate",
+          "file": "smoke/admin-users.smoke.spec.ts",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "SMOKE_003 admin login and users route reachable",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 9081,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Quß║ún L├╜ Ng╞░ß╗¥i D├╣ng/)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Quß║ún L├╜ Ng╞░ß╗¥i D├╣ng/)\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Quß║ún L├╜ Ng╞░ß╗¥i D├╣ng/)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Quß║ún L├╜ Ng╞░ß╗¥i D├╣ng/)\u001b[22m\n\n    at D:\\Projects\\demo_ai_workspace\\demo_playwright\\tests\\smoke\\admin-users.smoke.spec.ts:20:56",
+                        "location": {
+                          "file": "D:\\Projects\\demo_ai_workspace\\demo_playwright\\tests\\smoke\\admin-users.smoke.spec.ts",
+                          "column": 56,
+                          "line": 20
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m usersPage\u001b[33m.\u001b[39mloginAs(\u001b[32m'admin@hoianblog.vn'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'password123'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 19 |\u001b[39m     \u001b[36mawait\u001b[39m usersPage\u001b[33m.\u001b[39mgoto()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 20 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByText(\u001b[35m/Quß║ún L├╜ Ng╞░ß╗¥i D├╣ng/\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 21 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 22 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 23 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\Projects\\demo_ai_workspace\\demo_playwright\\tests\\smoke\\admin-users.smoke.spec.ts",
+                            "column": 56,
+                            "line": 20
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Quß║ún L├╜ Ng╞░ß╗¥i D├╣ng/)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Quß║ún L├╜ Ng╞░ß╗¥i D├╣ng/)\u001b[22m\n\n\n  18 |     await usersPage.loginAs('admin@hoianblog.vn', 'password123');\n  19 |     await usersPage.goto();\n> 20 |     await expect(page.getByText(/Quß║ún L├╜ Ng╞░ß╗¥i D├╣ng/)).toBeVisible();\n     |                                                        ^\n  21 |   });\n  22 | });\n  23 |\n    at D:\\Projects\\demo_ai_workspace\\demo_playwright\\tests\\smoke\\admin-users.smoke.spec.ts:20:56"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-04T14:00:58.156Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\Projects\\demo_ai_workspace\\demo_playwright\\test-results\\smoke-admin-users.smoke-Sm-f6e60-n-and-users-route-reachable-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\Projects\\demo_ai_workspace\\demo_playwright\\test-results\\smoke-admin-users.smoke-Sm-f6e60-n-and-users-route-reachable-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\Projects\\demo_ai_workspace\\demo_playwright\\test-results\\smoke-admin-users.smoke-Sm-f6e60-n-and-users-route-reachable-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\Projects\\demo_ai_workspace\\demo_playwright\\tests\\smoke\\admin-users.smoke.spec.ts",
+                        "column": 56,
+                        "line": 20
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "6faa7777872090ca3aa8-fe1124856a6443dcf524",
+              "file": "smoke/admin-users.smoke.spec.ts",
+              "line": 16,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-06-04T14:00:56.401Z",
+    "duration": 11564.510999999999,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

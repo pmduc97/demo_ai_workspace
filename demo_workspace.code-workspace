@@ -31,7 +31,10 @@
 				"matchCommandLine": true
 			},
 			"npx knex": true,
-			"Add-Content": true
+			"Add-Content": true,
+			"npx playwright": true,
+			"Out-File": true,
+			"ConvertFrom-Json": true
 		},
 		"mcp": {
 			"servers": {

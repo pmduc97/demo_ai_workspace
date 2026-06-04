@@ -12,11 +12,17 @@ Bạn đang đóng vai trò là `playwright-agent`. Nhiệm vụ của bạn là
 ### Phase 1: Create & Review Test Code
 1. Đọc file Test Case ITa của tính năng do user chỉ định.
 2. Áp dụng skill `.github/skills/playwright-suite/SKILL.md` để tạo Page Object Model (POM) và file Test Spec (`.spec.ts`).
-3. Tự review code vừa viết: Đảm bảo đã xử lý đúng các tag `[UI]` (chỉ check giao diện) và `[API]` (intercept network), có setup DB đầy đủ.
+3. **Bắt buộc lập `Playwright Chunk Plan` trước khi generate code:** mỗi chunk khoảng 8-10 TC, tối đa 10 TC/spec file; chia theo nhóm như list/filter, profile, role/status, create/delete, permission/security. Với bộ TC lớn, generate và chạy từng spec theo chunk, không tạo một spec file khổng lồ.
+4. Tự review code vừa viết: Đảm bảo đã xử lý đúng các tag `[UI]` (chỉ check giao diện) và `[API]` (intercept network), có setup DB đầy đủ, và mỗi spec không vượt quá 10 TC.
 
 ### Phase 2: Execute & Self-Correct (Chạy Test & Tự sửa lỗi)
-1. Sử dụng tool `run_in_terminal` để chạy lệnh test: `npx playwright test demo_playwright/tests/ITa_functional/[tên-file].spec.ts`.
-2. Đọc kết quả từ Terminal. Nếu có test case bị FAIL, bạn **PHẢI** phân tích nguyên nhân:
+0. **Execution Gate bắt buộc trước khi chạy full/chunk suite:**
+   - Kiểm tra BE available bằng health endpoint nếu có, hoặc endpoint public nhẹ như `GET http://localhost:3000/api/categories` / `GET http://localhost:3000/api/posts`.
+   - Kiểm tra FE available bằng `GET http://localhost:5173/` hoặc `baseURL` trong `demo_playwright/playwright.config.ts`.
+   - Nếu FE hoặc BE chưa chạy/không reachable: dừng ngay, report `BLOCKED: FE/BE not available`, không chạy full suite.
+1. **Smoke test bắt buộc:** chạy 2-3 case nhỏ trước full suite/chunk lớn (home render, API public 200 hoặc login/admin auth, điều hướng màn hình target). Chỉ chạy tiếp nếu smoke PASS.
+2. Sử dụng tool `run_in_terminal` để chạy lệnh test theo từng chunk/spec: `npx playwright test demo_playwright/tests/ITa_functional/[tên-file].spec.ts`.
+3. Đọc kết quả từ Terminal. Nếu có test case bị FAIL, bạn **PHẢI** phân tích nguyên nhân:
    - **Nếu là lỗi Test Code** (Sai locator, timeout do chờ sai element, logic test sai): Tự động dùng tool edit file để sửa lại code test và **chạy lại lệnh test**. (Lặp lại tối đa 3 lần).
    - **Nếu là Bug App** (FE/BE code sai logic so với tài liệu, API trả về 500, v.v.): Ghi nhận đây là Bug App. **TUYỆT ĐỐI KHÔNG** sửa test code để bypass lỗi của App.
 
@@ -25,6 +31,8 @@ Bạn đang đóng vai trò là `playwright-agent`. Nhiệm vụ của bạn là
 2. Tạo một file báo cáo mới lưu vào thư mục `test-results/ITa/` với tên `Report_ITa_[TênTínhNăng]_[YYYYMMDD].md`.
 3. Nội dung báo cáo bắt buộc phải có:
    - Tổng số Test Cases đã chạy.
+   - Kết quả Environment Gate: FE/BE URL đã check và trạng thái PASS/BLOCKED.
+   - Kết quả Smoke Test: danh sách smoke case đã chạy và PASS/FAIL.
    - Số lượng Bug Test Code đã phát hiện và tự fix thành công trong quá trình chạy.
    - Số lượng Bug App phát hiện được (Kèm phân tích Root Cause: Lỗi do UI hay API? Sai ở Viewpoint nào?).
    - Verdict cuối cùng (PASS/FAIL).

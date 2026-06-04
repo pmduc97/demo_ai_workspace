@@ -1,3 +1,39 @@
+### [2026-06-04 00:00:00] - playwright-agent
+- **Task**: Full cycle ITa Admin User List with mandatory environment gate
+- **Skill Used**: playwright-suite
+- **Target Feature**: admin_users
+- **Files Processed**:
+  - `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_USER_LIST_QuanLyNguoiDung.md` [Verified]
+  - `demo_playwright/tests/smoke/admin-users.smoke.spec.ts` [Created]
+  - `demo_playwright/tests/ITa_functional/admin-users.01-ui-validation.spec.ts` [Verified]
+  - `demo_playwright/tests/ITa_functional/admin-users.02-ui-security-error.spec.ts` [Verified]
+  - `demo_playwright/tests/ITa_functional/admin-users.03-api-list-detail.spec.ts` [Verified]
+  - `demo_playwright/tests/ITa_functional/admin-users.04-api-profile-status-create.spec.ts` [Verified]
+  - `demo_playwright/tests/ITa_functional/admin-users.05-api-auth-security-concurrency.spec.ts` [Verified]
+  - `test-results/ITa/Report_ITa_ADMIN_USER_LIST_20260604.md` [Created]
+  - `PROJECT_MANIFEST.yml` [Modified]
+- **Status**: PARTIAL
+- **Notes**: Environment Gate BLOCKED. BE `http://localhost:3001/api/categories` and FE `http://localhost:3000/` were not reachable, so smoke/full suite was not executed.
+
+### [2026-06-04 00:00:00] - docs-agent
+- **Task**: Tạo và review tài liệu Test Case ITa cho màn quản lý người dùng
+- **Skill Used**: doc-ita-implement, doc-ita-review
+- **Target Feature**: admin_users
+- **Files Processed**:
+  - `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_USER_LIST_QuanLyNguoiDung.md` [Modified]
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API19_AdminUsers_DanhSach.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API20_AdminUsers_DoiRole.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API23_AdminUsers_ChiTiet.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API24_AdminUsers_CapNhat.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API25_AdminUsers_DoiStatus.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API26_AdminUsers_Tao.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API27_AdminUsers_Xoa.md` [Verified/Unchanged]
+  - `demo_docs/[Design][DB] DATABASE_Schema.md` [Verified/Unchanged]
+- **Status**: SUCCESS
+- **Notes**: MCP database sampler used for live `users`/`posts` schema, sample rows and valid user IDs. Review verdict PASS, score 95/100. Minor residual risk: API26/API27 source docs are less standardized than API19-25, but ITa still covers create/delete flows.
+
 ### [2026-06-04 00:00:00] - Orchestrator
 - **Task**: Standardize master Users + Categories CRUD/actions
 - **Target Features**: admin_users, admin_categories

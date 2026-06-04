@@ -242,7 +242,7 @@ features:
   admin_users:
     name: "Quản lý người dùng"
     status: "implemented"
-    cycle_checkpoint: "correct"
+    cycle_checkpoint: "e2e"
     docs:
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md"
       be_api:
@@ -263,9 +263,15 @@ features:
       - "users"
     tests:
       be: "demo_source_be/src/__tests__/adminUser.test.js"
-      playwright: null
+      playwright:
+        - "demo_playwright/tests/smoke/admin-users.smoke.spec.ts"
+        - "demo_playwright/tests/ITa_functional/admin-users.01-ui-validation.spec.ts"
+        - "demo_playwright/tests/ITa_functional/admin-users.02-ui-security-error.spec.ts"
+        - "demo_playwright/tests/ITa_functional/admin-users.03-api-list-detail.spec.ts"
+        - "demo_playwright/tests/ITa_functional/admin-users.04-api-profile-status-create.spec.ts"
+        - "demo_playwright/tests/ITa_functional/admin-users.05-api-auth-security-concurrency.spec.ts"
       test_cases:
-        ita: null
+        ita: "demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_USER_LIST_QuanLyNguoiDung.md"
         itb: null
 
   admin_dashboard:

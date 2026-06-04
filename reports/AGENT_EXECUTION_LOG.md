@@ -20,6 +20,64 @@ Mỗi khi Orchestrator hoặc Sub-agent hoàn thành một task, **BẮT BUỘC*
 ## Lịch sử thực thi
 
 ### [2026-06-04 00:00:00] - docs-agent
+- **Task**: Audit FE/BE docs sau khi chuyển login validation sang tiếng Việt custom
+- **Skill Used**: doc-fe-review, doc-be-review
+- **Target Feature**: auth_login, posts_public
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Verified/Unchanged]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+  - `.github/instructions/docs-agent.instructions.md` [Verified/Unchanged]
+  - `.github/skills/doc-fe-review/SKILL.md` [Verified/Unchanged]
+  - `.github/skills/doc-be-review/SKILL.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_LOGIN_DangNhap.md` [Modified]
+  - `demo_docs/api/[Design][API] API01_Auth_DangNhap.md` [Modified]
+  - `demo_docs/fe/[Design][SCREEN] HOME_TrangChu.md` [Modified]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_POST_FORM_TaoSuaBai.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][SCREEN] CONTACT_LienHe.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API07_Posts_TaoBai.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API12_AdminPosts_DoiStatus.md` [Verified/Unchanged]
+  - `demo_docs/api/[Design][API] API21_Upload_AnhBai.md` [Verified/Unchanged]
+  - `demo_source_fe/src/pages/admin/LoginPage.jsx` [Verified/Unchanged]
+  - `demo_source_fe/src/pages/admin/PostFormPage.jsx` [Verified/Unchanged]
+  - `demo_source_fe/src/pages/public/ContactPage.jsx` [Verified/Unchanged]
+- **Status**: SUCCESS
+- **Notes**: Đã scan FE/BE docs theo các keyword `required`, `minLength`, `HTML5`, `native`, `browser`, `AUTH-E-004`, `AUTH-E-005`, `messageId`. Cập nhật docs đăng nhập để nêu rõ `noValidate` + custom React validation tiếng Việt; cập nhật API01 để phân biệt backend required-only với FE format/minLength; cập nhật HOME để bỏ public login CTA. Không phát hiện tài liệu khác đang mô tả native browser validation tiếng Anh cần sửa ngay. `auth_login` và `posts_public` đã ở `cycle_checkpoint=correct`.
+
+### [2026-06-04 00:00:00] - fe-agent
+- **Task**: Fix native browser validation tiếng Anh trên màn hình đăng nhập
+- **Skill Used**: fe-implement
+- **Target Feature**: auth_login
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Verified/Unchanged]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+  - `.github/instructions/fe-agent.instructions.md` [Verified/Unchanged]
+  - `demo_docs/[Design][COMMON] MESSAGE_Catalog.md` [Modified]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_LOGIN_DangNhap.md` [Modified]
+  - `demo_source_fe/src/pages/admin/LoginPage.jsx` [Modified]
+  - `demo_source_fe/src/constants/messages.js` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Nguyên nhân là HTML5 native validation (`required`, `type=email`, `minLength`) hiển thị tooltip theo ngôn ngữ trình duyệt. Đã thêm `noValidate`, bỏ native `required`, validate client bằng React và Message Catalog tiếng Việt (`AUTH-E-001`, `AUTH-E-004`, `AUTH-E-005`). Verify: `npm run build` PASS, VS Code errors none. `auth_login` đã ở `status=tested`, `cycle_checkpoint=correct`.
+
+### [2026-06-04 00:00:00] - fe-agent
+- **Task**: Fix layout public header, home page UI và admin login chrome
+- **Skill Used**: fe-implement
+- **Target Feature**: posts_public, auth_login
+- **Files Processed**:
+  - `PROJECT_MANIFEST.yml` [Modified]
+  - `reports/AGENT_EXECUTION_LOG.md` [Modified]
+  - `.github/skills/fe-implement/SKILL.md` [Verified/Unchanged]
+  - `.github/instructions/fe-agent.instructions.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][SCREEN] HOME_TrangChu.md` [Verified/Unchanged]
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_LOGIN_DangNhap.md` [Verified/Unchanged]
+  - `demo_docs/[Design][COMMON] MESSAGE_Catalog.md` [Verified/Unchanged]
+  - `demo_source_fe/src/App.jsx` [Modified]
+  - `demo_source_fe/src/components/Navbar.jsx` [Modified]
+  - `demo_source_fe/src/components/PostCard.jsx` [Modified]
+  - `demo_source_fe/src/pages/public/HomePage.jsx` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Ẩn login button trên public header khi chưa đăng nhập; chỉ hiển thị quản trị/đăng xuất khi có user. Route `/admin/login` không render Navbar/Footer. Trang chủ được nâng cấp hero, featured post, grid responsive, loading/error/empty states. Verify: `cd demo_source_fe; npm run build` PASS, VS Code errors none. `posts_public` và `auth_login` cập nhật `cycle_checkpoint=correct`.
+
+### [2026-06-04 00:00:00] - docs-agent
 - **Task**: Create, review, correct tài liệu API đăng nhập liên quan màn hình đăng nhập
 - **Skill Used**: doc-be-implement, doc-be-review
 - **Target Feature**: auth_login

@@ -23,7 +23,7 @@ features:
   auth_login:
     name: "Đăng nhập"
     status: "tested"
-    cycle_checkpoint: "plan"
+    cycle_checkpoint: "correct"
     docs:
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_LOGIN_DangNhap.md"
       be_api:
@@ -93,7 +93,7 @@ features:
   posts_public:
     name: "Danh sách & Chi tiết bài viết (public)"
     status: "implemented"
-    cycle_checkpoint: "test"
+    cycle_checkpoint: "correct"
     docs:
       fe_screen:
         - "demo_docs/fe/[Design][SCREEN] HOME_TrangChu.md"
@@ -109,6 +109,9 @@ features:
         - "demo_source_fe/src/pages/public/HomePage.jsx"
         - "demo_source_fe/src/pages/public/CategoryPage.jsx"
         - "demo_source_fe/src/pages/public/PostDetailPage.jsx"
+        - "demo_source_fe/src/components/Navbar.jsx"
+        - "demo_source_fe/src/components/PostCard.jsx"
+        - "demo_source_fe/src/App.jsx"
       be:
         - "demo_source_be/src/controllers/posts.controller.js"
         - "demo_source_be/src/routes/posts.routes.js"

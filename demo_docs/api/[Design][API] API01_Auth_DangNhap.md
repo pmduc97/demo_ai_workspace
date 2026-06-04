@@ -13,6 +13,7 @@ status: stable
 |-----|------|-------------------|-----------|
 | 1.0 | 2026-06-03 | Tạo tài liệu ban đầu cho API đăng nhập | GitHub Copilot |
 | 1.1 | 2026-06-04 | Chuẩn hóa 10 sections, bổ sung Validation Rules, Sequence Diagram, Error Code, Data Mapping và Message List | GitHub Copilot |
+| 1.2 | 2026-06-04 | Làm rõ backend chỉ validate required, FE xử lý format/minLength bằng custom message tiếng Việt | GitHub Copilot |
 
 ## 1. Tổng quan
 
@@ -56,8 +57,8 @@ API `API01_Auth_DangNhap` xác thực người dùng `admin` hoặc `member` khi
 
 | Logical Name | Physical Field | Kiểu dữ liệu | Bắt buộc | Ràng buộc (Min/Max/Format) | Chuẩn hóa input | Mô tả |
 |-------------|---------------|--------------|----------|----------------------------|----------------|-------|
-| Email đăng nhập | `email` | String | ✅ | Không rỗng; FE dùng HTML5 email format | Code hiện tại không trim/toLowerCase trong controller | Email của user trong bảng `users.email` |
-| Mật khẩu | `password` | String | ✅ | Không rỗng; FE có `minLength=6` | Không chuẩn hóa | Mật khẩu plain text để so với `users.password_hash` |
+| Email đăng nhập | `email` | String | ✅ | Backend chỉ kiểm tra không rỗng; FE validate format bằng React custom message tiếng Việt | Code hiện tại không trim/toLowerCase trong controller | Email của user trong bảng `users.email` |
+| Mật khẩu | `password` | String | ✅ | Backend chỉ kiểm tra không rỗng; FE validate tối thiểu 6 ký tự bằng React custom message tiếng Việt | Không chuẩn hóa | Mật khẩu plain text để so với `users.password_hash` |
 
 **Ví dụ Request Body:**
 ```json

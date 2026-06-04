@@ -15,6 +15,8 @@ status: stable
 | 1.1 | Chuẩn hóa 12 sections, bổ sung state matrix, mappings, events, message list | 2026-06-04 | GitHub Copilot |
 | 1.2 | Đồng bộ Message List với common Message Catalog và API `messageId` | 2026-06-04 | GitHub Copilot |
 | 1.3 | Làm rõ component registry là định hướng tái sử dụng, code hiện tại render inline Tailwind | 2026-06-04 | GitHub Copilot |
+| 1.4 | Tắt native browser validation tiếng Anh, chuyển sang validation message tiếng Việt qua Message Catalog | 2026-06-04 | GitHub Copilot |
+| 1.5 | Đồng bộ mô tả input constraint với code `noValidate` và custom validation trong React | 2026-06-04 | GitHub Copilot |
 
 ## 1. Tổng quan
 
@@ -84,7 +86,7 @@ Ghi chú implementation: JSX tree trên thể hiện cấu trúc logic và các 
 | Trạng thái | Email input | Password input | Button Đăng Nhập | Error Banner | Spinner | Điều hướng |
 |------------|-------------|----------------|------------------|--------------|---------|------------|
 | Init | Enable | Enable | Enable | Ẩn | Ẩn | Không |
-| Client validation error | Enable | Enable | Enable | Hiện message `AUTH-E-001` | Ẩn | Không |
+| Client validation error | Enable | Enable | Enable | Hiện message `AUTH-E-001`, `AUTH-E-004` hoặc `AUTH-E-005` | Ẩn | Không |
 | Loading | Enable | Enable | Disabled | Ẩn nếu chưa có lỗi mới | Hiện | Không |
 | API error | Enable | Enable | Enable | Hiện message từ API hoặc fallback | Ẩn | Không |
 | Authenticated | Không render | Không render | Không render | Không render | Không render | Redirect `/admin/dashboard` |
@@ -100,9 +102,9 @@ Ghi chú implementation: JSX tree trên thể hiện cấu trúc logic và các 
 | Logo Subtitle | Text | Output | Text `Quản lý nội dung`, màu xám | `Quản lý nội dung` | Static content | Không có | N/A | Mô tả khu vực quản trị |
 | Error Banner | Alert | Output | Chỉ hiển thị khi `error` khác rỗng | `''` | State `error` | Không có | N/A | Hiển thị validation/API error |
 | Email Label | Label | Output | Gắn với input email về mặt hiển thị | `Email` | Static content | Không có | N/A | Label hiện tại chưa dùng `htmlFor` |
-| Email Input | Input text/email | Input | Bắt buộc, format email theo HTML5 | `''` | State `form.email` | E01 | `email` | Placeholder `admin@hoianblog.vn` |
+| Email Input | Input text/email | Input | Bắt buộc, format email do React validate; native browser validation bị tắt bằng `noValidate` | `''` | State `form.email` | E01 | `email` | Placeholder `admin@hoianblog.vn` |
 | Password Label | Label | Output | Gắn với input password về mặt hiển thị | `Mật khẩu` | Static content | Không có | N/A | Label hiện tại chưa dùng `htmlFor` |
-| Password Input | Input password | Input | Bắt buộc, `minLength=6` | `''` | State `form.password` | E01 | `password` | Placeholder `••••••••` |
+| Password Input | Input password | Input | Bắt buộc, tối thiểu 6 ký tự do React validate; không dùng tooltip native browser | `''` | State `form.password` | E01 | `password` | Placeholder `••••••••` |
 | Button Đăng Nhập | Button submit | Input | Disabled khi `loading=true` | Text `Đăng Nhập` | State `loading` | E02 | N/A | Khi loading đổi text `Đang đăng nhập...` |
 | Button Spinner | Icon | Output | Hiển thị khi `loading=true` | Ẩn | State `loading` | Không có | N/A | Spinner CSS Tailwind |
 
@@ -116,8 +118,8 @@ Ghi chú implementation: JSX tree trên thể hiện cấu trúc logic và các 
 
 | UI Field / State | JSON Field | Kiểu dữ liệu | Bắt buộc | Ràng buộc | Ghi chú |
 |------------------|------------|--------------|----------|-----------|---------|
-| `form.email` | `email` | String | Có | Format email hợp lệ, không rỗng | API trả 400 nếu thiếu |
-| `form.password` | `password` | String | Có | Min 6 ký tự theo UI, không rỗng | API trả 400 nếu thiếu |
+| `form.email` | `email` | String | Có | Không rỗng, format email hợp lệ theo custom React validation | API trả 400 nếu thiếu; FE chặn format sai trước khi gọi API |
+| `form.password` | `password` | String | Có | Không rỗng, tối thiểu 6 ký tự theo custom React validation | API trả 400 nếu thiếu; FE chặn password ngắn trước khi gọi API |
 
 ```js
 await api.post('/auth/login', {
@@ -159,6 +161,14 @@ const handleSubmit = async (e) => {
     setError(parseApiError({ response: { data: { messageId: 'AUTH-E-001' } } }));
     return;
   }
+  if (!emailPattern.test(form.email)) {
+    setError(getMessage('AUTH-E-004'));
+    return;
+  }
+  if (form.password.length < 6) {
+    setError(getMessage('AUTH-E-005'));
+    return;
+  }
   setLoading(true);
   setError('');
   try {
@@ -178,6 +188,8 @@ const handleSubmit = async (e) => {
 | HTTP Status | Nguồn xử lý | Tình huống | Component hiển thị | Message ID | Xử lý |
 |-------------|-------------|------------|--------------------|------------|-------|
 | N/A | Màn hình tự xử lý | Thiếu `email` hoặc `password` trước khi submit | Error Banner | AUTH-E-001 | Không gọi API, giữ nguyên màn hình |
+| N/A | Màn hình tự xử lý | `email` sai định dạng trước khi submit | Error Banner | AUTH-E-004 | Không gọi API, giữ nguyên màn hình |
+| N/A | Màn hình tự xử lý | `password` dưới 6 ký tự trước khi submit | Error Banner | AUTH-E-005 | Không gọi API, giữ nguyên màn hình |
 | 400 | Màn hình tự xử lý từ API response | API báo thiếu email/password | Error Banner | AUTH-E-001 | Hiển thị text từ Message Catalog |
 | 401 | Màn hình tự xử lý từ API response | Email không tồn tại hoặc sai mật khẩu | Error Banner | AUTH-E-002 | Hiển thị text từ Message Catalog |
 | 500 | Màn hình tự xử lý fallback | Lỗi server hoặc lỗi không có `response.data.message` | Error Banner | AUTH-E-003 | Hiển thị fallback từ Message Catalog |
@@ -267,6 +279,8 @@ sequenceDiagram
 | AUTH-E-001 | E | `Email và mật khẩu là bắt buộc` | Error Banner | User submit thiếu field hoặc API trả HTTP 400 |
 | AUTH-E-002 | E | `Email hoặc mật khẩu không đúng` | Error Banner | API trả HTTP 401 |
 | AUTH-E-003 | E | `Đăng nhập thất bại` | Error Banner | API/network error không có message chi tiết |
+| AUTH-E-004 | E | `Email không đúng định dạng` | Error Banner | User submit email sai định dạng phía client |
+| AUTH-E-005 | E | `Mật khẩu tối thiểu 6 ký tự` | Error Banner | User submit password dưới 6 ký tự phía client |
 | AUTH-I-001 | I | `Tự động chuyển tới dashboard` | Router redirect | `user` đã tồn tại trong `AuthContext` |
 | AUTH-S-001 | S | `Đăng nhập thành công` | Không hiển thị toast; redirect tới dashboard | API trả HTTP 200 |
 | AUTH-C-001 | C | `Xác nhận gửi thông tin đăng nhập` | Không hiển thị confirm | User submit form |

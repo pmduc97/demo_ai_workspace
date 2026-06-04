@@ -26,9 +26,10 @@ Trang chủ là điểm vào chính của blog. Hiển thị banner giới thi�
 
 ### Navbar
 - Logo bên trái: "Blog Hội An"
-- Menu: Trang chủ | Danh mục (dropdown các category) | Giới thiệu | Liên hệ
-- Nút "Đăng nhập" bên phải (nếu chưa đăng nhập) hoặc avatar + "Quản lý" (nếu đã đăng nhập)
-- Sticky top, nền trắng, shadow nhẹ
+- Menu: Trang chủ | Giới thiệu | Liên hệ
+- Không hiển thị nút "Đăng nhập" trên public header khi chưa đăng nhập vì login chỉ phục vụ khu vực quản trị.
+- Nếu đã đăng nhập, hiển thị nút "Quản trị" và "Đăng xuất".
+- Sticky top, nền trắng mờ, border amber nhẹ, backdrop blur.
 
 ### HeroBanner
 - Ảnh nền full-width, chiều cao 400px (desktop) / 250px (mobile)

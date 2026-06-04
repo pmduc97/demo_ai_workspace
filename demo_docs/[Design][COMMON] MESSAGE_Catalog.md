@@ -62,6 +62,8 @@ Khi tạo hoặc cập nhật API docs / FE screen docs:
 | AUTH-E-001 | Auth | E | 400 | `Email và mật khẩu là bắt buộc` | ErrorBanner | `demo_source_be/src/controllers/auth.controller.js` | Login thiếu `email` hoặc `password` |
 | AUTH-E-002 | Auth | E | 401 | `Email hoặc mật khẩu không đúng` | ErrorBanner | `demo_source_be/src/controllers/auth.controller.js` | Login sai email hoặc password |
 | AUTH-E-003 | Auth | E | 500 | `Đăng nhập thất bại` | ErrorBanner | `demo_source_fe/src/services/api.js` | Lỗi login không có message hợp lệ từ API hoặc network error |
+| AUTH-E-004 | Auth | E | N/A | `Email không đúng định dạng` | ErrorBanner | `demo_source_fe/src/pages/admin/LoginPage.jsx` | Login nhập email sai định dạng phía client |
+| AUTH-E-005 | Auth | E | N/A | `Mật khẩu tối thiểu 6 ký tự` | ErrorBanner | `demo_source_fe/src/pages/admin/LoginPage.jsx` | Login nhập mật khẩu dưới 6 ký tự phía client |
 | AUTH-S-001 | Auth | S | 200 | `Đăng nhập thành công` | Router redirect | `demo_source_fe/src/pages/admin/LoginPage.jsx` | API login thành công, redirect dashboard |
 | AUTH-I-001 | Auth | I | N/A | `Tự động chuyển tới dashboard` | Router redirect | `demo_source_fe/src/pages/admin/LoginPage.jsx` | User đã tồn tại trong `AuthContext` khi mở `/admin/login` |
 | AUTH-C-001 | Auth | C | N/A | `Xác nhận gửi thông tin đăng nhập` | Không hiển thị confirm | `demo_source_fe/src/pages/admin/LoginPage.jsx` | User submit form đăng nhập |

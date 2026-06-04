@@ -26,3 +26,35 @@ Tài liệu này định nghĩa các góc độ (viewpoints) bắt buộc phải
 *Mục tiêu: Xử lý các tình huống thực tế khi luồng bị gián đoạn.*
 - **Dữ liệu bị thay đổi giữa chừng:** Đang ở màn hình Edit bài viết, nhưng một Admin khác đã xóa bài viết đó -> Khi bấm Save sẽ xử lý thế nào?
 - **Hủy ngang (Cancellation):** Đi được nửa luồng rồi bấm Cancel/Back -> Dữ liệu rác có bị dọn dẹp không? Trạng thái hệ thống có bị lỗi không?
+
+## 6. Viewpoint: Cross-screen Constraint & Dependency (Ràng buộc dữ liệu chéo)
+*Mục tiêu: Đảm bảo tính toàn vẹn dữ liệu khi có sự phụ thuộc giữa các thực thể ở nhiều màn hình khác nhau.*
+- **Ràng buộc xóa/sửa (Foreign Key/Business Logic):** Kiểm tra việc chặn thao tác khi dữ liệu đang được sử dụng. (VD: Admin tạo `Category X` -> Member tạo `Post Y` thuộc `Category X` -> Admin cố gắng xóa `Category X` -> Hệ thống phải chặn lại và báo lỗi, không làm hỏng dữ liệu bài viết).
+
+## 7. Viewpoint: Global Data Consistency (Tính nhất quán dữ liệu toàn cục)
+*Mục tiêu: Đảm bảo trạng thái DB và UI đồng bộ hoàn toàn trên toàn hệ thống sau khi một luồng kết thúc.*
+- **Đồng bộ chéo hệ thống:** Dữ liệu thay đổi ở một luồng phải lập tức phản ánh đúng ở các màn hình thống kê hoặc luồng khác. (VD: Member tạo bài viết -> Admin duyệt bài -> Dashboard Stats tổng số bài viết phải tự động tăng lên 1, trang chủ Public phải hiển thị bài viết đó ngay lập tức).
+
+## 8. Viewpoint: Workflow Error Recovery & Session (Khôi phục lỗi & Phiên làm việc)
+*Mục tiêu: Kiểm tra khả năng phục hồi của hệ thống khi luồng bị gián đoạn bởi lỗi kỹ thuật hoặc hết hạn phiên.*
+- **Session Timeout:** Đang thao tác giữa luồng thì hết hạn token -> Bấm Submit -> Hệ thống văng ra trang Login -> Sau khi Login lại, hệ thống xử lý thế nào (quay lại luồng cũ hay bắt đầu lại từ đầu).
+- **Rác dữ liệu khi lỗi (Orphan Data):** Upload ảnh thành công nhưng Submit form bị lỗi 500 -> User Submit lại thành công -> Đảm bảo không sinh ra dữ liệu rác (duplicate ảnh) trên server.
+
+---
+
+## 9. Nguyên tắc cốt lõi & Anti-pattern (Bắt buộc)
+- **Định nghĩa 1 TC ITb:** 1 TC ITb = 1 workflow segment đi qua **>= 2 nodes** (2 màn hình khác nhau, hoặc 2 role khác nhau).
+- **Anti-pattern (CẤM):** Viết TC chỉ chạy trên 1 màn hình, check 1 bảng DB rồi dừng. Đó là scope của ITa. ITb bắt buộc phải có sự luân chuyển dữ liệu/trạng thái sang node tiếp theo.
+- **Độ dài TC:** Mỗi TC nên từ 5-6 steps (tối đa 10). Nếu luồng quá dài, phải cắt thành các segment hợp lý.
+
+## 10. Phân loại 9 Pattern Taxonomy (Coverage bắt buộc)
+*Mọi kịch bản ITb phải được phân loại vào 1 trong 9 nhóm sau để đảm bảo không sót case:*
+1. **`HP` (Happy Path):** Luồng chuẩn thành công xuyên màn hình (VD: Member tạo bài -> Admin duyệt -> Guest xem).
+2. **`ALT` (Alternative Branch):** Luồng rẽ nhánh hợp lệ (VD: Admin từ chối duyệt bài, trả về cho Member).
+3. **`IDEM` (Idempotency):** Tính lũy đẳng (VD: Bấm nút "Duyệt bài" 2 lần liên tiếp do mạng lag -> DB chỉ cập nhật 1 lần, không sinh lỗi).
+4. **`PIPE-INT` (Pipeline Interruption):** Đứt gãy luồng (VD: Đang tạo bài thì hết hạn Token -> Login lại -> Luồng đi tiếp thế nào).
+5. **`PRE-MISS` (Missing Prerequisite):** Thiếu dữ liệu tiền quyết (VD: Đang ở form tạo bài, một Admin khác xóa mất Category đang chọn -> Bấm Submit xử lý ra sao).
+6. **`DEL-CASC` (Cascade Effect):** Hiệu ứng dây chuyền (VD: Xóa Category -> Các bài viết thuộc Category đó bị xóa theo hay set về Null?).
+7. **`STATE-VIO` (State Transition Violation):** Vi phạm vòng đời (VD: Bài viết đang `draft`, dùng Postman gọi thẳng API đổi status sang `archived` bỏ qua bước `published` -> Hệ thống phải chặn).
+8. **`CONC` (Concurrency):** Tranh chấp dữ liệu (VD: 2 Admin cùng duyệt 1 bài viết cùng lúc).
+9. **`ISO` (Role Isolation):** Cô lập dữ liệu (VD: Member A không thể nhìn thấy bài `draft` của Member B).

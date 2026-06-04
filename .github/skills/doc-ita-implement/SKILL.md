@@ -13,26 +13,31 @@ Tạo tài liệu Test Case ITa (Functional Integration) dựa trên tài liệu
 - Khi user yêu cầu tạo test case ITa cho một chức năng.
 - Khi user gõ lệnh `/doc-ita-implement`.
 
-## Hướng dẫn thực hiện (Workflow)
-1. **Thu thập thông tin**:
-   - Đọc file tài liệu thiết kế FE (Screen) được chỉ định.
-   - Đọc file tài liệu thiết kế BE (API) tương ứng.
-   - Đọc file `demo_docs/tests/ITa/TEMPLATE_ITa.md` để lấy cấu trúc chuẩn.
-   - Đọc file `demo_docs/tests/ITa/VIEWPOINT_ITa.md` để nắm các góc độ kiểm thử bắt buộc.
-   - Đọc file `demo_docs/tests/ITa/CHECKLIST_TC_ITa.md` để tự kiểm tra chất lượng đầu ra.
-2. **Phân tích & Trích xuất**:
-   - Từ FE: Lấy các Validation Rules, Events Mapping, Error Handling.
-   - Từ BE: Lấy Request Payload, Success Response, Error Response, Database interaction.
-3. **Sinh dữ liệu Test (Test Data)**:
-   - Viết câu lệnh SQL (Setup Data) để chuẩn bị trạng thái DB trước khi test (DELETE data rác, INSERT data mẫu).
-   - Lập bảng Input Data Sets (Data ID, các trường dữ liệu, ghi chú). Phải bao phủ đủ các Viewpoint (Valid, Empty, Max Length, Invalid Format, Security XSS/SQLi).
-4. **Viết Kịch bản Kiểm thử (Test Cases)**:
-   - **4.1. UI Validation**: Map các lỗi validation từ FE với Input Data Sets tương ứng. Đảm bảo API KHÔNG được gọi.
-   - **4.2. Happy Path**: Map luồng thành công từ FE gọi xuống BE. Kiểm tra API response, UI update, và DB state.
-   - **4.3. Negative Path**: Map các lỗi từ BE trả về (400, 401, 403, 404, 500) và cách FE hiển thị lỗi đó.
-5. **Tạo file**:
-   - Lưu file vào thư mục `demo_docs/tests/ITa/` với định dạng tên `[Test][ITa] TC_{TênChứcNăng}.md`.
-   - Cập nhật `PROJECT_MANIFEST.yml` để thêm đường dẫn file test case vừa tạo vào section `test_cases.ita` của feature tương ứng.
+## Hướng dẫn thực hiện (Workflow - 4 Phases)
+Để tránh timeout và đảm bảo không sót case, AI PHẢI thực hiện theo 4 Phase sau. Dừng lại và hỏi ý kiến user sau mỗi Phase.
+
+**Phase 1: Phân tích & Lập bảng kiểm kê (Validation Field Inventory)**
+- Đọc tài liệu thiết kế FE/BE, `TEMPLATE_ITa.md`, `VIEWPOINT_ITa.md`.
+- **Bắt buộc:** Đọc tài liệu `demo_docs/[Design][DB] DATABASE_Schema.md` để nắm chính xác tên bảng, tên cột, kiểu dữ liệu và các ràng buộc (Foreign Key, Not Null) trước khi chuẩn bị Test Data.
+- Lập bảng `Validation Field Inventory` liệt kê toàn bộ các trường có validation (Required, MaxLength, Format, v.v.).
+- *Dừng lại và yêu cầu user xác nhận bảng Inventory.*
+
+**Phase 2: Lập Checklist (ITa Checklist)**
+- Dựa vào bảng Inventory, lập bảng `ITa Checklist` tóm tắt các TC sẽ viết.
+- Tuân thủ thứ tự: Validate -> Happy Path -> Permission -> Pagination -> Error.
+- Tách bạch `[UI]` và `[API]`. 1 Condition = 1 TC. Tách riêng Boundary (exact-max và over-max).
+- *Giới hạn: Tối đa 8 dòng checklist mỗi lần generate. Dừng lại và yêu cầu user xác nhận.*
+
+**Phase 3: Viết Kịch bản Chi tiết (TC Detail)**
+- Viết bảng `TC Detail` dựa trên Checklist đã chốt.
+- Step và Expected Result phải đánh số tương ứng (1., 2., 3...).
+- *Giới hạn: Tối đa 4 TC mỗi lần generate để tránh timeout. Dừng lại và hỏi user có muốn viết tiếp không.*
+
+**Phase 4: Sinh dữ liệu Test & Hoàn thiện file**
+- Viết SQL Setup Data và Input Data Sets.
+- Tổng hợp toàn bộ nội dung từ Phase 1 đến Phase 4 thành 1 file hoàn chỉnh.
+- Lưu file vào `demo_docs/tests/ITa/[Test][ITa] TC_{TênChứcNăng}.md`.
+- Cập nhật `PROJECT_MANIFEST.yml` để thêm đường dẫn file test case vừa tạo vào section `test_cases.ita` của feature tương ứng.
 
 ## Yêu cầu đầu ra
 - File Markdown tuân thủ 100% cấu trúc của `TEMPLATE_ITa.md`.

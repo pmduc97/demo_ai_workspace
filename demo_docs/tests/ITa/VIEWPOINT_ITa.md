@@ -37,3 +37,49 @@ Tài liệu này định nghĩa các góc độ (viewpoints) bắt buộc phải
 *Mục tiêu: Đảm bảo UX tốt khi môi trường mạng không ổn định.*
 - **Mất mạng (Offline):** Submit form khi ngắt kết nối mạng -> FE báo lỗi kết nối.
 - **Timeout:** API phản hồi quá chậm (> 10s) -> FE báo timeout, không bị treo.
+
+## 7. Viewpoint: Initial State & UI Layout (Trạng thái khởi tạo & Giao diện)
+*Mục tiêu: Đảm bảo giao diện hiển thị đúng thiết kế và trạng thái ban đầu chuẩn xác.*
+- **Initial State:** Giá trị mặc định (default value) của các form tạo mới đúng spec. Trạng thái loading ban đầu hoạt động đúng.
+- **Empty State:** Khi danh sách không có dữ liệu (0 record), UI hiển thị thông báo phù hợp, không bị vỡ layout.
+- **Layout & Responsive:** Không vỡ khung khi thu nhỏ màn hình. Text quá dài (maxlength) được xử lý cắt chữ (ellipsis) hoặc wrap đúng cách.
+
+## 8. Viewpoint: Pagination / Sort / Filter (Hành vi Danh sách)
+*Mục tiêu: Đảm bảo các tính năng điều hướng và tìm kiếm dữ liệu hoạt động chính xác.*
+- **Phân trang (Pagination):** Nút Next/Prev hoạt động đúng, số lượng record trên mỗi trang và tổng số trang hiển thị chính xác.
+- **Lọc/Tìm kiếm (Filter/Search):** Kết hợp nhiều điều kiện lọc hoạt động đúng. Giữ nguyên điều kiện lọc khi chuyển trang hoặc khi ấn Back từ trang chi tiết quay lại.
+
+## 9. Viewpoint: Composite Validation & Sanitization (Validate tương quan & Tiền xử lý)
+*Mục tiêu: Đảm bảo tính toàn vẹn của dữ liệu phức tạp và làm sạch dữ liệu trước khi gửi.*
+- **Validate tương quan (Composite):** Bắt lỗi logic liên quan đến nhiều trường cùng lúc (VD: Ngày kết thúc phải lớn hơn ngày bắt đầu).
+- **Tiền xử lý (Sanitization):** Tự động trim khoảng trắng (space) ở đầu/cuối khi submit form. Xóa các số 0 vô nghĩa ở đầu (leading zeros) đối với trường số.
+
+## 10. Viewpoint: Usability & Double-click Prevention (Trải nghiệm & Ngăn thao tác sai)
+*Mục tiêu: Cải thiện trải nghiệm người dùng (UX) và tránh rác dữ liệu do thao tác nhầm.*
+- **Double-click:** Click liên tục nhiều lần vào nút submit (Tạo mới/Đăng nhập) -> FE disable nút ngay lập tức, không gọi API 2 lần, không tạo ra dữ liệu trùng lặp.
+- **Focus & Navigation:** Khi form có lỗi, tự động focus vào trường bị lỗi đầu tiên. Hỗ trợ Tab order chuẩn từ trên xuống dưới, từ trái qua phải.
+
+## 11. Viewpoint: File Upload (Xử lý tệp tin)
+*Mục tiêu: Đảm bảo tính năng tải lên tệp tin hoạt động an toàn và đúng thiết kế.*
+- **Validate File:** Kiểm tra định dạng file (chỉ cho phép jpg, png, webp...), dung lượng file (VD: tối đa 5MB).
+- **Upload Behavior:** Xử lý khi upload lỗi (file hỏng, mất mạng). UI hiển thị preview ảnh chính xác sau khi upload thành công.
+
+## 12. Viewpoint: Concurrency / Exclusion (Xử lý đồng thời)
+*Mục tiêu: Đảm bảo tính nhất quán của dữ liệu khi có nhiều người dùng thao tác cùng lúc.*
+- **Ghi đè dữ liệu (Locking/Exclusion):** Kịch bản 2 user cùng mở trang Edit của 1 record. User A lưu trước, User B lưu sau -> Hệ thống xử lý đúng theo spec (Báo lỗi cho User B hoặc áp dụng Last write wins).
+
+---
+
+## 13. Nguyên tắc thiết kế Test Case (Golden Rules)
+*Mục tiêu: Đảm bảo Test Case rõ ràng, dễ đọc, không bị gộp case lộn xộn và dễ dàng chuyển đổi thành Automation Test.*
+
+- **Tách bạch [UI] và [API]:** 
+  - `[UI]`: Chỉ kiểm tra hành vi hiển thị trên màn hình (không mở Network tab).
+  - `[API]`: Mở Network tab để verify endpoint + method + status code + response body.
+- **1 Condition = 1 TC:** Không gộp nhiều field hoặc nhiều rule vào cùng 1 TC.
+- **Tách Boundary:** Giá trị biên hợp lệ (exact-max) và không hợp lệ (over-max) phải là 2 TC riêng biệt.
+- **Thứ tự viết TC (Flow chuẩn):** Validate (từng field một) -> Happy Path -> Permission -> Pagination -> Error Handling.
+- **Format chuyên nghiệp:** 
+  - Step procedure đánh số `1, 2, 3...`.
+  - Expected result bắt buộc có prefix số tương ứng `1., 2., 3...` để biết kết quả nào thuộc bước nào.
+  - Tên UI element để trong ngoặc vuông (VD: `[Button Submit]`).

@@ -30,7 +30,9 @@ Viết một bộ test E2E hoàn chỉnh cho một tính năng, áp dụng Page 
 3. **Setup Data:** Chuyển đổi các câu lệnh SQL trong phần "Dữ liệu nền" của file Test Case thành code setup (ví dụ: dùng `test.beforeAll` để gọi DB hoặc API setup).
 4. **Input Data:** Chuyển đổi bảng "Dữ liệu đầu vào" thành một object/array JSON trong code.
 5. **Test Cases:** Viết các block `test()` tương ứng 1-1 với các `TC ID` trong file Markdown. Truyền đúng `Data ID` vào test.
-6. Sử dụng `expect` để assert kết quả (UI, API response, DB state) đúng như "Kết quả mong đợi" trong tài liệu.
+6. **Assertion (Rất quan trọng):**
+   - **Với ITa:** Chú ý các tag `[UI]` (chỉ assert giao diện, không chờ API) và `[API]` (phải dùng `page.waitForResponse` để assert status code và response body).
+   - **Với ITb:** Bắt buộc phải viết code verify DB khớp với `DB Confirmation Matrix` trong tài liệu.
 7. Gọi `await captureEvidence(page, testInfo, 'Tên-Bước')` trước và sau các action chính để lưu lại bằng chứng UI.
 
 ### Bước 4 — Chạy thử và Phân tích kết quả (Analysis & Retry Loop)

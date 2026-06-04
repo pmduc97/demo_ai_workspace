@@ -17,9 +17,25 @@ status: DRAFT
 
 ---
 
-## 3. Dữ liệu Test (Test Data)
+## 3. Validation Field Inventory (Bảng kiểm kê Validate)
+*Liệt kê tất cả các trường có validation từ tài liệu thiết kế để đảm bảo không bỏ sót.*
 
-### 3.1. Dữ liệu nền (Setup Data - DB State)
+| Field ID | Field Name | Data Type | Validation Type | Rule/Constraint | Message Code | TC cần tạo |
+|---|---|---|---|---|---|---|
+| `[field_id]` | [Tên trường] | [Type] | [Required/MaxLength/...] | [Quy tắc cụ thể] | `[MSG_CODE]` | `[TC_ID]` |
+
+## 4. ITa Checklist (Danh sách Test Case)
+*Tóm tắt danh sách các Test Case sẽ thực hiện. Thứ tự ưu tiên: Validate -> Happy Path -> Permission -> Pagination -> Error.*
+
+| TC ID | Scenario | Test Target | Title | Viewpoint (TV) | Priority | Type |
+|---|---|---|---|---|---|---|
+| `[TC_ID]` | [Validate/Happy/Error] | `[field_id]` hoặc Form | [Tiêu đề TC] | [TV-xx] | [High/Medium] | `[UI]` hoặc `[API]` |
+
+---
+
+## 5. Dữ liệu Test (Test Data)
+
+### 5.1. Dữ liệu nền (Setup Data - DB State)
 *Dữ liệu bắt buộc phải được insert vào DB trước khi chạy test suite này.*
 ```sql
 -- Xóa data cũ để clean state
@@ -30,7 +46,7 @@ INSERT INTO [table_name] (col1, col2) VALUES
 (val1, val2);
 ```
 
-### 3.2. Dữ liệu đầu vào (Input Data Sets)
+### 5.2. Dữ liệu đầu vào (Input Data Sets)
 *Các bộ dữ liệu dùng để nhập vào form hoặc gọi API.*
 
 | Data ID | `[field_1]` | `[field_2]` | Ghi chú (Mục đích) |
@@ -41,22 +57,9 @@ INSERT INTO [table_name] (col1, col2) VALUES
 
 ---
 
-## 4. Kịch bản Kiểm thử (Test Cases)
+## 6. Kịch bản Kiểm thử Chi tiết (TC Detail)
+*Bảng chi tiết các bước thực hiện. Áp dụng nguyên tắc: 1 Condition = 1 TC, Step và Expected Result phải đánh số tương ứng.*
 
-### 4.1. UI Validation (Chỉ test FE, chưa gọi API)
-
-| TC ID | Data ID | Hành động (Action) | Kết quả mong đợi (Expected Result) |
-|---|---|---|---|
-| `TC_UI_01` | `TD_INV_EMPTY` | Nhập data vào form, click submit | - **UI:** Hiển thị lỗi [Message].<br>- **API:** KHÔNG gọi API. |
-
-### 4.2. Happy Path (Luồng thành công FE + BE)
-
-| TC ID | Data ID | Hành động (Action) | Kết quả mong đợi (Expected Result) |
-|---|---|---|---|
-| `TC_HP_01` | `TD_VALID_01` | Nhập data vào form, click submit | - **API:** Gọi `[METHOD] [ENDPOINT]` với payload khớp `TD_VALID_01`. Trả về `[STATUS_CODE]`.<br>- **UI:** Hiển thị toast thành công. Chuyển hướng về `[URL]`.<br>- **DB:** Có record mới trong bảng `[table_name]`. |
-
-### 4.3. Negative Path (Luồng lỗi từ Server)
-
-| TC ID | Data ID | Hành động (Action) | Kết quả mong đợi (Expected Result) |
-|---|---|---|---|
-| `TC_NP_01` | `[TD_ID]` | (Bypass FE) Gửi thẳng API payload | - **API:** Trả về `[STATUS_CODE]` kèm message lỗi.<br>- **DB:** Không có thay đổi. |
+| TC ID | Viewpoint | Test Target | Precondition | Procedure (Các bước) | Expected Result (Kết quả mong đợi) |
+|---|---|---|---|---|---|
+| `[TC_ID]` | [TV-xx] | `[Target]` | [Điều kiện] | 1. [Bước 1]<br>2. [Bước 2] | 1. [Kết quả 1]<br>2. **[UI]** [Kết quả UI]<br>**[API]** [Kết quả API] |

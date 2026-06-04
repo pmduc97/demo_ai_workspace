@@ -23,12 +23,12 @@ Giữ tài liệu (`demo_docs/`) đồng bộ với code thực tế.
 - Không tự ý thêm endpoint/field vào docs nếu code chưa có.
 
 ## Format chuẩn file API doc (Backend)
-- Bắt buộc tuân thủ chuẩn **7 sections** (có YAML Frontmatter, Query IDs mapping).
+- Bắt buộc tuân thủ chuẩn **10 sections + Change Log** (có YAML Frontmatter, Bảng DB liên quan, Validation Rules dạng V-xx, Sequence Diagram, Data Mapping, Message List, Query IDs mapping với Knex.js).
 - Sử dụng skill `doc-be-implement` để tạo/cập nhật.
 - Sử dụng skill `doc-be-review` để kiểm tra.
 
 ## Format chuẩn file Screen doc (Frontend)
-- Bắt buộc tuân thủ chuẩn **10 sections** (có YAML Frontmatter, UI mapping, Events & Actions).
+- Bắt buộc tuân thủ chuẩn **12 sections + Change Log** (có YAML Frontmatter, Ma trận trạng thái UI, Request/Response Mapping, Sequence Diagram, Message List).
 - Sử dụng skill `doc-fe-implement` để tạo/cập nhật.
 - Sử dụng skill `doc-fe-review` để kiểm tra.
 

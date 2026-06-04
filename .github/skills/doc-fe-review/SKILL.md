@@ -26,10 +26,10 @@ Review một FE screen design doc để đảm bảo đúng format, đủ nội 
 Xem đầy đủ tại [review-checklist.md](./references/review-checklist.md).
 
 Chia làm 4 nhóm:
-- **F — Format** (tên file, frontmatter, heading structure)
-- **C — Content** (9 sections, nội dung từng section)
-- **A — API Sync** (link đến API docs, field accuracy)
-- **Q — Quality** (phong cách viết, không để trống, không thừa nội dung cũ)
+- **F — Format** (tên file, frontmatter, Change Log, heading structure, đủ 12 sections)
+- **C — Content** (12 sections + Change Log, nội dung từng section, Event ID nhất quán, Message List)
+- **A — API Sync** (link đến API docs, Request/Response Mapping accuracy)
+- **Q — Quality** (phong cách viết, Event ID nhất quán xuyên suốt, không để trống, không thừa nội dung cũ)
 
 ### Bước 3 — Tính điểm và chấm verdict
 

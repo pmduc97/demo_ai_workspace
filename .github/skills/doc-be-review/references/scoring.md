@@ -4,9 +4,9 @@
 
 | Nhóm | Điểm tối đa |
 |------|------------|
-| F — Format | 25 |
+| F — Format | 20 |
 | C — Content | 35 |
-| D — Database & Logic Sync | 30 |
+| D — Database & Logic Sync | 35 |
 | Q — Quality | 10 |
 | **Tổng** | **100** |
 

@@ -20,11 +20,11 @@ Review và chấm điểm tài liệu Test Case ITb (Scenario Integration) dựa
    - Đọc file `demo_docs/tests/ITb/VIEWPOINT_ITb.md` để đối chiếu độ bao phủ luồng.
 
 2. **Đánh giá theo Checklist**:
-   - Chấm điểm từng mục trong Checklist (Cấu trúc 20%, Dữ liệu Test & Luân chuyển 30%, Kịch bản Luồng 50%).
+   - Chấm điểm từng mục trong Checklist (Cấu trúc & Format 20%, Tuân thủ Nguyên tắc cốt lõi 30%, Độ bao phủ 9 Pattern Taxonomy 50%).
    - Ghi nhận các lỗi (Findings) và phân loại mức độ:
-     - **Critical**: Sai format hoàn toàn, thiếu SQL Setup Data, luồng bị đứt gãy (dữ liệu bước trước không truyền được sang bước sau).
-     - **High**: Thiếu kiểm tra trạng thái (State Verification) ở các bước quan trọng, kịch bản chỉ có 1 role (thiếu Multi-Actor).
-     - **Medium**: Thiếu Flow Data table, các bước mô tả hành động không rõ ràng.
+     - **Critical**: Vi phạm Anti-pattern (chỉ test 1 node), thiếu Mermaid Flowchart, thiếu DB Confirmation Matrix, luồng bị đứt gãy.
+     - **High**: Thiếu các Pattern cốt lõi (HP, ALT), đánh số Step không khớp 1-1, thiếu SQL Setup Data.
+     - **Medium**: Thiếu các Pattern nâng cao (CONC, ISO, IDEM, PIPE-INT...), thiếu Flow Data table.
      - **Low**: Sai chính tả, format bảng chưa đẹp.
 
 3. **Xuất Báo cáo Review (Output Format)**:
@@ -37,8 +37,8 @@ Review và chấm điểm tài liệu Test Case ITb (Scenario Integration) dựa
 
 ## 2. Chi tiết Checklist
 - [x/ ] Cấu trúc & Format (20/20)
-- [x/ ] Dữ liệu Test & Luân chuyển (30/30)
-- [x/ ] Kịch bản Luồng (Scenario Steps) (50/50)
+- [x/ ] Tuân thủ Nguyên tắc cốt lõi (30/30)
+- [x/ ] Độ bao phủ 9 Pattern Taxonomy (50/50)
 
 ## 3. Findings (Các vấn đề cần sửa)
 - **[Critical]** ...

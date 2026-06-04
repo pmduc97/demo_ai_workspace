@@ -7,7 +7,7 @@ argument-hint: "Tên file API cần review (e.g. API01_Auth_DangNhap, hoặc dem
 # Doc BE Review Skill
 
 ## Mục tiêu
-Review một BE API design doc để đảm bảo đúng format 7 sections, đủ nội dung, và đặc biệt là logic xử lý map chính xác với Database thông qua Query IDs. Đầu ra là điểm số, danh sách findings, và verdict PASS/FAIL.
+Review một BE API design doc để đảm bảo đúng format 10 sections + Change Log, đủ nội dung, Validation Rules có ID, Sequence Diagram cho luồng phức tạp, và đặc biệt là logic xử lý map chính xác với Database thông qua Query IDs. Đầu ra là điểm số, danh sách findings, và verdict PASS/FAIL.
 
 ## Khi nào dùng
 - Kiểm tra doc API trước khi merge.
@@ -25,10 +25,10 @@ Review một BE API design doc để đảm bảo đúng format 7 sections, đ�
 Xem đầy đủ tại [review-checklist.md](./references/review-checklist.md).
 
 Chia làm 4 nhóm:
-- **F — Format** (tên file, frontmatter, heading structure, 7 sections).
-- **C — Content** (thông tin chung, request, response, side effects).
-- **D — Database & Logic Sync** (logic step-by-step, Query IDs mapping, Knex.js snippet).
-- **Q — Quality** (phong cách viết, không để trống, không thừa nội dung cũ).
+- **F — Format** (tên file, frontmatter, Change Log, heading structure, đủ 10 sections).
+- **C — Content** (thông tin chung + DB liên quan, request 7 cột, validation rules V-xx, response + Error Code, sequence diagram, message list).
+- **D — Database & Logic Sync** (logic step-by-step, Query IDs mapping, Knex.js snippet, Điều kiện OK/NG, Data Mapping).
+- **Q — Quality** (phong cách viết, Error Code nhất quán giữa Section 4 và 9, không để trống, không thừa nội dung cũ).
 
 ### Bước 3 — Tính điểm và chấm verdict
 Xem thang điểm tại [scoring.md](./references/scoring.md).

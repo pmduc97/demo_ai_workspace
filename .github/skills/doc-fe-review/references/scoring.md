@@ -4,8 +4,8 @@
 
 | Nhóm | Điểm tối đa |
 |------|------------|
-| F — Format | 25 |
-| C — Content | 45 |
+| F — Format | 20 |
+| C — Content | 50 |
 | A — API Sync | 20 |
 | Q — Quality | 10 |
 | **Tổng** | **100** |

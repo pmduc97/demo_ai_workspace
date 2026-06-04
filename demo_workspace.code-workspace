@@ -23,7 +23,24 @@
 				"approve": true,
 				"matchCommandLine": true
 			},
-			"Rename-Item": true
+			"Rename-Item": true,
+			"npm install": true,
+			"npm run build": true,
+			"/^node D:\\\\Project\\\\demo_ai_workspace\\\\demo_tools\\\\mcp-db-sampler\\\\test-db\\.js$/": {
+				"approve": true,
+				"matchCommandLine": true
+			}
+		},
+		"mcp": {
+			"servers": {
+				"mcp-db-sampler": {
+					"command": "node",
+					"args": [
+						"D:/Project/demo_ai_workspace/demo_tools/mcp-db-sampler/build/index.js"
+					]
+				}
+			},
+			"inputs": []
 		}
 	}
 }

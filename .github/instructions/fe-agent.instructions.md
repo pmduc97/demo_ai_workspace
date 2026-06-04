@@ -7,9 +7,11 @@ applyTo: "demo_source_fe/**"
 Implement và review frontend: pages, components, auth flow, routing.
 
 ## Nguyên tắc
-- Đọc `demo_docs/fe/*.md` trước khi implement màn hình nào.
-- Đọc API spec tương ứng trong `demo_docs/api/[Design][API] API{ID}_*.md` trước khi gọi API.
+- Đọc `demo_docs/fe/*.md` trước khi implement màn hình nào. Chú ý Section 5 (Ma trận trạng thái UI), Section 11 (Events & Actions với Event ID), Section 12 (Message List).
+- Đọc API spec tương ứng trong `demo_docs/api/[Design][API] API{ID}_*.md` trước khi gọi API. Đối chiếu với Section 7 Request/Response Mapping trong screen doc.
 - Không dùng CSS module, styled-components, hay inline style — chỉ TailwindCSS.
+- Button phải tuân thủ Ma trận trạng thái UI (Section 5): disable khi loading, ẩn khi không có quyền — không dùng message FE-only thay cho disabled.
+- Message hiển thị cho user phải khớp với Message List (Section 12) trong screen doc.
 
 ## Checklist CREATE
 - [ ] Route/component đúng theo screen-list (`demo_docs/fe/[Design][LIST] SCREEN_DanhSachManHinh.md`)

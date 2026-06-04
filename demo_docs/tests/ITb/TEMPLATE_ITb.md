@@ -15,11 +15,17 @@ status: DRAFT
 ## 1. Mục đích (Overview)
 [Mô tả ngắn gọn mục đích của kịch bản này. Ví dụ: Kiểm tra luồng xuất bản bài viết từ lúc Admin tạo nháp, duyệt bài, cho đến khi User bình thường nhìn thấy trên trang chủ.]
 
-## 2. Điều kiện tiền quyết (Pre-conditions)
-- [Điều kiện 1, ví dụ: Hệ thống đã có sẵn 1 tài khoản Admin và 1 tài khoản Member]
-- [Điều kiện 2, ví dụ: Đã có sẵn danh mục "Tin tức"]
-
----
+## 2. Sơ đồ Luồng (Workflow Flowchart)
+*Sơ đồ Mermaid mô tả trực quan các bước đi qua các màn hình/role.*
+```mermaid
+sequenceDiagram
+    actor Admin
+    actor Member
+    Admin->>+ScreenA: Tạo bài viết (Draft)
+    ScreenA-->>-DB: Insert Post
+    Member->>+ScreenB: Xem danh sách
+    ScreenB-->>-Member: Không thấy bài Draft
+```
 
 ## 3. Dữ liệu Test (Test Data)
 
@@ -34,22 +40,33 @@ INSERT INTO [table_name] (col1, col2) VALUES
 (val1, val2);
 ```
 
-### 3.2. Dữ liệu luân chuyển (Flow Data)
-*Các dữ liệu được tạo ra ở bước trước và dùng lại ở bước sau.*
+### 3.2. Ma trận Kiểm tra Dữ liệu (DB Confirmation Matrix)
+*Bảng mapping để verify dữ liệu chảy qua các màn hình được lưu đúng vào DB.*
 
-| Biến (Variable) | Nguồn tạo (Source Step) | Nơi sử dụng (Target Step) | Ghi chú |
-|---|---|---|---|
-| `[post_id]` | Bước 2 (Tạo bài viết) | Bước 3 (Duyệt bài), Bước 4 (Xem bài) | ID của bài viết vừa tạo |
+| TC ID | Step | Table | Column | Expected Value | Nguồn giá trị (Source) | SQL Verify |
+|---|---|---|---|---|---|---|
+| `[TC_ID]` | [Step No] | `[table]` | `[column]` | `[value]` | [Input/Hardcode/Default] | `SELECT ...` |
 
 ---
 
-## 4. Kịch bản Kiểm thử (Scenario Steps)
+## 4. ITb Checklist (Danh sách Test Case)
+*Tóm tắt danh sách các Test Case sẽ thực hiện, phân loại theo 9 Pattern Taxonomy.*
 
-*Kịch bản này mô phỏng một luồng thao tác liên tục của một hoặc nhiều người dùng.*
+| TC ID | Pattern | Title | Priority |
+|---|---|---|---|
+| `[TC_ID]` | `[HP/ALT/ISO...]` | [Tiêu đề TC] | [High/Medium] |
 
-| Bước | Actor (Role) | Màn hình (Screen) | Hành động (Action) | Kết quả mong đợi (Expected Result) |
+---
+
+## 5. Kịch bản Kiểm thử Chi tiết (TC Detail)
+
+*Kịch bản này mô phỏng một luồng thao tác liên tục đi qua >= 2 nodes. Step và Expected Result phải đánh số 1-1.*
+
+### [TC_ID]: [Tiêu đề TC]
+- **Pattern:** `[HP/ALT/CONC...]`
+- **Pre-conditions:** [Điều kiện tiền quyết cụ thể cho TC này]
+
+| Bước (Step) | Actor | Node (Screen/API) | Hành động (Procedure) | Kết quả mong đợi (Expected Result) |
 |---|---|---|---|---|
-| `Step_01` | `[Role]` | `[URL/Screen]` | [Mô tả hành động, VD: Đăng nhập với tài khoản Admin] | - **UI:** Chuyển hướng vào Dashboard.<br>- **State:** Lưu token vào context. |
-| `Step_02` | `[Role]` | `[URL/Screen]` | [Mô tả hành động, VD: Tạo bài viết mới trạng thái Draft] | - **API:** Gọi `POST /api/posts` thành công (201).<br>- **DB:** Record được tạo với status='draft'. Lấy `[post_id]`. |
-| `Step_03` | `[Role]` | `[URL/Screen]` | [Mô tả hành động, VD: Đăng xuất Admin, đăng nhập Member] | - **UI:** Chuyển hướng đúng, xóa token cũ. |
-| `Step_04` | `[Role]` | `[URL/Screen]` | [Mô tả hành động, VD: Member vào trang chủ tìm bài viết `[post_id]`] | - **UI:** KHÔNG nhìn thấy bài viết (vì đang là draft).<br>- **API:** `GET /api/posts` không trả về bài này. |
+| 1 | `[Role]` | `[Screen]` | 1. [Mô tả hành động 1] | 1. **[UI]** [Kết quả UI 1]<br>**[DB]** [Kết quả DB 1] |
+| 2 | `[Role]` | `[Screen]` | 2. [Mô tả hành động 2] | 2. **[API]** [Kết quả API 2] |

@@ -20,11 +20,11 @@ Review và chấm điểm tài liệu Test Case ITa (Functional Integration) d�
    - Đọc file `demo_docs/tests/ITa/VIEWPOINT_ITa.md` để đối chiếu độ bao phủ.
 
 2. **Đánh giá theo Checklist**:
-   - Chấm điểm từng mục trong Checklist (Cấu trúc 20%, Test Data 30%, Test Cases 50%).
+   - Chấm điểm từng mục trong Checklist (Cấu trúc 20%, Golden Rules 30%, Độ bao phủ Viewpoint 50%).
    - Ghi nhận các lỗi (Findings) và phân loại mức độ:
-     - **Critical**: Sai format hoàn toàn, thiếu SQL Setup Data, thiếu Happy Path.
-     - **High**: Thiếu Input Data Sets cho các Viewpoint quan trọng, UI Validation lại gọi API, Negative Path thiếu mã lỗi quan trọng.
-     - **Medium**: Thiếu test case Security/Network, ID không đồng nhất.
+     - **Critical**: Thiếu bảng Validation Inventory, thiếu ITa Checklist, gộp nhiều condition vào 1 TC (vi phạm Golden Rule), thiếu Happy Path.
+     - **High**: Không tách bạch `[UI]` và `[API]`, không tách riêng Boundary test, thiếu SQL Setup Data, thiếu các Viewpoint cốt lõi (TV-01 đến TV-04).
+     - **Medium**: Thiếu các Advanced Viewpoints (TV-07 đến TV-12), đánh số Step/Expected Result không khớp.
      - **Low**: Sai chính tả, format bảng chưa đẹp.
 
 3. **Xuất Báo cáo Review (Output Format)**:
@@ -37,8 +37,8 @@ Review và chấm điểm tài liệu Test Case ITa (Functional Integration) d�
 
 ## 2. Chi tiết Checklist
 - [x/ ] Cấu trúc & Format (20/20)
-- [x/ ] Dữ liệu Test (Test Data) (30/30)
-- [x/ ] Kịch bản Kiểm thử (Test Cases) (50/50)
+- [x/ ] Tuân thủ Golden Rules (30/30)
+- [x/ ] Độ bao phủ Viewpoint & Dữ liệu (50/50)
 
 ## 3. Findings (Các vấn đề cần sửa)
 - **[Critical]** ...

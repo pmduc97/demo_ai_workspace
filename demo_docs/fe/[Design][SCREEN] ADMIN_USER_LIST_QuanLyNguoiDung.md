@@ -1,7 +1,7 @@
 ---
 version: 2.0
 created: 2026-06-03
-updated: 2026-06-04
+updated: 2026-06-05
 status: draft
 ---
 
@@ -12,9 +12,10 @@ status: draft
 |-----|------|----------|----------|
 | 1.0 | 2026-06-03 | Tạo tài liệu ban đầu cho danh sách user và đổi role | GitHub Copilot |
 | 2.0 | 2026-06-04 | Chuẩn hóa 12 sections; bổ sung search/filter/sort/pagination/export, profile fields, khóa/mở khóa và modal chỉnh sửa user | GitHub Copilot |
+| 2.1 | 2026-06-05 | Đồng bộ layout code: bỏ checkbox chọn dòng, rút gọn cột table để tránh scroll ngang, chuẩn hóa nút `Export CSV` và `+ Tạo mới`, thông tin đầy đủ xem trong popup `Xem` | GitHub Copilot |
 
 ## 1. Tổng quan
-Trang quản lý tài khoản người dùng. Chỉ Admin mới truy cập được. Màn hình cho phép xem danh sách user có search/filter/sort/pagination, export CSV theo điều kiện hiện tại, xem/chỉnh sửa thông tin profile mở rộng, đổi role và khóa/mở khóa tài khoản. Thiết kế này là target design cần đồng bộ thêm DB/API trước khi implement đầy đủ các field mới.
+Trang quản lý tài khoản người dùng. Chỉ Admin mới truy cập được. Màn hình cho phép xem danh sách user có search/filter/sort/pagination, export CSV theo điều kiện hiện tại, tạo mới user bằng modal, xem/chỉnh sửa thông tin profile mở rộng, đổi role và khóa/mở khóa tài khoản. Grid chỉ hiển thị các cột chính để hạn chế scroll ngang; các field đầy đủ xem trong popup `Xem`.
 
 ## 2. Thông tin chung
 
@@ -45,32 +46,30 @@ Trang quản lý tài khoản người dùng. Chỉ Admin mới truy cập đư�
 
 ```jsx
 <AdminLayout>
-  <PageHeader title="Quản Lý Người Dùng" />
-  <UserToolbar />       {/* Search, role/status filter, sort, export CSV */}
-  <UserTable>
-    <UserRow />
-    <RoleBadge />
-    <StatusBadge />
-  </UserTable>
-  <Pagination />
-  <UserDetailModal />
-  <EditUserModal />
-  <RoleConfirmModal />
-  <LockConfirmModal />
+  <AdminPageLayout title="Quản Lý Người Dùng">
+    <HeaderActions />     {/* Export CSV, + Tạo mới */}
+    <DataToolbar />       {/* Search, role/status filter */}
+    <DataTable />         {/* Cột chính: Người dùng, Liên hệ, Role, Trạng thái, Hành động */}
+    <UserDetailModal />
+    <CreateUserModal />
+    <EditUserModal />
+    <RoleConfirmModal />
+    <LockConfirmModal />
+  </AdminPageLayout>
 </AdminLayout>
 ```
 
-Components dùng lại: `AdminLayout`, `ProtectedRoute`, `Pagination`, `ConfirmModal`, `ErrorBanner`, `LoadingSpinner`.
+Components dùng lại: `AdminLayout`, `AdminPageLayout`, `DataToolbar`, `DataTable`, `ProtectedRoute`, `ConfirmModal`, `ErrorBanner`, `LoadingSpinner`.
 
 ## 5. Ma trận trạng thái UI
 
-| Trạng thái | Search/Filter | Export CSV | Xem chi tiết | Sửa profile | Đổi role | Khóa/Mở khóa | Pagination |
-|------------|---------------|------------|--------------|-------------|----------|--------------|------------|
-| Init | Enable | Enable | Enable | Enable | Enable nếu không phải chính mình | Enable nếu không phải chính mình | Enable nếu `totalPages > 1` |
-| Loading list | Disable | Disable | Disable | Disable | Disable | Disable | Disable |
-| Submitting edit/role/lock | Disable | Disable | Disable | Disable | Disable | Disable | Disable |
-| Empty | Enable | Disable | Ẩn | Ẩn | Ẩn | Ẩn | Ẩn |
-| No permission | Ẩn | Ẩn | Ẩn | Ẩn | Ẩn | Ẩn | Ẩn |
+| Trạng thái | Search/Filter | Export CSV | `+ Tạo mới` | Xem chi tiết | Sửa profile | Đổi role | Khóa/Mở khóa | Pagination |
+|------------|---------------|------------|--------------|--------------|-------------|----------|--------------|------------|
+| Init | Enable | Enable nếu có dữ liệu | Enable | Enable | Enable | Enable nếu không phải chính mình | Enable nếu không phải chính mình | Enable nếu `totalPages > 1` |
+| Loading list | Disable | Disable | Disable | Disable | Disable | Disable | Disable | Disable |
+| Submitting edit/role/lock/create | Disable | Disable | Disable | Disable | Disable | Disable | Disable | Disable |
+| Empty | Enable | Disable | Enable | Ẩn | Ẩn | Ẩn | Ẩn | Ẩn |
+| No permission | Ẩn | Ẩn | Ẩn | Ẩn | Ẩn | Ẩn | Ẩn | Ẩn |
 
 ## 6. Chi tiết UI từng section
 
@@ -84,6 +83,7 @@ Components dùng lại: `AdminLayout`, `ProtectedRoute`, `Pagination`, `ConfirmM
 | Nút Search | Button | Input | Disabled khi loading | N/A | N/A | E05 | N/A | Áp dụng điều kiện, page về 1 |
 | Nút Reset | Button | Input | Disabled khi loading | N/A | N/A | E06 | N/A | Clear keyword/filter/sort rồi search lại |
 | Nút Export CSV | Button | Input | Disabled khi loading/submitting/empty | N/A | N/A | E14 | Query hiện tại | Export danh sách user theo điều kiện hiện tại, tải tuần tự từng page `limit=100` |
+| Nút `+ Tạo mới` | Button | Input | Disabled khi busy | N/A | N/A | E15 | N/A | Mở CreateUserModal |
 
 ### 6.2 UserTable
 | UI Control | Loại | I/O | Ràng buộc | Giá trị khởi tạo | Nguồn dữ liệu | Event ID | JSON Field mapping | Ghi chú |
@@ -92,14 +92,9 @@ Components dùng lại: `AdminLayout`, `ProtectedRoute`, `Pagination`, `ConfirmM
 | Tên | Text | Output | N/A | N/A | API19 | N/A | `name` | Hiển thị kèm bio ngắn nếu có |
 | Email | Text | Output | N/A | N/A | API19 | N/A | `email` | Email đăng nhập |
 | Số điện thoại | Text | Output | N/A | N/A | API19 | N/A | `phone` | Hiển thị `—` nếu null |
-| Địa chỉ | Text | Output | N/A | N/A | API19 | N/A | `address` | Có thể truncate |
 | Role | Badge/Button | Input/Output | `admin`, `member` | Row value | API19/User input | E09/E10 | `role` | E09 mở modal, E10 confirm đổi role; không cho đổi role chính mình |
 | Trạng thái | Badge/Button | Input/Output | `active`, `locked` | Row value | API19/User input | E11/E12 | `status` | E11 mở modal, E12 confirm khóa/mở khóa; không cho khóa chính mình |
-| Bài viết | Text | Output | N/A | N/A | API19 | N/A | `postCount`, `publishedPostCount`, `draftPostCount` | Hiển thị `total / published / draft` |
-| Lần đăng nhập | Text | Output | Format `DD/MM/YYYY HH:mm` | N/A | API19 | N/A | `last_login_at` | `—` nếu chưa login |
-| Ngày tham gia | Text | Output | Format `DD/MM/YYYY` | N/A | API19 | N/A | `created_at` | |
-| Ngày cập nhật | Text | Output | Format `DD/MM/YYYY` | N/A | API19 | N/A | `updated_at` | |
-| Hành động | Button group | Input | Disabled khi busy | N/A | User input | E07/E08/E09/E11 | N/A | Xem, Sửa, Đổi role, Khóa/Mở khóa |
+| Hành động | Button group | Input | Disabled khi busy | N/A | User input | E07/E08/E09/E11 | N/A | Xem, Sửa, Xóa; thống kê bài viết/ngày/địa chỉ xem trong popup `Xem` |
 
 ### 6.3 UserDetailModal
 | UI Control | Loại | I/O | Ràng buộc | Giá trị khởi tạo | Nguồn dữ liệu | Event ID | JSON Field mapping | Ghi chú |
@@ -216,9 +211,9 @@ const { user: currentUser } = useAuth();
 
 | Breakpoint | Layout |
 |-----------|--------|
-| Mobile (< 768px) | Toolbar stack dọc, bảng scroll ngang, ưu tiên hiển thị Avatar/Tên/Email/Role/Status; các field address/bio ẩn khỏi table và xem trong detail modal |
-| Tablet (768–1024px) | Toolbar 2 hàng, bảng hiển thị thêm phone, post stats, last login |
-| Desktop (> 1024px) | Full layout với AdminLayout sidebar, đầy đủ cột và actions |
+| Mobile (< 768px) | Toolbar stack dọc, table chỉ giữ cột chính; chi tiết xem qua popup `Xem` |
+| Tablet (768–1024px) | Toolbar 2 hàng, table không dùng checkbox chọn dòng |
+| Desktop (> 1024px) | Full layout với AdminLayout sidebar, table rút gọn để tránh scroll ngang |
 
 ## 11. Events & Actions
 

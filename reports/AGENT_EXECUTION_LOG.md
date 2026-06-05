@@ -1,3 +1,42 @@
+### [2026-06-05 10:20:00] - Orchestrator
+Task: Review/fix ITa/ITb test design docs and Playwright test code for Admin Login/User/Category/Post flows
+Status: PASS (review/fix completed, execution not run per user constraint)
+
+Files:
+- [Verified/Unchanged] `.github/knowledge/playwright-lessons.md`
+- [Verified/Unchanged] `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_USER_LIST_QuanLyNguoiDung.md`
+- [Verified/Unchanged] `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md`
+- [Verified/Unchanged] `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_POST_LIST_DanhSachBai.md`
+- [Verified/Unchanged] `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_LOGIN_DangNhap.md`
+- [Modified] `demo_docs/tests/ITb/[Test][ITb] TC_WF_Admin_Manage_System.md`
+- [Verified/Unchanged] `demo_docs/tests/ITb/[Test][ITb] TC_WF_Admin_Manage_Posts.md`
+- [Deleted] `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_POST_LIST.md`
+- [Deleted] `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_CATEGORY_LIST.md`
+- [Deleted] `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_USER_LIST.md`
+- [Deleted] `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_LOGIN.md`
+- [Verified/Unchanged] `demo_playwright/page-objects/LoginPage.ts`
+- [Modified] `demo_playwright/page-objects/AdminUserListPage.ts`
+- [Modified] `demo_playwright/page-objects/AdminCategoryListPage.ts`
+- [Modified] `demo_playwright/page-objects/AdminPostListPage.ts`
+- [Verified/Unchanged] `demo_playwright/tests/ITa_functional/admin-login.01-auth.spec.ts`
+- [Modified] `demo_playwright/tests/ITa_functional/admin-users.01-list.spec.ts`
+- [Modified] `demo_playwright/tests/ITa_functional/admin-categories.01-list.spec.ts`
+- [Modified] `demo_playwright/tests/ITa_functional/admin-posts.01-list.spec.ts`
+- [Modified] `PROJECT_MANIFEST.yml`
+- [Modified] `reports/AGENT_EXECUTION_LOG.md`
+
+Summary:
+- Removed obsolete duplicate ITa docs that referenced stale bulk/checkbox behavior.
+- Updated ITb Admin Manage System flow to use Admin Posts `+ Tạo mới` modal instead of `/admin/posts/new` create route.
+- Updated POM locators for current compact admin UI, modal create flows, and status/role action modals.
+- Fixed Admin Users spec role/status tests to match current UI.
+- Added ITa Playwright specs for Admin Categories and Admin Posts list/create/detail/delete/status flows.
+- Type diagnostics checked for modified Playwright files: no errors.
+
+Residual risks:
+- Playwright execution was not run because user requested manual server control/no automatic runs.
+- ITb Playwright spec files are still not generated; only ITb design doc alignment was corrected.
+
 ### [2026-06-05 00:00:00] - docs-agent
 - **Task**: Review và fix toàn bộ design docs chức năng quản lý post theo workflow doc-fe/doc-be implement-review
 - **Skill Used**: doc-fe-implement, doc-fe-review, doc-be-implement, doc-be-review
@@ -69,6 +108,61 @@
 - **Status**: SUCCESS
 - **Notes**: Review tổng CONDITIONAL PASS. Medium findings còn lại: backend chưa trả `messageId`, API08 chưa validate/whitelist update body, API09/API13 đang hard delete thay vì soft delete. Low findings: API10 chưa pagination/filter, một số `id` chưa validate number.
 
+### [2026-06-05] - Orchestrator
+
+- Task: Fix Admin Category FE runtime bugs before manual test.
+- Files read: `PROJECT_MANIFEST.yml`, `.github/instructions/fe-agent.instructions.md`, `.github/instructions/be-agent.instructions.md`, `demo_source_fe/src/pages/admin/CategoryListPage.jsx`, `demo_source_fe/src/components/ui/DataTable.jsx`, `demo_source_fe/src/pages/admin/UserListPage.jsx`, `demo_source_fe/src/pages/admin/PostListPage.jsx`, `demo_source_fe/src/hooks/useMasterData.js`, `demo_source_fe/src/components/ui/DataToolbar.jsx`, `demo_source_be/src/controllers/users.controller.js`, `demo_source_be/src/controllers/categories.controller.js`, `demo_source_be/src/controllers/posts.controller.js`, `demo_source_be/src/routes/admin.routes.js`, `demo_source_be/src/routes/categories.routes.js`, `demo_source_fe/src/services/api.js`, `demo_source_fe/src/context/AuthContext.jsx`, `demo_source_fe/src/components/ProtectedRoute.jsx`, `reports/AGENT_EXECUTION_LOG.md`.
+- Files modified: `demo_source_fe/src/pages/admin/CategoryListPage.jsx`, `reports/AGENT_EXECUTION_LOG.md`.
+- Verification: VS Code diagnostics for `CategoryListPage.jsx` report no errors. Fixed add modal to render category create form instead of detail modal, and replaced invalid `load(pagination.page)` call with `load()`.
+- Status: SUCCESS
+
+### [2026-06-05] - Orchestrator
+
+- Task: Apply admin grid UI consistency comments for Categories, Users, and Posts.
+- Files read: `demo_source_fe/src/pages/admin/UserListPage.jsx`, `demo_source_fe/src/pages/admin/CategoryListPage.jsx`, `demo_source_fe/src/pages/admin/PostListPage.jsx`.
+- Files modified: `demo_source_fe/src/pages/admin/UserListPage.jsx`, `demo_source_fe/src/pages/admin/CategoryListPage.jsx`, `demo_source_fe/src/pages/admin/PostListPage.jsx`, `reports/AGENT_EXECUTION_LOG.md`.
+- Verification: VS Code diagnostics for all three modified FE files report no errors.
+- Notes: Reduced visible table columns to avoid horizontal scroll, moved detailed fields behind `Xem` popup/detail modal, standardized header buttons to `Export CSV` and `+ Tạo mới`, and aligned grid row action button styles across admin list screens.
+- Status: SUCCESS
+
+### [2026-06-05] - Orchestrator
+
+- Task: Remove row-selection checkboxes from admin list grids for UI consistency.
+- Files read: `demo_source_fe/src/pages/admin/PostListPage.jsx`, `demo_source_fe/src/pages/admin/UserListPage.jsx`, `demo_source_fe/src/pages/admin/CategoryListPage.jsx`.
+- Files modified: `demo_source_fe/src/pages/admin/PostListPage.jsx`, `demo_source_fe/src/pages/admin/UserListPage.jsx`, `demo_source_fe/src/pages/admin/CategoryListPage.jsx`, `reports/AGENT_EXECUTION_LOG.md`.
+- Verification: VS Code diagnostics for all three modified FE files report no errors.
+- Notes: Removed checkbox selection props from Users, Categories, and Posts grids; removed Admin Posts bulk action UI/logic branches because the feature is not visible/useful in the current UI.
+- Status: SUCCESS
+
+### [2026-06-05] - Orchestrator
+
+- Task: Change Admin Posts `+ Tạo mới` from route navigation to in-page popup modal.
+- Files read: `demo_source_fe/src/pages/admin/PostListPage.jsx`, `demo_source_fe/src/pages/admin/PostFormPage.jsx`, `demo_source_fe/src/App.jsx`.
+- Files modified: `demo_source_fe/src/pages/admin/PostListPage.jsx`, `reports/AGENT_EXECUTION_LOG.md`.
+- Verification: VS Code diagnostics for `PostListPage.jsx` report no errors.
+- Notes: Added create-post modal with title/slug/category/status/thumbnail/content fields, client-side required validation, submit to `POST /posts`, success toast, modal close, and list refresh. Existing edit route remains unchanged.
+- Status: SUCCESS
+
+### [2026-06-05] - docs-agent
+- **Task**: Đồng bộ tài liệu thiết kế FE với các fix layout admin list gần đây.
+- **Skill Used**: doc-fe-implement, doc-fe-review
+- **Target Feature**: admin_users, admin_categories, admin_posts
+- **Files Processed**:
+	- `PROJECT_MANIFEST.yml` [Modified]
+	- `.github/skills/doc-fe-implement/SKILL.md` [Verified/Unchanged]
+	- `.github/skills/doc-fe-review/SKILL.md` [Verified/Unchanged]
+	- `.github/instructions/docs-agent.instructions.md` [Verified/Unchanged]
+	- `demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md` [Modified]
+	- `demo_docs/fe/[Design][SCREEN] ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md` [Modified]
+	- `demo_docs/fe/[Design][SCREEN] ADMIN_POST_LIST_DanhSachBai.md` [Modified]
+	- `demo_docs/fe/[Design][LIST] COMPONENT_DanhSach.md` [Modified]
+	- `demo_source_fe/src/pages/admin/UserListPage.jsx` [Verified/Unchanged]
+	- `demo_source_fe/src/pages/admin/CategoryListPage.jsx` [Verified/Unchanged]
+	- `demo_source_fe/src/pages/admin/PostListPage.jsx` [Verified/Unchanged]
+	- `reports/AGENT_EXECUTION_LOG.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Docs now reflect compact admin grids, no row checkbox/bulk action, unified `Export CSV` and `+ Tạo mới`, detail popup via `Xem`, and Admin Posts create modal on list page. Residual risk: dedicated `ADMIN_POST_FORM` doc still describes the edit/create route, while current list uses route only for edit.
+
 ### [2026-06-05] - be-agent
 - **Task**: Review và fix backend code cho chức năng quản lý post (posts_public, posts_member, admin_posts)
 - **Skill Used**: be-implement, be-review
@@ -126,14 +220,15 @@
 - **Notes**: Đã sử dụng MCP để lấy cấu trúc bảng `users` và dữ liệu mẫu. Đã tạo file Test Case ITb dựa trên tài liệu Workflow Design. File bao gồm Sơ đồ Mermaid, DB Confirmation Matrix, và 4 Test Cases (HP, ALT, STATE-VIO) đi qua nhiều màn hình và role. Review đạt 95/100 điểm (PASS). Cập nhật `cycle_checkpoint` thành `create`.
 
 ### [2026-06-05 10:00:00] - docs-agent
-- **Task**: Tạo và review tài liệu Test Case ITa cho chức năng Quản lý danh mục
-- **Skill Used**: doc-ita-implement, doc-ita-review
-- **Target Feature**: admin_categories
+- **Task**: Tạo tài liệu Test Case ITb cho luồng Member quản lý bài viết và Admin quản lý bài viết
+- **Skill Used**: doc-itb-implement
+- **Target Feature**: posts_member, admin_posts
 - **Files Processed**:
-  - `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md` [Modified]
+  - `demo_docs/tests/ITb/[Test][ITb] TC_WF_Member_Manage_Posts.md` [Created]
+  - `demo_docs/tests/ITb/[Test][ITb] TC_WF_Admin_Manage_Posts.md` [Created]
   - `PROJECT_MANIFEST.yml` [Modified]
 - **Status**: SUCCESS
-- **Notes**: Đã tạo file Test Case ITa sử dụng MCP để lấy dữ liệu mẫu từ DB. Đã review và chấm điểm file vừa tạo.
+- **Notes**: Đã hoàn thành Phase 2 đến Phase 5 cho cả 2 luồng. Đã cập nhật đường dẫn file test case vào PROJECT_MANIFEST.yml.
 
 ### [2026-06-05 10:05:00] - docs-agent
 - **Task**: Fix bugs và final review tài liệu Test Case ITa cho chức năng Quản lý danh mục
@@ -154,3 +249,38 @@
   - `PROJECT_MANIFEST.yml` [Modified]
 - **Status**: SUCCESS
 - **Notes**: Đã tạo và chạy 3 TC smoke test. Phát hiện 1 Bug App (thiếu toast báo lỗi khi sai quyền). Đã xuất báo cáo.
+
+### [2026-06-05] - fe-agent
+- **Task**: Implement Admin Post List screen (`PostListPage.jsx`) based on design doc.
+- **Skill Used**: fe-implement
+- **Target Feature**: admin_posts
+- **Files Processed**:
+	- `demo_source_fe/src/pages/admin/PostListPage.jsx` [Modified]
+	- `demo_source_fe/src/components/ui/Pagination.jsx` [Created]
+	- `demo_source_fe/src/components/ui/ConfirmModal.jsx` [Created]
+	- `demo_source_fe/src/components/ui/ErrorBanner.jsx` [Created]
+	- `demo_source_fe/src/components/ui/LoadingSpinner.jsx` [Created]
+	- `demo_source_fe/src/components/ui/Toast.jsx` [Created]
+- **Status**: SUCCESS
+- **Notes**: Implemented table with columns (Thumbnail, Category, Author, Views, Date), filters (Search, Category, Status, Author, Sort), row actions (Preview, Edit, Toggle Status, Delete), and bulk actions (Bulk Delete, Bulk Publish/Draft). Added reusable UI components.
+
+## [2026-06-05] Refactor Admin Master Pages (Phase 2)
+- **Agent**: fe-agent
+- **Task**: Refactor `UserListPage.jsx`, `CategoryListPage.jsx`, and `PostListPage.jsx` to use the new common components (`useMasterData`, `AdminPageLayout`, `DataToolbar`, `DataTable`, `Pagination`).
+- **Changes**:
+  - `demo_source_fe/src/pages/admin/UserListPage.jsx`: Replaced local state and custom table with `useMasterData`, `AdminPageLayout`, `DataToolbar`, `DataTable`, and `Pagination`. Preserved modals.
+  - `demo_source_fe/src/pages/admin/CategoryListPage.jsx`: Replaced local state and custom table with common components. Preserved inline editing by rendering inputs in `categoryColumns`.
+  - `demo_source_fe/src/pages/admin/PostListPage.jsx`: Replaced local state and custom table with common components. Preserved bulk actions and modals.
+- **Status**: Completed Phase 2 of the Admin UI Refactor plan.
+
+### [2026-06-05] - docs-agent
+- **Task**: Tạo tài liệu Test Case ITa cho 4 chức năng: Login, Admin User List, Admin Category List, Admin Post List
+- **Skill Used**: doc-ita-implement
+- **Target Feature**: auth_login, admin_users, admin_categories, admin_posts
+- **Files Processed**:
+  - `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_LOGIN.md` [Created]
+  - `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_USER_LIST.md` [Created]
+  - `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_CATEGORY_LIST.md` [Created]
+  - `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_POST_LIST.md` [Created]
+- **Status**: SUCCESS
+- **Notes**: Đã tạo thành công 4 file Test Case ITa bao phủ Happy Path, Negative Path và UI Validation theo đúng template.

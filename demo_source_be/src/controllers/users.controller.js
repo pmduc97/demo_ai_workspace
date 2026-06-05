@@ -22,10 +22,24 @@ exports.list = async (req, res) => {
       return res.status(422).json({ messageId: 'USER-E-001', message: 'Sort không hợp lệ' });
     }
     
-    page = parseInt(page) || 1;
-    limit = parseInt(limit) || 10;
-    if (page < 1 || limit < 1 || limit > 100) {
-      return res.status(422).json({ messageId: 'USER-E-001', message: 'Pagination không hợp lệ' });
+    if (page !== undefined) {
+      const parsedPage = parseInt(page, 10);
+      if (isNaN(parsedPage) || parsedPage < 1) {
+        return res.status(400).json({ messageId: 'USER-E-001', message: 'Pagination không hợp lệ' });
+      }
+      page = parsedPage;
+    } else {
+      page = 1;
+    }
+
+    if (limit !== undefined) {
+      const parsedLimit = parseInt(limit, 10);
+      if (isNaN(parsedLimit) || parsedLimit < 1 || parsedLimit > 100) {
+        return res.status(400).json({ messageId: 'USER-E-001', message: 'Pagination không hợp lệ' });
+      }
+      limit = parsedLimit;
+    } else {
+      limit = 10;
     }
 
     role = role || 'all';
@@ -134,6 +148,20 @@ exports.createAdminUser = async (req, res) => {
     }
     if (status === 'locked' && (!locked_reason || locked_reason.trim().length < 5 || locked_reason.trim().length > 255)) {
       return res.status(422).json({ messageId: 'USER-E-001', message: 'Lý do khóa không hợp lệ' });
+    }
+
+    if (phone) {
+      phone = String(phone).trim();
+      if (!/^0\d{9,10}$/.test(phone)) {
+        return res.status(400).json({ messageId: 'USER-E-001', message: 'Số điện thoại không hợp lệ' });
+      }
+    }
+
+    if (birthdate) {
+      const bd = new Date(birthdate);
+      if (isNaN(bd.getTime()) || bd > new Date()) {
+        return res.status(400).json({ messageId: 'USER-E-001', message: 'Ngày sinh không hợp lệ' });
+      }
     }
 
     const existing = await db('users').where({ email }).whereNull('deleted_at').first();
@@ -283,6 +311,17 @@ exports.updateAdminUserProfile = async (req, res) => {
 
     if (!['male', 'female', 'other', 'unknown'].includes(gender)) {
       return res.status(422).json({ messageId: 'USER-E-001', message: 'Giới tính không hợp lệ' });
+    }
+
+    if (phone && !/^0\d{9,10}$/.test(phone)) {
+      return res.status(400).json({ messageId: 'USER-E-001', message: 'Số điện thoại không hợp lệ' });
+    }
+
+    if (birthdate) {
+      const bd = new Date(birthdate);
+      if (isNaN(bd.getTime()) || bd > new Date()) {
+        return res.status(400).json({ messageId: 'USER-E-001', message: 'Ngày sinh không hợp lệ' });
+      }
     }
 
     const user = await db('users').where({ id }).whereNull('deleted_at').first();

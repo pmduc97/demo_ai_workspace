@@ -13,7 +13,7 @@ Tài liệu này theo dõi tiến độ chuẩn hóa và review các tài liệu
 | | `CONTACT` | Liên Hệ | 📝 Draft | ⏳ Pending | Cần update lên 10 sections |
 | **2. Auth** | `ADMIN_LOGIN` | Đăng Nhập | ✅ Stable | ✅ Pass | Đã chuẩn hóa 10 sections |
 | **3. Admin Content** | `ADMIN_DASHBOARD` | Tổng Quan | 📝 Draft | ⏳ Pending | Cần update lên 10 sections |
-| | `ADMIN_POST_LIST` | Danh Sách Bài | 📝 Draft | ⏳ Pending | Cần update lên 10 sections |
+| | `ADMIN_POST_LIST` | Danh Sách Bài | ✅ Stable | ✅ Pass | Đã chuẩn hóa 12 sections |
 | | `ADMIN_POST_FORM` | Tạo/Sửa Bài | 📝 Draft | ⏳ Pending | Cần update lên 10 sections |
 | **4. Admin Master** | `ADMIN_CATEGORY_LIST` | Quản Lý Danh Mục | ✅ Stable | ✅ Pass | Đã chuẩn hóa 10 sections |
 | | `ADMIN_USER_LIST` | Quản Lý Người Dùng | ✅ Stable | ✅ Pass | Đã chuẩn hóa 10 sections |
@@ -33,7 +33,7 @@ Tài liệu này theo dõi tiến độ chuẩn hóa và review các tài liệu
 | | `API07` | Posts_TaoBai | 📝 Draft | ⏳ Pending | Cần update lên 7 sections |
 | | `API08` | Posts_CapNhat | 📝 Draft | ⏳ Pending | Cần update lên 7 sections |
 | | `API09` | Posts_Xoa | 📝 Draft | ⏳ Pending | Cần update lên 7 sections |
-| | `API10` | AdminPosts_DanhSach | 📝 Draft | ⏳ Pending | Cần update lên 7 sections |
+| | `API10` | AdminPosts_DanhSach | ✅ Stable | ✅ Pass | Đã chuẩn hóa 10 sections |
 | | `API11` | AdminPosts_ChiTiet | 📝 Draft | ⏳ Pending | Cần update lên 7 sections |
 | | `API12` | AdminPosts_DoiStatus | 📝 Draft | ⏳ Pending | Cần update lên 7 sections |
 | | `API13` | AdminPosts_Xoa | 📝 Draft | ⏳ Pending | Cần update lên 7 sections |

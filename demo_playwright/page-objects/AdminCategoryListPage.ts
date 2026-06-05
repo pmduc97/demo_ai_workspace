@@ -61,12 +61,12 @@ export class AdminCategoryListPage {
     // Toolbar — placeholder từ source FE: "Tên hoặc slug"
     this.searchInput = page.getByPlaceholder('Tên hoặc slug');
     // Select thứ 0: statusFilter, thứ 1: sortFilter (trong toolbar, không có trong modal)
-    this.statusFilter = page.locator('div.grid select').nth(0);
-    this.sortFilter = page.locator('div.grid select').nth(1);
+    this.statusFilter = page.locator('main select').first();
+    this.sortFilter = page.locator('main select').nth(1);
     this.searchButton = page.getByRole('button', { name: 'Search' });
     this.resetButton = page.getByRole('button', { name: 'Reset' });
     this.exportButton = page.getByRole('button', { name: /Export CSV/ });
-    this.addButton = page.getByRole('button', { name: '+ Thêm danh mục' });
+    this.addButton = page.getByRole('button', { name: '+ Tạo mới' });
 
     // Banners — dùng text color class (inline p tag)
     this.errorText = page.locator('p.text-red-600').first();
@@ -84,17 +84,17 @@ export class AdminCategoryListPage {
     this.pageInfo = page.getByText(/Trang \d+ \/ \d+/);
 
     // Add Modal
-    this.addModal = page.locator('div.fixed').filter({ has: page.getByText('Thêm danh mục mới') });
-    this.addModalTitle = page.getByText('Thêm danh mục mới');
+    this.addModal = page.locator('div.fixed').filter({ has: page.getByText('Thêm danh mục') });
+    this.addModalTitle = page.getByText('Thêm danh mục');
     // Scoped vào modal để tránh conflict với inline edit
-    this.addNameInput = this.addModal.getByPlaceholder('Du lịch');
-    this.addSlugInput = this.addModal.getByPlaceholder('du-lich');
-    this.addDescriptionInput = this.addModal.getByPlaceholder('Mô tả ngắn...');
+    this.addNameInput = this.addModal.getByPlaceholder('Tên danh mục');
+    this.addSlugInput = this.addModal.getByPlaceholder('slug-danh-muc');
+    this.addDescriptionInput = this.addModal.getByPlaceholder('Mô tả');
     this.addStatusSelect = this.addModal.locator('select[name="status"]');
-    this.addThumbnailInput = this.addModal.getByPlaceholder('/uploads/categories/...');
-    this.addSeoTitleInput = this.addModal.locator('input[name="seo_title"]');
-    this.addSeoDescriptionInput = this.addModal.locator('input[name="seo_description"]');
-    this.addSubmitButton = this.addModal.getByRole('button', { name: /^Thêm$/ });
+    this.addThumbnailInput = this.addModal.getByPlaceholder('Thumbnail URL');
+    this.addSeoTitleInput = this.addModal.getByPlaceholder('SEO title');
+    this.addSeoDescriptionInput = this.addModal.getByPlaceholder('SEO description');
+    this.addSubmitButton = this.addModal.getByRole('button', { name: 'Thêm danh mục' });
     this.addCancelButton = this.addModal.getByRole('button', { name: 'Hủy' });
     this.addErrorText = this.addModal.locator('p.text-red-600');
 
@@ -130,7 +130,7 @@ export class AdminCategoryListPage {
 
   async search(keyword: string) {
     await this.searchInput.fill(keyword);
-    await this.searchButton.click();
+    await this.searchInput.press('Enter');
     await this.waitForTableReady();
   }
 
@@ -182,8 +182,7 @@ export class AdminCategoryListPage {
   }) {
     if (data.name !== undefined) {
       await this.addNameInput.fill(data.name);
-      // Đợi auto-generate slug
-      await this.page.waitForTimeout(100);
+      await expect(this.addSlugInput).not.toHaveValue('', { timeout: 3000 });
     }
     if (data.slug !== undefined) await this.addSlugInput.fill(data.slug);
     if (data.description !== undefined) await this.addDescriptionInput.fill(data.description);
@@ -264,7 +263,7 @@ export class AdminCategoryListPage {
   async openDeleteByName(name: string) {
     const row = this.rowByName(name);
     await expect(row).toBeVisible();
-    await row.getByRole('button', { name: 'Xóa mềm' }).click();
+    await row.getByRole('button', { name: 'Xóa' }).click();
     await expect(this.deleteModal).toBeVisible();
   }
 

@@ -1,7 +1,7 @@
 ---
 version: 1.0
 created: 2026-06-03
-updated: 2026-06-03
+updated: 2026-06-05
 status: stable
 ---
 
@@ -28,6 +28,9 @@ Khi thiết kế (viết spec) hoặc implement màn hình mới, **BẮT BUỘC
 | Tên Component | Đường dẫn | Props chính | Mô tả & Cách dùng |
 |---------------|-----------|-------------|-------------------|
 | `AdminLayout` | `src/components/AdminLayout.jsx` | `children` | Layout chuẩn cho trang Admin (bao gồm Sidebar trái và Header trên). Tự động ẩn menu Categories/Users nếu user là `member`. |
+| `AdminPageLayout` | `src/components/admin/AdminPageLayout.jsx` | `title`, `children` | Layout chuẩn cho các trang danh sách trong Admin, bao gồm PageHeader và bọc nội dung. |
+| `DataToolbar` | `src/components/ui/DataToolbar.jsx` | `searchPlaceholder`, `onSearch`, `customFilters` | Toolbar dùng chung cho các trang danh sách (User, Category, Post), hỗ trợ search và custom filters. Header actions như `Export CSV`, `+ Tạo mới` đặt trong `AdminPageLayout.headerActions`. |
+| `DataTable` | `src/components/ui/DataTable.jsx` | `columns`, `data`, `loading`, `sort`, `onSort`, `emptyMessage` | Bảng dữ liệu dùng chung cho các trang danh sách, hỗ trợ render cột động theo contract `render(row)`, sort header và empty/loading state. Không hiển thị checkbox nếu không truyền `onSelectRow/onSelectAll`; các admin grid hiện tại không dùng row selection. |
 | `Navbar` | `src/components/Navbar.jsx` | Không có | Thanh điều hướng trên cùng cho các trang Public (Home, Category, About...). |
 | `Footer` | `src/components/Footer.jsx` | Không có | Chân trang cho các trang Public. |
 | `ProtectedRoute` | `src/components/ProtectedRoute.jsx` | `children`, `role` (optional) | Route Guard. Nếu chưa login -> redirect `/admin/login`. Nếu truyền `role="admin"` mà user là `member` -> redirect `/admin/dashboard`. |
@@ -51,3 +54,4 @@ Khi thiết kế (viết spec) hoặc implement màn hình mới, **BẮT BUỘC
 | Tên Context | Đường dẫn | Giá trị cung cấp (Value) | Mô tả & Cách dùng |
 |-------------|-----------|--------------------------|-------------------|
 | `AuthContext` | `src/context/AuthContext.jsx` | `user`, `login(token, user)`, `logout()` | Quản lý trạng thái đăng nhập. Dùng hook `useAuth()` để lấy thông tin user hiện tại ở bất kỳ component nào. |
+| `useMasterData` | `src/hooks/useMasterData.js` | `data`, `loading`, `error`, `pagination`, `fetchData`, `handleSearch`, `handleFilter`, `handlePageChange` | Custom hook quản lý state và logic fetch dữ liệu cho các trang danh sách (User, Category, Post). |

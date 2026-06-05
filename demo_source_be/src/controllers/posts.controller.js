@@ -71,7 +71,95 @@ exports.update = async (req, res) => {
   return res.json(rows[0]);
 };
 exports.remove = async (req, res) => { const post = await db('posts').where({ id: req.params.id }).first(); if (!post) return res.status(404).json({ message: 'Post not found' }); if (req.user.role !== 'admin' && post.author_id !== req.user.id) return res.status(403).json({ message: 'Forbidden' }); await db('posts').where({ id: req.params.id }).del(); return res.json({ message: 'Deleted' }); };
-exports.listAdmin = async (req, res) => res.json({ items: await db('posts').orderBy('created_at', 'desc') });
+exports.listAdmin = async (req, res) => {
+  const { search, category_id, status, author_id, sort_by = 'created_at', sort_order = 'desc' } = req.query;
+
+  let p = 1;
+  if (req.query.page !== undefined) {
+    p = Number(req.query.page);
+    if (!Number.isInteger(p) || p < 1) {
+      return res.status(400).json({ message: 'Invalid page parameter' });
+    }
+  }
+
+  let l = 10;
+  if (req.query.limit !== undefined) {
+    l = Number(req.query.limit);
+    if (!Number.isInteger(l) || l < 1) {
+      return res.status(400).json({ message: 'Invalid limit parameter' });
+    }
+  }
+
+  if (!['created_at', 'view_count'].includes(sort_by)) {
+    return res.status(400).json({ message: 'Invalid sort_by parameter' });
+  }
+  if (!['asc', 'desc'].includes(sort_order)) {
+    return res.status(400).json({ message: 'Invalid sort_order parameter' });
+  }
+  if (status && !['draft', 'published'].includes(status)) {
+    return res.status(400).json({ message: 'Invalid status parameter' });
+  }
+
+  let q = db('posts as p')
+    .leftJoin('users as u', 'p.author_id', 'u.id')
+    .leftJoin('categories as c', 'p.category_id', 'c.id');
+
+  if (search) {
+    q = q.andWhereILike('p.title', `%${search}%`);
+  }
+  if (category_id) {
+    q = q.andWhere('p.category_id', category_id);
+  }
+  if (status) {
+    q = q.andWhere('p.status', status);
+  }
+  if (author_id) {
+    q = q.andWhere('p.author_id', author_id);
+  }
+
+  const countRow = await q.clone().count('* as total').first();
+  const total = Number(countRow.total || 0);
+  const total_pages = Math.ceil(total / l);
+
+  const rows = await q.clone()
+    .select(
+      'p.id', 'p.title', 'p.slug', 'p.thumbnail_url', 'p.status', 'p.view_count', 'p.created_at', 'p.updated_at',
+      'u.id as author_id', 'u.name as author_name', 'u.email as author_email',
+      'c.id as category_id', 'c.name as category_name', 'c.slug as category_slug'
+    )
+    .orderBy(`p.${sort_by}`, sort_order)
+    .limit(l)
+    .offset((p - 1) * l);
+
+  const items = rows.map(r => ({
+    id: r.id,
+    title: r.title,
+    slug: r.slug,
+    thumbnail_url: r.thumbnail_url,
+    status: r.status,
+    view_count: r.view_count,
+    created_at: r.created_at,
+    updated_at: r.updated_at,
+    author: r.author_id ? {
+      id: r.author_id,
+      name: r.author_name,
+      email: r.author_email
+    } : null,
+    category: r.category_id ? {
+      id: r.category_id,
+      name: r.category_name,
+      slug: r.category_slug
+    } : null
+  }));
+
+  return res.json({
+    items,
+    total,
+    page: p,
+    limit: l,
+    total_pages
+  });
+};
 exports.getAdminById = async (req, res) => { const post = await db('posts').where({ id: req.params.id }).first(); if (!post) return res.status(404).json({ message: 'Post not found' }); return res.json(post); };
 exports.updateStatus = async (req, res) => { if (!['draft', 'published'].includes(req.body.status)) return res.status(422).json({ message: 'Validation failed', details: [{ field: 'status', message: 'status must be draft or published' }] }); const rows = await db('posts').where({ id: req.params.id }).update({ status: req.body.status, updated_at: db.fn.now() }).returning('*'); if (!rows[0]) return res.status(404).json({ message: 'Post not found' }); return res.json(rows[0]); };
 exports.adminStats = async (req, res) => { const scoped = req.user.role === 'admin' ? db('posts') : db('posts').where('author_id', req.user.id); const [totalRow, pubRow, draftRow, catRow] = await Promise.all([scoped.clone().count('* as c').first(), scoped.clone().where('status', 'published').count('* as c').first(), scoped.clone().where('status', 'draft').count('* as c').first(), db('categories').count('* as c').first()]); res.json({ totalPosts: Number(totalRow.c || 0), publishedPosts: Number(pubRow.c || 0), draftPosts: Number(draftRow.c || 0), totalCategories: Number(catRow.c || 0) }); };

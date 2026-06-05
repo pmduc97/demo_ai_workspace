@@ -98,6 +98,12 @@ Khi tạo hoặc cập nhật API docs / FE screen docs:
 | POST-S-001 | Post | S | 201 | `Tạo bài viết thành công` | Toast | `PostFormPage.jsx` | Tạo bài viết thành công |
 | POST-S-002 | Post | S | 200 | `Cập nhật bài viết thành công` | Toast | `PostFormPage.jsx` | Cập nhật bài viết thành công |
 | POST-S-003 | Post | S | 200 | `Deleted` | Toast | `posts.controller.js` | Xóa bài viết thành công |
+| POST-S-004 | Post | S | 200 | `Đổi trạng thái bài viết thành công` | Toast | `PostListPage.jsx` | Đổi trạng thái bài viết thành công |
+| POST-S-005 | Post | S | 200 | `Xóa nhiều bài viết thành công` | Toast | `PostListPage.jsx` | Xóa nhiều bài viết thành công |
+| POST-S-006 | Post | S | 200 | `Cập nhật trạng thái nhiều bài viết thành công` | Toast | `PostListPage.jsx` | Cập nhật trạng thái nhiều bài viết thành công |
+| POST-C-001 | Post | C | N/A | `Bạn có chắc chắn muốn xóa bài viết này?` | ConfirmModal | `PostListPage.jsx` | Click xóa 1 bài viết |
+| POST-C-002 | Post | C | N/A | `Bạn có chắc chắn muốn xóa các bài viết đã chọn?` | ConfirmModal | `PostListPage.jsx` | Click xóa nhiều bài viết |
+| POST-C-003 | Post | C | N/A | `Bạn có chắc chắn muốn đổi trạng thái các bài viết đã chọn?` | ConfirmModal | `PostListPage.jsx` | Click đổi trạng thái nhiều bài viết |
 | POST-I-001 | Post | I | N/A | `Chưa có bài viết nào.` | EmptyState | `PostListPage.jsx` | Danh sách bài viết rỗng |
-| POST-E-005 | Post | E | N/A | `Không thể tải bài viết. Vui lòng thử lại.` | ErrorBanner | `HomePage.jsx` / `CategoryPage.jsx` / `PostDetailPage.jsx` | FE public fetch posts lỗi |
-| POST-I-002 | Post | I | N/A | `Đang tải bài viết...` | LoadingText | `PostDetailPage.jsx` | Đang fetch chi tiết bài viết |
+| POST-I-002 | Post | I | N/A | `Không tìm thấy bài viết phù hợp với bộ lọc.` | EmptyState | `PostListPage.jsx` | Filter/search không có kết quả |
+| POST-E-005 | Post | E | 500 | `Không thể tải bài viết. Vui lòng thử lại.` | ErrorBanner | `PostListPage.jsx` | API lỗi khi tải danh sách |

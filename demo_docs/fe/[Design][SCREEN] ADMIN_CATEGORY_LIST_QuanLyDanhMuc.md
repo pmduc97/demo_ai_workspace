@@ -1,7 +1,7 @@
 ---
 version: 1.0
 created: 2026-06-03
-updated: 2026-06-04
+updated: 2026-06-05
 status: draft
 ---
 
@@ -13,9 +13,10 @@ status: draft
 | 1.1 | 2026-06-04 | Bổ sung filter/sort/pagination, metadata danh mục, SEO, trạng thái hiển thị và soft delete | GitHub Copilot |
 | 1.2 | 2026-06-04 | Điều chỉnh toolbar Search/Reset thủ công, chuyển AddForm sang modal, bổ sung Export CSV theo điều kiện hiện tại bằng cách tải tuần tự page `limit=100` | GitHub Copilot |
 | 1.3 | 2026-06-04 | Đổi page size mặc định màn quản lý danh mục từ 10 xuống 5 record/page để pagination hiển thị rõ hơn | GitHub Copilot |
+| 1.4 | 2026-06-05 | Đồng bộ layout code: bỏ checkbox chọn dòng, rút gọn cột table để tránh scroll ngang, chuẩn hóa nút `Export CSV` và `+ Tạo mới`, dùng popup `Xem` cho thông tin chi tiết | GitHub Copilot |
 
 ## 1. Tổng quan
-Trang quản lý danh mục bài viết. Chỉ Admin mới truy cập được. Cho phép xem danh sách có filter/sort/phân trang, thêm mới bằng modal, sửa inline, đổi trạng thái hiển thị, xóa mềm và export CSV theo điều kiện tìm kiếm hiện tại.
+Trang quản lý danh mục bài viết. Chỉ Admin mới truy cập được. Cho phép xem danh sách có filter/sort/phân trang, thêm mới bằng modal, sửa inline, xem chi tiết bằng popup, xóa mềm và export CSV theo điều kiện tìm kiếm hiện tại. Grid chỉ hiển thị các cột chính để hạn chế scroll ngang; field đầy đủ xem trong popup `Xem`.
 
 ## 2. Thông tin chung
 
@@ -44,28 +45,28 @@ Trang quản lý danh mục bài viết. Chỉ Admin mới truy cập được. 
 
 ```jsx
 <AdminLayout>
-  <PageHeader title="Quản Lý Danh Mục" />
-  <CategoryToolbar />   {/* Search input + Search button, reset, filter status, sort, export CSV, open add modal */}
-  <AddCategoryModal />  {/* Modal thêm mới */}
-  <CategoryTable>       {/* Bảng danh sách */}
-    <InlineEditRow />   {/* Row ở chế độ edit */}
-    <NormalRow />       {/* Row bình thường */}
-  </CategoryTable>
-  <DeleteModal />       {/* Modal xác nhận xóa */}
+  <AdminPageLayout title="Quản Lý Danh Mục">
+    <HeaderActions />     {/* Export CSV, + Tạo mới */}
+    <DataToolbar />       {/* Search input + filter status */}
+    <DataTable />         {/* Cột chính: Tên, Slug, Trạng thái, Số bài, Hành động */}
+    <AddCategoryModal />  {/* Modal tạo mới */}
+    <CategoryDetailModal /> {/* Popup Xem thông tin đầy đủ */}
+    <DeleteModal />       {/* Modal xác nhận xóa */}
+  </AdminPageLayout>
 </AdminLayout>
 ```
 
-Components dùng lại: `AdminLayout`, `ProtectedRoute` (role: admin), `Pagination`, `ConfirmModal`, `ErrorBanner`, `LoadingSpinner`.
+Components dùng lại: `AdminLayout`, `AdminPageLayout`, `DataToolbar`, `DataTable`, `ProtectedRoute` (role: admin), `ConfirmModal`, `ErrorBanner`, `LoadingSpinner`.
 
 ## 5. Ma trận trạng thái UI
 
-| Trạng thái | Search/Filter | Nút Thêm | Nút Sửa | Nút Xóa | Pagination |
-|------------|---------------|----------|---------|---------|------------|
-| Init | Enable | Enable nút mở modal | Enable | Enable | Enable nếu `totalPages > 1` |
-| Loading list | Disable | Disable | Disable | Disable | Disable |
-| Submitting add/edit/delete | Disable | Disable | Disable | Disable | Disable |
-| Empty | Enable | Enable nếu form valid | Ẩn | Ẩn | Ẩn |
-| No permission | Ẩn | Ẩn | Ẩn | Ẩn | Ẩn |
+| Trạng thái | Search/Filter | Export CSV | Nút `+ Tạo mới` | Nút Xem | Nút Sửa | Nút Xóa | Pagination |
+|------------|---------------|------------|-----------------|---------|---------|--------|------------|
+| Init | Enable | Enable nếu có dữ liệu | Enable nút mở modal | Enable | Enable | Enable | Enable nếu `totalPages > 1` |
+| Loading list | Disable | Disable | Disable | Disable | Disable | Disable | Disable |
+| Submitting add/edit/delete | Disable | Disable | Disable | Disable | Disable | Disable | Disable |
+| Empty | Enable | Disable | Enable | Ẩn | Ẩn | Ẩn | Ẩn |
+| No permission | Ẩn | Ẩn | Ẩn | Ẩn | Ẩn | Ẩn | Ẩn |
 
 ## 6. Chi tiết UI từng section
 
@@ -78,7 +79,7 @@ Components dùng lại: `AdminLayout`, `ProtectedRoute` (role: admin), `Paginati
 | Nút Search | Button | Input | Disabled khi loading | N/A | N/A | E04 | N/A | Áp dụng keyword/filter/sort và page về 1 |
 | Nút Reset | Button | Input | N/A | N/A | N/A | E05 | N/A | Clear keyword/filter/sort về mặc định rồi gọi lại API14 page 1 |
 | Nút Export CSV | Button | Input | Disabled khi loading/submitting | N/A | N/A | E11 | Query hiện tại | Export danh sách theo điều kiện search/filter/sort hiện tại |
-| Nút Thêm danh mục | Button | Input | Disabled khi loading/submitting | N/A | N/A | E06 | N/A | Mở AddCategoryModal |
+| Nút `+ Tạo mới` | Button | Input | Disabled khi loading/submitting | N/A | N/A | E06 | N/A | Mở AddCategoryModal |
 
 ### 6.2 AddCategoryModal
 | UI Control | Loại | I/O | Ràng buộc | Giá trị khởi tạo | Nguồn dữ liệu | Event ID | JSON Field mapping | Ghi chú |
@@ -99,13 +100,10 @@ Components dùng lại: `AdminLayout`, `ProtectedRoute` (role: admin), `Paginati
 | Tên (View) | Text | Output | N/A | N/A | API14 | N/A | `name` | |
 | Slug (View) | Text | Output | N/A | N/A | API14 | N/A | `slug` | |
 | Trạng thái (View/Edit) | Badge/Select | Input/Output | `active`, `hidden` | Row value | API14/User input | E07 | `status` | Badge xanh/xám |
-| Mô tả (View/Edit) | Text/Input | Input/Output | Max 500 ký tự | Row value | API14/User input | E07 | `description` | |
 | Số bài | Text | Output | N/A | N/A | API14 | N/A | `postCount` | Tổng bài chưa xóa |
-| Số lượt xem | Text | Output | N/A | N/A | API14 | N/A | `viewCount` | SUM `posts.view_count` |
-| Người tạo | Text | Output | N/A | N/A | API14 | N/A | `createdByName` | Lấy từ `users.name` |
-| Bài mới nhất | Text | Output | N/A | N/A | API14 | N/A | `latestPost` | Hiển thị tiêu đề bài mới nhất |
-| Ngày cập nhật | Text | Output | Format `DD/MM/YYYY` | N/A | API14 | N/A | `updated_at` | Dùng `formatDate` |
-| Thumbnail/SEO (Edit) | Input | Input | URL/length limits | Row value | User input | E07 | `thumbnail_url`, `seo_title`, `seo_description` | Có thể mở trong vùng edit mở rộng |
+| Hành động: Xem | Button | Input | Disabled khi busy | N/A | Row | E12 | Row object | Mở popup chi tiết chứa mô tả, lượt xem, người tạo, bài mới nhất, SEO, ngày tạo/cập nhật |
+| Hành động: Sửa | Button | Input | Disabled khi busy | N/A | Row | E07 | Row object | Sửa inline các field chính/metadata |
+| Hành động: Xóa | Button | Input | Disabled khi busy | N/A | Row | E10 | `id` | Mở DeleteModal |
 
 ### 6.4 DeleteModal
 - Text dùng `CATEGORY-C-001`: "Xóa mềm danh mục này? Danh mục sẽ bị ẩn khỏi danh sách public nhưng dữ liệu bài viết vẫn được giữ."
@@ -188,8 +186,8 @@ const [deleteModal, setDeleteModal] = useState({ open: false, id: null });
 
 | Breakpoint | Layout |
 |-----------|--------|
-| Mobile (< 768px) | Toolbar và AddForm stack dọc, bảng scroll ngang, ẩn cột SEO/Ngày cập nhật |
-| Tablet (768–1024px) | AddForm ngang, bảng đầy đủ cột |
+| Mobile (< 768px) | Toolbar stack dọc, table chỉ giữ cột chính; chi tiết xem qua popup `Xem` |
+| Tablet (768–1024px) | Toolbar 2 hàng, table không dùng checkbox chọn dòng |
 | Desktop (> 1024px) | Full layout với AdminLayout sidebar |
 
 ## 11. Events & Actions
@@ -240,7 +238,7 @@ sequenceDiagram
 
 - Table action chuẩn cho master: `Xem`, `Sửa`, `Xóa`.
 - Button `Xem` mở detail modal từ dữ liệu row hiện tại hoặc API detail nếu cần.
-- Toolbar giữ cùng pattern với User: Search, Reset, Export CSV, `+ Thêm danh mục`.
+- Toolbar/header actions giữ cùng pattern với User/Post: Search, filter, Export CSV, `+ Tạo mới`.
 
 
 | MessageId | Loại | Nội dung | Component hiển thị | Điều kiện |

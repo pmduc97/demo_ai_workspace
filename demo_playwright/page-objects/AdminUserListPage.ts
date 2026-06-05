@@ -43,15 +43,16 @@ export class AdminUserListPage {
 
   async openWithAdmin() {
     await this.loginAs('admin@hoianblog.vn', 'password123');
+    const responsePromise = this.page.waitForResponse(response => response.url().includes('/api/admin/users') && response.status() === 200);
     await this.page.locator('a[href="/admin/users"]').first().click();
+    await responsePromise;
     await expect(this.page).toHaveURL(/\/admin\/users/);
-    await expect(this.searchInput).toBeVisible();
-    await expect(this.createButton).toBeVisible();
+    await expect(this.table).toBeVisible();
   }
 
   async search(keyword: string) {
     await this.searchInput.fill(keyword);
-    await this.searchButton.click();
+    await this.searchInput.press('Enter');
   }
 
   rowByEmail(email: string) {
@@ -68,6 +69,25 @@ export class AdminUserListPage {
   async openCreate() {
     await this.createButton.click();
     await expect(this.page.getByText('Tạo người dùng')).toBeVisible();
+  }
+
+  async changeRoleByEmail(email: string, nextRole: 'admin' | 'member') {
+    await this.search(email);
+    const row = this.rowByEmail(email);
+    await expect(row).toBeVisible();
+    await row.getByRole('button', { name: /admin|member/i }).click();
+    await expect(this.page.getByText('Xác nhận đổi role')).toBeVisible();
+    const responsePromise = this.page.waitForResponse(response => response.url().includes('/api/admin/users/') && response.url().includes('/role') && response.status() === 200);
+    await this.page.getByRole('button', { name: `Đổi thành ${nextRole}` }).click();
+    await responsePromise;
+  }
+
+  async openStatusModalByEmail(email: string) {
+    await this.search(email);
+    const row = this.rowByEmail(email);
+    await expect(row).toBeVisible();
+    await row.getByRole('button', { name: /active|locked/i }).click();
+    await expect(this.page.getByText('Xác nhận trạng thái')).toBeVisible();
   }
 
   async fillProfile(data: Partial<Record<'name' | 'phone' | 'address' | 'avatar_url' | 'bio' | 'birthdate' | 'gender', string>>) {

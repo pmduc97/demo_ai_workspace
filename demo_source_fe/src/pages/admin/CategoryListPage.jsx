@@ -1,7 +1,11 @@
-import { useEffect, useMemo, useState } from 'react';
-import AdminLayout from '../../components/AdminLayout';
+import React, { useState } from 'react';
 import api, { parseApiError } from '../../services/api';
 import { getMessage } from '../../constants/messages';
+import { useMasterData } from '../../hooks/useMasterData';
+import AdminPageLayout from '../../components/layout/AdminPageLayout';
+import DataToolbar from '../../components/ui/DataToolbar';
+import DataTable from '../../components/ui/DataTable';
+import Pagination from '../../components/ui/Pagination';
 
 const toSlug = (str) =>
   str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -16,24 +20,9 @@ const formatDate = (value) => {
   return date.toLocaleDateString('vi-VN');
 };
 
-const normalizeResponse = (data, currentPage, limit) => {
-  const items = Array.isArray(data) ? data : data?.items || [];
-  return {
-    items,
-    pagination: data?.pagination || { page: currentPage, limit, totalItems: items.length, totalPages: 1 },
-  };
-};
-
 export default function CategoryListPage() {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [keyword, setKeyword] = useState('');
-  const [searchDraft, setSearchDraft] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [sort, setSort] = useState('created_at_desc');
-  const [pagination, setPagination] = useState({ page: 1, limit: 5, totalItems: 0, totalPages: 1 });
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [addForm, setAddForm] = useState(emptyForm);
   const [addError, setAddError] = useState('');
@@ -46,51 +35,37 @@ export default function CategoryListPage() {
   const [deleteModal, setDeleteModal] = useState({ open: false, id: null, name: '' });
   const [detailCategory, setDetailCategory] = useState(null);
 
-  const busy = loading || adding || saving || deleting || exporting;
-  const canSubmitAdd = addForm.name.trim().length >= 2 && addForm.slug.trim().length > 0 && !adding;
-
-  const load = async (page = pagination.page, overrides = {}) => {
-    setLoading(true);
-    setError('');
-    try {
-      const params = {
-        keyword: (overrides.keyword ?? keyword).trim(),
-        status: overrides.status ?? statusFilter,
-        sort: overrides.sort ?? sort,
-        page,
-        limit: pagination.limit,
-      };
-      const { data } = await api.get('/categories', { params });
-      const normalized = normalizeResponse(data, page, pagination.limit);
-      setCategories(normalized.items);
-      setPagination(normalized.pagination);
-    } catch (err) {
-      setError(parseApiError(err, 'CATEGORY-E-001'));
-      setCategories([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    load(1);
+  const fetchCategories = React.useCallback(async (params) => {
+    const { data } = await api.get('/categories', {
+      params: {
+        page: params.page,
+        limit: params.limit,
+        keyword: params.keyword,
+        status: params.status !== 'all' ? params.status : undefined,
+        sort: params.sortField ? `${params.sortField}_${params.sortOrder}` : 'created_at_desc'
+      }
+    });
+    const items = Array.isArray(data) ? data : data?.items || [];
+    return { data: items, total: data?.pagination?.totalItems || items.length };
   }, []);
 
-  const pageStart = useMemo(() => ((pagination.page || 1) - 1) * (pagination.limit || 5), [pagination]);
+  const {
+    data: categories,
+    total,
+    loading,
+    page,
+    limit,
+    filters,
+    sort,
+    fetchData: load,
+    handlePageChange,
+    handleLimitChange,
+    handleFilterChange,
+    handleSortChange,
+  } = useMasterData(fetchCategories, { keyword: '', status: 'all' }, { field: 'created_at', order: 'desc' }, 5);
 
-  const handleSearch = () => {
-    const nextKeyword = searchDraft.trim();
-    setKeyword(nextKeyword);
-    load(1, { keyword: nextKeyword });
-  };
-
-  const resetFilters = () => {
-    setSearchDraft('');
-    setKeyword('');
-    setStatusFilter('all');
-    setSort('created_at_desc');
-    load(1, { keyword: '', status: 'all', sort: 'created_at_desc' });
-  };
+  const busy = loading || adding || saving || deleting || exporting;
+  const canSubmitAdd = addForm.name.trim().length >= 2 && addForm.slug.trim().length > 0 && !adding;
 
   const escapeCsv = (value) => {
     const text = value === null || value === undefined ? '' : String(value);
@@ -103,15 +78,16 @@ export default function CategoryListPage() {
     try {
       const exportLimit = 100;
       const firstResponse = await api.get('/categories', {
-        params: { keyword: keyword.trim(), status: statusFilter, sort, page: 1, limit: exportLimit },
+        params: { keyword: filters.keyword, status: filters.status, sort: sort.field ? `${sort.field}_${sort.order}` : 'created_at_desc', page: 1, limit: exportLimit },
       });
-      const firstPage = normalizeResponse(firstResponse.data, 1, exportLimit);
-      let items = [...firstPage.items];
-      for (let page = 2; page <= (firstPage.pagination.totalPages || 1); page += 1) {
+      const firstPageItems = Array.isArray(firstResponse.data) ? firstResponse.data : firstResponse.data?.items || [];
+      const totalPages = firstResponse.data?.pagination?.totalPages || 1;
+      let items = [...firstPageItems];
+      for (let p = 2; p <= totalPages; p += 1) {
         const { data } = await api.get('/categories', {
-          params: { keyword: keyword.trim(), status: statusFilter, sort, page, limit: exportLimit },
+          params: { keyword: filters.keyword, status: filters.status, sort: sort.field ? `${sort.field}_${sort.order}` : 'created_at_desc', page: p, limit: exportLimit },
         });
-        items = [...items, ...normalizeResponse(data, page, exportLimit).items];
+        items = [...items, ...(Array.isArray(data) ? data : data?.items || [])];
       }
       const header = ['ID', 'Tên', 'Slug', 'Mô tả', 'Trạng thái', 'Số bài', 'Bài đã publish', 'Lượt xem', 'Người tạo', 'Bài mới nhất', 'Ngày tạo', 'Ngày cập nhật'];
       const rows = items.map((cat) => [cat.id, cat.name, cat.slug, cat.description, cat.status, cat.postCount ?? 0, cat.publishedPostCount ?? 0, cat.viewCount ?? 0, cat.createdByName, cat.latestPost?.title, formatDate(cat.created_at), formatDate(cat.updated_at)]);
@@ -150,7 +126,7 @@ export default function CategoryListPage() {
       setAddForm(emptyForm);
       setAddModalOpen(false);
       setSuccess(getMessage('CATEGORY-S-001'));
-      load(pagination.page);
+      load();
     } catch (err) {
       setAddError(parseApiError(err, 'CATEGORY-E-001'));
     } finally {
@@ -176,7 +152,7 @@ export default function CategoryListPage() {
       await api.put(`/categories/${id}`, editForm);
       setEditingId(null);
       setSuccess(getMessage('CATEGORY-S-002'));
-      load(pagination.page);
+      load();
     } catch (err) {
       setError(parseApiError(err, 'CATEGORY-E-001'));
     } finally {
@@ -191,7 +167,7 @@ export default function CategoryListPage() {
       await api.delete(`/categories/${deleteModal.id}`);
       setDeleteModal({ open: false, id: null, name: '' });
       setSuccess(getMessage('CATEGORY-S-003'));
-      load(pagination.page);
+      load();
     } catch (err) {
       setError(parseApiError(err, 'CATEGORY-E-003'));
     } finally {
@@ -199,154 +175,123 @@ export default function CategoryListPage() {
     }
   };
 
-  const changePage = (page) => { if (!busy && page >= 1 && page <= pagination.totalPages) load(page); };
+  const categoryColumns = [
+    {
+      key: 'name',
+      label: 'Tên',
+      sortable: true,
+      render: (cat) => editingId === cat.id ? <input name="name" value={editForm.name} onChange={handleEditChange} className="border border-gray-300 rounded px-2 py-1 w-full text-sm" /> : <span className="font-medium text-gray-800">{cat.name}</span>
+    },
+    {
+      key: 'slug',
+      label: 'Slug',
+      sortable: true,
+      render: (cat) => editingId === cat.id ? <input name="slug" value={editForm.slug} onChange={handleEditChange} className="border border-gray-300 rounded px-2 py-1 w-full text-sm" /> : <span className="text-gray-500 font-mono text-xs">{cat.slug}</span>
+    },
+    
+    {
+      key: 'status',
+      label: 'Trạng thái',
+      sortable: true,
+      render: (cat) => editingId === cat.id ? <select name="status" value={editForm.status} onChange={handleEditChange} className="border border-gray-300 rounded px-2 py-1 w-full text-sm"><option value="active">Hiển thị</option><option value="hidden">Ẩn</option></select> : <span className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${cat.status === 'hidden' ? 'bg-gray-100 text-gray-600' : 'bg-green-100 text-green-700'}`}>{cat.status === 'hidden' ? 'Ẩn' : 'Hiển thị'}</span>
+    },
+    {
+      key: 'posts',
+      label: 'Số bài',
+      sortable: false,
+      render: (cat) => <span className="text-gray-600">{cat.postCount ?? 0} <span className="text-gray-400">/ {cat.publishedPostCount ?? 0} publish</span></span>
+    },
+    {
+      key: 'actions',
+      label: 'Hành động',
+      sortable: false,
+      render: (cat) => editingId === cat.id ? (
+        <div className="flex justify-end gap-2">
+          <button onClick={() => handleSave(cat.id)} disabled={saving} className="text-xs bg-green-500 hover:bg-green-600 disabled:opacity-60 text-white px-3 py-1 rounded-lg">Lưu</button>
+          <button onClick={cancelEdit} disabled={saving} className="text-xs bg-gray-200 hover:bg-gray-300 disabled:opacity-60 text-gray-700 px-3 py-1 rounded-lg">Hủy</button>
+        </div>
+      ) : (
+        <div className="flex justify-end gap-2">
+          <button onClick={() => setDetailCategory(cat)} disabled={busy} className="text-xs font-medium bg-gray-100 hover:bg-gray-200 disabled:opacity-60 text-gray-700 px-3 py-1.5 rounded-lg">Xem</button>
+          <button onClick={() => startEdit(cat)} disabled={busy} className="text-xs font-medium bg-amber-50 hover:bg-amber-100 disabled:opacity-60 text-amber-700 px-3 py-1.5 rounded-lg">Sửa</button>
+          <button onClick={() => setDeleteModal({ open: true, id: cat.id, name: cat.name })} disabled={busy} className="text-xs font-medium bg-red-50 hover:bg-red-100 disabled:opacity-60 text-red-600 px-3 py-1.5 rounded-lg">Xóa</button>
+        </div>
+      )
+    }
+  ];
+
+  const customFilters = (
+    <select value={filters.status} onChange={(e) => handleFilterChange({ status: e.target.value })} disabled={busy} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:bg-gray-100">
+      <option value="all">Tất cả</option><option value="active">Đang hiển thị</option><option value="hidden">Đã ẩn</option>
+    </select>
+  );
+
+  const headerActions = (
+    <>
+      <button type="button" onClick={exportCsv} disabled={busy} className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-700 hover:bg-emerald-100 disabled:opacity-60">{exporting ? 'Đang export...' : 'Export CSV'}</button>
+      <button type="button" onClick={() => { setAddError(''); setAddForm(emptyForm); setAddModalOpen(true); }} disabled={busy} className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 disabled:opacity-60">+ Tạo mới</button>
+    </>
+  );
 
   return (
-    <AdminLayout title="Quản Lý Danh Mục">
-      <div className="bg-white rounded-xl border border-gray-200 p-5 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
-          <div>
-            <label className="block text-xs text-gray-500 mb-1">Tìm kiếm</label>
-            <input value={searchDraft} onChange={(e) => setSearchDraft(e.target.value.slice(0, 100))} onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }} disabled={busy} placeholder="Tên hoặc slug" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:bg-gray-100" />
-          </div>
-          <div>
-            <label className="block text-xs text-gray-500 mb-1">Trạng thái</label>
-            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} disabled={busy} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:bg-gray-100">
-              <option value="all">Tất cả</option><option value="active">Đang hiển thị</option><option value="hidden">Đã ẩn</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-xs text-gray-500 mb-1">Sắp xếp</label>
-            <select value={sort} onChange={(e) => setSort(e.target.value)} disabled={busy} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:bg-gray-100">
-              <option value="created_at_desc">Mới tạo trước</option><option value="name_asc">Tên A-Z</option><option value="post_count_desc">Nhiều bài nhất</option><option value="view_count_desc">Nhiều lượt xem nhất</option><option value="latest_post_desc">Bài mới nhất</option>
-            </select>
-          </div>
-          <div className="flex gap-2 md:col-span-2">
-            <button type="button" onClick={handleSearch} disabled={busy} className="flex-1 bg-amber-500 hover:bg-amber-600 disabled:opacity-60 text-white px-4 py-2 rounded-lg text-sm font-medium">Search</button>
-            <button type="button" onClick={resetFilters} disabled={busy} className="flex-1 bg-gray-100 hover:bg-gray-200 disabled:opacity-60 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium">Reset</button>
-          </div>
-        </div>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4 border-t border-gray-100 pt-4">
-          <p className="text-sm text-gray-500">Kết quả theo điều kiện hiện tại: <span className="font-medium text-gray-700">{pagination.totalItems}</span> danh mục</p>
-          <div className="flex gap-2">
-            <button type="button" onClick={exportCsv} disabled={busy} className="bg-emerald-50 hover:bg-emerald-100 disabled:opacity-60 text-emerald-700 px-4 py-2 rounded-lg text-sm font-medium">{exporting ? 'Đang export...' : 'Export CSV'}</button>
-            <button type="button" onClick={() => { setAddError(''); setAddForm(emptyForm); setAddModalOpen(true); }} disabled={busy} className="bg-amber-500 hover:bg-amber-600 disabled:opacity-60 text-white px-4 py-2 rounded-lg text-sm font-medium">+ Thêm danh mục</button>
-          </div>
-        </div>
+    <AdminPageLayout title="Quản Lý Danh Mục" headerActions={headerActions}>
+      <div className="space-y-4">
         {error && <p className="text-sm text-red-600 mb-3">{error}</p>}
         {success && <p className="text-sm text-green-600 mb-3">{success}</p>}
+
+        <DataToolbar
+          searchPlaceholder="Tên hoặc slug"
+          onSearch={(keyword) => handleFilterChange({ keyword })}
+          customFilters={customFilters}
+        />
+
+        <DataTable
+          columns={categoryColumns}
+          data={categories}
+          loading={loading}
+          sort={sort}
+          onSort={handleSortChange}
+          emptyMessage="Chưa có danh mục nào. Hãy thêm danh mục đầu tiên!"
+        />
+
+        <Pagination
+          page={page}
+          total={total}
+          limit={limit}
+          onPageChange={handlePageChange}
+        />
       </div>
 
       {addModalOpen && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
-          <div className="bg-white rounded-xl shadow-xl p-6 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex items-start justify-between gap-4 mb-4">
-              <div>
-                <h2 className="text-lg font-semibold text-gray-800">Thêm danh mục mới</h2>
-                <p className="text-sm text-gray-500 mt-1">Sau khi tạo xong, danh sách sẽ reload theo điều kiện search hiện tại.</p>
-              </div>
-              <button type="button" onClick={() => setAddModalOpen(false)} disabled={adding} className="text-gray-400 hover:text-gray-600 text-xl leading-none">×</button>
+          <div className="bg-white rounded-xl shadow-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-start gap-4 mb-4">
+              <h3 className="font-semibold text-gray-800">Thêm danh mục</h3>
+              <button onClick={() => !adding && setAddModalOpen(false)} className="text-gray-400 hover:text-gray-600 text-xl leading-none">×</button>
             </div>
-        {addError && <p className="text-sm text-red-600 mb-3">{addError}</p>}
-        <form onSubmit={handleAdd} className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 items-end">
-          <div className="flex-1 min-w-36">
-            <label className="block text-xs text-gray-500 mb-1">Tên *</label>
-            <input name="name" value={addForm.name} onChange={handleAddChange} placeholder="Du lịch" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" />
-          </div>
-          <div className="flex-1 min-w-36">
-            <label className="block text-xs text-gray-500 mb-1">Slug *</label>
-            <input name="slug" value={addForm.slug} onChange={handleAddChange} placeholder="du-lich" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" />
-          </div>
-          <div>
-            <label className="block text-xs text-gray-500 mb-1">Mô tả</label>
-            <input name="description" value={addForm.description} onChange={handleAddChange} placeholder="Mô tả ngắn..." className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" />
-          </div>
-          <div><label className="block text-xs text-gray-500 mb-1">Trạng thái</label><select name="status" value={addForm.status} onChange={handleAddChange} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"><option value="active">Đang hiển thị</option><option value="hidden">Ẩn</option></select></div>
-          <div><label className="block text-xs text-gray-500 mb-1">Thumbnail URL</label><input name="thumbnail_url" value={addForm.thumbnail_url} onChange={handleAddChange} placeholder="/uploads/categories/..." className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" /></div>
-          <div><label className="block text-xs text-gray-500 mb-1">SEO Title</label><input name="seo_title" value={addForm.seo_title} onChange={handleAddChange} maxLength={70} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" /></div>
-          <div><label className="block text-xs text-gray-500 mb-1">SEO Description</label><input name="seo_description" value={addForm.seo_description} onChange={handleAddChange} maxLength={160} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" /></div>
-          <button type="submit" disabled={!canSubmitAdd} className="bg-amber-500 hover:bg-amber-600 disabled:opacity-60 text-white px-5 py-2 rounded-lg text-sm font-medium transition-colors">
-            {adding ? 'Đang thêm...' : 'Thêm'}
-          </button>
-          <button type="button" onClick={() => setAddModalOpen(false)} disabled={adding} className="bg-gray-100 hover:bg-gray-200 disabled:opacity-60 text-gray-700 px-5 py-2 rounded-lg text-sm font-medium transition-colors">Hủy</button>
-        </form>
+            {addError && <p className="text-sm text-red-600 mb-3">{addError}</p>}
+            <form onSubmit={handleAdd} className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <input name="name" value={addForm.name} onChange={handleAddChange} className="border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="Tên danh mục" />
+                <input name="slug" value={addForm.slug} onChange={handleAddChange} className="border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="slug-danh-muc" />
+              </div>
+              <textarea name="description" value={addForm.description} onChange={handleAddChange} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="Mô tả" />
+              <select name="status" value={addForm.status} onChange={handleAddChange} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                <option value="active">Hiển thị</option>
+                <option value="hidden">Ẩn</option>
+              </select>
+              <input name="thumbnail_url" value={addForm.thumbnail_url} onChange={handleAddChange} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="Thumbnail URL" />
+              <input name="seo_title" value={addForm.seo_title} onChange={handleAddChange} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="SEO title" />
+              <textarea name="seo_description" value={addForm.seo_description} onChange={handleAddChange} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="SEO description" />
+              <div className="flex gap-3 justify-end pt-2">
+                <button type="button" onClick={() => setAddModalOpen(false)} disabled={adding} className="px-4 py-2 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 disabled:opacity-60 text-gray-700">Hủy</button>
+                <button type="submit" disabled={!canSubmitAdd} className="px-4 py-2 text-sm rounded-lg bg-amber-500 hover:bg-amber-600 disabled:opacity-60 text-white">{adding ? 'Đang thêm...' : 'Thêm danh mục'}</button>
+              </div>
+            </form>
           </div>
         </div>
       )}
 
-      {/* Table */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-        {loading ? (
-          <div className="p-8 text-center text-gray-400">Đang tải...</div>
-        ) : categories.length === 0 ? (
-          <div className="p-8 text-center text-gray-400">Chưa có danh mục nào. Hãy thêm danh mục đầu tiên!</div>
-        ) : (
-          <div className="overflow-x-auto"><table className="w-full text-sm min-w-[1100px]">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">STT</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Tên</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Slug</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Mô tả</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Trạng thái</th>
-                <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Số bài</th>
-                <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Lượt xem</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Metadata</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Hành động</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {categories.map((cat, idx) => (
-                <tr key={cat.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-gray-400">{pageStart + idx + 1}</td>
-                  {editingId === cat.id ? (
-                    <>
-                      <td className="px-4 py-2"><input name="name" value={editForm.name} onChange={handleEditChange} className="border border-gray-300 rounded px-2 py-1 w-full text-sm" /></td>
-                      <td className="px-4 py-2"><input name="slug" value={editForm.slug} onChange={handleEditChange} className="border border-gray-300 rounded px-2 py-1 w-full text-sm" /></td>
-                      <td className="px-4 py-2"><input name="description" value={editForm.description} onChange={handleEditChange} className="border border-gray-300 rounded px-2 py-1 w-full text-sm" /></td>
-                      <td className="px-4 py-2"><select name="status" value={editForm.status} onChange={handleEditChange} className="border border-gray-300 rounded px-2 py-1 w-full text-sm"><option value="active">Hiển thị</option><option value="hidden">Ẩn</option></select></td>
-                      <td className="px-4 py-2 text-center text-gray-400">{cat.postCount ?? 0} / {cat.publishedPostCount ?? 0}</td>
-                      <td className="px-4 py-2 text-center text-gray-400">{cat.viewCount ?? 0}</td>
-                      <td className="px-4 py-2 space-y-2"><input name="thumbnail_url" value={editForm.thumbnail_url} onChange={handleEditChange} placeholder="Thumbnail URL" className="border border-gray-300 rounded px-2 py-1 w-full text-xs" /><input name="seo_title" value={editForm.seo_title} onChange={handleEditChange} placeholder="SEO title" className="border border-gray-300 rounded px-2 py-1 w-full text-xs" /><input name="seo_description" value={editForm.seo_description} onChange={handleEditChange} placeholder="SEO description" className="border border-gray-300 rounded px-2 py-1 w-full text-xs" /></td>
-                      <td className="px-4 py-2 text-right space-x-2">
-                        <button onClick={() => handleSave(cat.id)} disabled={saving} className="text-xs bg-green-500 hover:bg-green-600 disabled:opacity-60 text-white px-3 py-1 rounded-lg">Lưu</button>
-                        <button onClick={cancelEdit} disabled={saving} className="text-xs bg-gray-200 hover:bg-gray-300 disabled:opacity-60 text-gray-700 px-3 py-1 rounded-lg">Hủy</button>
-                      </td>
-                    </>
-                  ) : (
-                    <>
-                      <td className="px-4 py-3 font-medium text-gray-800">{cat.name}</td>
-                      <td className="px-4 py-3 text-gray-500 font-mono text-xs">{cat.slug}</td>
-                      <td className="px-4 py-3 text-gray-500 truncate max-w-xs">{cat.description || '—'}</td>
-                      <td className="px-4 py-3"><span className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${cat.status === 'hidden' ? 'bg-gray-100 text-gray-600' : 'bg-green-100 text-green-700'}`}>{cat.status === 'hidden' ? 'Ẩn' : 'Hiển thị'}</span></td>
-                      <td className="px-4 py-3 text-center text-gray-600"><span>{cat.postCount ?? 0}</span><span className="text-gray-400"> / {cat.publishedPostCount ?? 0} publish</span></td>
-                      <td className="px-4 py-3 text-center text-gray-600">{cat.viewCount ?? 0}</td>
-                      <td className="px-4 py-3 text-gray-500 text-xs"><div>Người tạo: {cat.createdByName || '—'}</div><div>Bài mới nhất: {cat.latestPost?.title || '—'}</div><div>Cập nhật: {formatDate(cat.updated_at)}</div></td>
-                      <td className="px-4 py-3 text-right space-x-2">
-                        <button onClick={() => setDetailCategory(cat)} disabled={busy} className="text-xs bg-gray-100 hover:bg-gray-200 disabled:opacity-60 text-gray-700 px-3 py-1 rounded-lg">Xem</button>
-                        <button onClick={() => startEdit(cat)} disabled={busy} className="text-xs bg-blue-50 hover:bg-blue-100 disabled:opacity-60 text-blue-600 px-3 py-1 rounded-lg">Sửa</button>
-                        <button onClick={() => setDeleteModal({ open: true, id: cat.id, name: cat.name })} disabled={busy} className="text-xs bg-red-50 hover:bg-red-100 disabled:opacity-60 text-red-600 px-3 py-1 rounded-lg">Xóa mềm</button>
-                      </td>
-                    </>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table></div>
-        )}
-      </div>
-
-      {pagination.totalPages > 1 && (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 text-sm text-gray-600">
-          <p>Trang {pagination.page} / {pagination.totalPages} · {pagination.totalItems} danh mục</p>
-          <div className="flex gap-2">
-            <button onClick={() => changePage(pagination.page - 1)} disabled={busy || pagination.page <= 1} className="px-3 py-2 rounded-lg bg-white border border-gray-200 hover:bg-gray-50 disabled:opacity-50">Trước</button>
-            <button onClick={() => changePage(pagination.page + 1)} disabled={busy || pagination.page >= pagination.totalPages} className="px-3 py-2 rounded-lg bg-white border border-gray-200 hover:bg-gray-50 disabled:opacity-50">Sau</button>
-          </div>
-        </div>
-      )}
-
-      {/* Delete modal */}
       {detailCategory && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-xl shadow-xl p-6 max-w-2xl w-full">
@@ -375,6 +320,6 @@ export default function CategoryListPage() {
           </div>
         </div>
       )}
-    </AdminLayout>
+    </AdminPageLayout>
   );
 }

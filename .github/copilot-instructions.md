@@ -17,6 +17,11 @@ Blog tin tức về du lịch Việt Nam và các điểm đến du lịch.
 - Validate input chỉ ở boundary (route handler), không validate lại trong service/controller
 - Không dùng `var`, ưu tiên `const` > `let`
 
+### Terminal & Process Management (NGHIÊM CẤM VI PHẠM)
+- **TUYỆT ĐỐI KHÔNG** sử dụng các lệnh kill process hàng loạt như `Stop-Process -Name node -Force`, `killall node`, hoặc `taskkill /IM node.exe /F`. Điều này sẽ làm sập các dự án khác đang chạy trên máy user.
+- **BẮT BUỘC**: Khi cần tắt một server bị kẹt port (ví dụ 3000, 3001), phải tìm chính xác PID đang giữ port đó và chỉ kill đúng PID đó.
+  - Ví dụ: `netstat -ano | findstr :3000` -> Lấy PID -> `Stop-Process -Id <PID> -Force`.
+
 ### Backend (`demo_source_be/`)
 - Framework: Express, query builder: Knex.js — không dùng ORM khác
 - Auth: JWT (access token), password: bcrypt

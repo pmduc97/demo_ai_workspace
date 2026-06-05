@@ -41,7 +41,7 @@
 				"mcp-db-sampler": {
 					"command": "node",
 					"args": [
-						"D:\\Projects\\demo_ai_workspace\\demo_tools\\mcp-db-sampler\\build\\index.js"
+						"D:\\Project\\demo_ai_workspace\\demo_tools\\mcp-db-sampler\\build\\index.js"
 					]
 				}
 			},

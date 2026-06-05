@@ -36,6 +36,7 @@ demo_docs/        ← API specs (22 endpoints) + FE screen specs (11 màn hình)
 |-------|-------------|
 | `/doc-fe-create-and-review` | Tạo tài liệu thiết kế FE (10 sections) và tự chấm điểm |
 | `/doc-be-create-and-review` | Tạo tài liệu thiết kế BE (7 sections) và tự chấm điểm |
+| `/doc-workflow-create-and-review` | Tạo tài liệu Workflow (Business Flow) và tự chấm điểm |
 | `/doc-ita-create-and-review` | Tạo Test Case ITa (dùng MCP lấy data thật) và tự chấm điểm |
 | `/doc-itb-create-and-review` | Tạo Test Case ITb (có Mermaid, DB Matrix) và tự chấm điểm |
 | `/fe-create-and-review` | Code React component/page, tự review và sửa lỗi |
@@ -58,12 +59,13 @@ demo_docs/        ← API specs (22 endpoints) + FE screen specs (11 màn hình)
 ```
 1. DOCS       → Gọi `/doc-fe-create-and-review` hoặc `/doc-be-create-and-review`
 2. PLAN       → Phân rã yêu cầu thành task có acceptance criteria rõ
-3. TEST DESIGN→ Gọi `/doc-ita-create-and-review` hoặc `/doc-itb-create-and-review`
-4. CREATE     → Gọi `/fe-create-and-review` hoặc `/be-create-and-review`
-5. TEST       → Gọi `/test-create-and-review`
-6. E2E TEST   → Gọi `/playwright-ita-full-cycle` hoặc `/playwright-itb-full-cycle`
-7. QA GATE    → Gọi `/qa-gate` kiểm tra tổng
-8. REPORT     → Tóm tắt kết quả, ghi residual risks
+3. WORKFLOW   → Gọi `/doc-workflow-create-and-review`
+4. TEST DESIGN→ Gọi `/doc-ita-create-and-review` hoặc `/doc-itb-create-and-review`
+5. CREATE     → Gọi `/fe-create-and-review` hoặc `/be-create-and-review`
+6. TEST       → Gọi `/test-create-and-review`
+7. E2E TEST   → Gọi `/playwright-ita-full-cycle` hoặc `/playwright-itb-full-cycle`
+8. QA GATE    → Gọi `/qa-gate` kiểm tra tổng
+9. REPORT     → Tóm tắt kết quả, ghi residual risks
 ```
 
 ## Gate Rules (không ngoại lệ)

@@ -56,11 +56,12 @@ Blog tin tức về du lịch Việt Nam và các điểm đến du lịch.
 - **`reports/AGENT_EXECUTION_LOG.md`**: Nơi ghi log bắt buộc sau mỗi lần Agent hoàn thành một task.
 
 ## Workflow AI (Full-Cycle)
-Workspace này dùng quy trình: **plan → docs → test_design → create → review → test_execution → qa_gate**
+Workspace này dùng quy trình: **plan → docs → workflow → test_design → create → review → test_execution → qa_gate**
 
 Các prompt workflow liên hoàn (Create & Review) có sẵn tại `.github/prompts/`:
 - `doc-fe-create-and-review.prompt.md` — Tạo và review tài liệu FE
 - `doc-be-create-and-review.prompt.md` — Tạo và review tài liệu BE
+- `doc-workflow-create-and-review.prompt.md` — Tạo và review tài liệu Workflow (Business Flow)
 - `doc-ita-create-and-review.prompt.md` — Tạo và review Test Case ITa (dùng MCP)
 - `doc-itb-create-and-review.prompt.md` — Tạo và review Test Case ITb (dùng MCP)
 - `fe-create-and-review.prompt.md` — Code và review Frontend

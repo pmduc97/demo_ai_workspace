@@ -139,6 +139,7 @@ Toàn bộ workflow chạy trong **GitHub Copilot Chat** trên VS Code, không c
 |------|----------|
 | `/doc-fe-create-and-review` | Tạo tài liệu thiết kế FE (10 sections) và tự chấm điểm |
 | `/doc-be-create-and-review` | Tạo tài liệu thiết kế BE (7 sections) và tự chấm điểm |
+| `/doc-workflow-create-and-review` | Tạo tài liệu Workflow (Business Flow) và tự chấm điểm |
 | `/doc-ita-create-and-review` | Tạo Test Case ITa (dùng MCP lấy data thật) và tự chấm điểm |
 | `/doc-itb-create-and-review` | Tạo Test Case ITb (có Mermaid, DB Matrix) và tự chấm điểm |
 | `/fe-create-and-review` | Code React component/page, tự review và sửa lỗi |
@@ -167,13 +168,14 @@ Toàn bộ workflow chạy trong **GitHub Copilot Chat** trên VS Code, không c
 ```
 1. DOCS       → docs-agent chuẩn hóa tài liệu thiết kế (FE/BE)
 2. PLAN       → Orchestrator phân rã yêu cầu thành task
-3. TEST DESIGN→ docs-agent tạo Test Case ITa/ITb từ tài liệu thiết kế
-4. CREATE     → be-agent / fe-agent implement
-5. REVIEW     → tự review hoặc cross-review
-6. CORRECT    → fix finding Critical/High
-7. TEST       → test-agent viết test unit/integration
-8. E2E TEST   → playwright-agent viết/chạy test E2E dựa trên Test Case ITa/ITb
-9. QA GATE    → qa-agent kiểm tra tổng, ra verdict PASS/FAIL
+3. WORKFLOW   → docs-agent tạo tài liệu Workflow (Business Flow) từ FE/BE docs
+4. TEST DESIGN→ docs-agent tạo Test Case ITa/ITb (ITb lấy input từ Workflow)
+5. CREATE     → be-agent / fe-agent implement
+6. REVIEW     → tự review hoặc cross-review
+7. CORRECT    → fix finding Critical/High
+8. TEST       → test-agent viết test unit/integration
+9. E2E TEST   → playwright-agent viết/chạy test E2E dựa trên Test Case ITa/ITb
+10. QA GATE   → qa-agent kiểm tra tổng, ra verdict PASS/FAIL
 ```
 
 ### Gate Rules
@@ -272,16 +274,16 @@ cd demo_source_be
 npm test
 ```
 
-## Trạng thái hiện tại (2026-06-03)
+## Trạng thái hiện tại (2026-06-05)
 
 ### Backend — ✅ Hoàn chỉnh
 | Phần | Status |
 |---|---|
 | Express app, middlewares, routes, controllers | ✅ Xong |
 | Migrations + Seeds | ✅ Xong |
-| DB PostgreSQL chạy thực | ❌ Cần tạo DB và chạy migrate |
+| DB PostgreSQL chạy thực | ✅ Đã tạo DB và chạy migrate/seed |
 
-### Frontend — ⚠️ ~85%
+### Frontend — ⚠️ ~90%
 | Phần | Status |
 |---|---|
 | Routing, AuthContext, ProtectedRoute | ✅ Xong |
@@ -289,18 +291,20 @@ npm test
 | Trang public: Home, Category, Post Detail | ✅ Xong |
 | Trang public: About, Contact | ⚠️ Placeholder tĩnh |
 | Admin: Login, Post List, Post Form, Category List, User List | ✅ Xong |
-| Admin: Dashboard stats | ⚠️ Chỉ có heading |
+| Admin: Dashboard stats | ✅ Xong |
 
 ### Tests
 | Phần | Status |
 |---|---|
 | health.test.js | ✅ Xong |
-| auth / posts / categories / admin tests | ❌ Chưa làm |
+| auth / categories / admin_users tests | ✅ Đã có Unit/Integration Test |
+| admin_users E2E tests | ⚠️ Đã có Playwright Test (Pass rate: 89.6%, còn vài bug validation) |
+| posts tests | ❌ Chưa làm |
 
 ### Việc cần làm tiếp
-1. Tạo DB PostgreSQL `hoian_blog` → chạy migrate + seed
-2. Hoàn thiện FE: About/Contact content, Dashboard stats
-3. Viết tests: auth, posts, categories, admin
+1. Hoàn thiện FE: About/Contact content
+2. Viết tests: posts
+3. Fix các bug validation còn tồn đọng của admin_users
 
 ## Đóng góp
 

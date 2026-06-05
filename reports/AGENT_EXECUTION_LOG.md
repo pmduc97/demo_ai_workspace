@@ -68,3 +68,39 @@
 	- `d:\Projects\demo_ai_workspace\reports\AGENT_EXECUTION_LOG.md` [Modified]
 - **Status**: SUCCESS
 - **Notes**: Review tổng CONDITIONAL PASS. Medium findings còn lại: backend chưa trả `messageId`, API08 chưa validate/whitelist update body, API09/API13 đang hard delete thay vì soft delete. Low findings: API10 chưa pagination/filter, một số `id` chưa validate number.
+
+### [2026-06-05] - be-agent
+- **Task**: Review và fix backend code cho chức năng quản lý post (posts_public, posts_member, admin_posts)
+- **Skill Used**: be-implement, be-review
+- **Target Feature**: posts_public, posts_member, admin_posts
+- **Files Processed**:
+	- `demo_source_be/src/controllers/posts.controller.js` [Modified]
+	- `PROJECT_MANIFEST.yml` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Đã review code backend cho chức năng quản lý post. Phát hiện lỗi High (Mass Assignment) trong hàm `update` (API08) do sử dụng `...req.body` trực tiếp. Đã fix bằng cách thêm validation và whitelist các trường được phép update (`title`, `slug`, `content`, `thumbnail_url`, `status`, `category_id`). Các hàm khác (`listAdmin`, `getAdminById`, `updateStatus`, `remove`, `listPublic`, `listMy`, `getBySlug`, `create`) đều khớp với API spec. Đã cập nhật `cycle_checkpoint` thành `test` trong `PROJECT_MANIFEST.yml`.
+
+### [2026-06-05] - docs-agent
+- **Task**: Review tài liệu thiết kế FE cho chức năng login
+- **Skill Used**: doc-fe-review
+- **Target Feature**: auth_login
+- **Files Processed**:
+	- `demo_docs/fe/[Design][SCREEN] ADMIN_LOGIN_DangNhap.md` [Verified/Unchanged]
+	- `PROJECT_MANIFEST.yml` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Tài liệu đã tuân thủ đầy đủ 12 sections, có YAML frontmatter, Change Log, và đồng bộ với Message Catalog. Đánh giá PASS (100/100). Cập nhật `cycle_checkpoint` thành `plan`.
+
+### [2026-06-05] - orchestrator
+- **Task**: Bổ sung bước Workflow Design vào quy trình phát triển chuẩn trước khi tạo ITb
+- **Skill Used**: agent-customization
+- **Target Feature**: N/A (Global Workflow Update)
+- **Files Processed**:
+	- `demo_docs/workflow/TEMPLATE_WORKFLOW.md` [Created]
+	- `.github/skills/doc-workflow-implement/SKILL.md` [Created]
+	- `.github/skills/doc-workflow-review/SKILL.md` [Created]
+	- `.github/prompts/doc-workflow-create-and-review.prompt.md` [Created]
+	- `.github/skills/doc-itb-implement/SKILL.md` [Modified]
+	- `README.md` [Modified]
+	- `.github/copilot-instructions.md` [Modified]
+	- `.github/agents/orchestrator.agent.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Đã tạo template, skills và prompt cho việc tạo/review Workflow Design. Đã cập nhật skill ITb để bắt buộc lấy input từ file Workflow thay vì tự suy luận từ FE/BE docs. Đã cập nhật README, copilot-instructions và orchestrator agent để phản ánh vòng lặp phát triển mới (thêm bước WORKFLOW).

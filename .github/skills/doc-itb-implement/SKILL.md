@@ -16,12 +16,12 @@ Tạo tài liệu Test Case ITb (Scenario Integration) dựa trên các tài li�
 ## Hướng dẫn thực hiện (Workflow - 5 Phases)
 Để tránh timeout và đảm bảo kịch bản luồng đạt chuẩn Enterprise, AI PHẢI thực hiện theo 5 Phase sau. Dừng lại và hỏi ý kiến user sau mỗi Phase.
 
-**Phase 1: Phân tích & Vẽ Sơ đồ Luồng (Mermaid Flowchart)**
-- Đọc các tài liệu thiết kế FE/BE liên quan, `TEMPLATE_ITb.md`, `VIEWPOINT_ITb.md`.
-- **Bắt buộc:** Đọc tài liệu `demo_docs/[Design][DB] DATABASE_Schema.md` để nắm chính xác cấu trúc DB, phục vụ cho việc lập DB Confirmation Matrix ở bước sau.
-- Xác định các Actor, Nodes (Screen/API).
-- Vẽ sơ đồ `Mermaid sequenceDiagram` mô tả luồng đi qua các node.
-- *Dừng lại và yêu cầu user xác nhận sơ đồ luồng.*
+**Phase 1: Phân tích Workflow & Chuẩn bị**
+- **BẮT BUỘC:** Đọc tài liệu `[Design][WORKFLOW]` tương ứng của luồng nghiệp vụ này (tại `demo_docs/workflow/`). Không tự suy luận luồng từ FE/BE docs.
+- Đọc `TEMPLATE_ITb.md`, `VIEWPOINT_ITb.md`.
+- Đọc tài liệu `demo_docs/[Design][DB] DATABASE_Schema.md` để nắm chính xác cấu trúc DB, phục vụ cho việc lập DB Confirmation Matrix ở bước sau.
+- Review lại sơ đồ `Mermaid sequenceDiagram` từ file Workflow để xác định các Actor, Nodes (Screen/API).
+- *Dừng lại và yêu cầu user xác nhận đã hiểu đúng Workflow.*
 
 **Phase 2: Lập Ma trận Dữ liệu (DB Confirmation Matrix) & Setup Data**
 - Viết câu lệnh SQL Setup Data (DELETE/INSERT).

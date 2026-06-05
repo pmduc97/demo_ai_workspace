@@ -44,7 +44,32 @@ exports.create = async (req, res) => {
   return res.status(201).json(rows[0]);
 };
 
-exports.update = async (req, res) => { const post = await db('posts').where({ id: req.params.id }).first(); if (!post) return res.status(404).json({ message: 'Post not found' }); if (req.user.role !== 'admin' && post.author_id !== req.user.id) return res.status(403).json({ message: 'Forbidden' }); const rows = await db('posts').where({ id: req.params.id }).update({ ...req.body, updated_at: db.fn.now() }).returning('*'); return res.json(rows[0]); };
+exports.update = async (req, res) => {
+  const post = await db('posts').where({ id: req.params.id }).first();
+  if (!post) return res.status(404).json({ message: 'Post not found' });
+  if (req.user.role !== 'admin' && post.author_id !== req.user.id) return res.status(403).json({ message: 'Forbidden' });
+
+  const errors = validate([
+    { field: 'title', required: false, type: 'string', min: 5 },
+    { field: 'slug', required: false, type: 'string', pattern: /^[a-z0-9-]+$/ },
+    { field: 'content', required: false, type: 'string' },
+    { field: 'status', required: false, enum: ['draft', 'published'] },
+    { field: 'category_id', required: false, type: 'number' },
+  ], req.body);
+  if (errors.length) return res.status(422).json({ message: 'Validation failed', details: errors });
+
+  const { title, slug, content, thumbnail_url, status, category_id } = req.body;
+  const updateData = { updated_at: db.fn.now() };
+  if (title !== undefined) updateData.title = title;
+  if (slug !== undefined) updateData.slug = slug;
+  if (content !== undefined) updateData.content = content;
+  if (thumbnail_url !== undefined) updateData.thumbnail_url = thumbnail_url;
+  if (status !== undefined) updateData.status = status;
+  if (category_id !== undefined) updateData.category_id = category_id;
+
+  const rows = await db('posts').where({ id: req.params.id }).update(updateData).returning('*');
+  return res.json(rows[0]);
+};
 exports.remove = async (req, res) => { const post = await db('posts').where({ id: req.params.id }).first(); if (!post) return res.status(404).json({ message: 'Post not found' }); if (req.user.role !== 'admin' && post.author_id !== req.user.id) return res.status(403).json({ message: 'Forbidden' }); await db('posts').where({ id: req.params.id }).del(); return res.json({ message: 'Deleted' }); };
 exports.listAdmin = async (req, res) => res.json({ items: await db('posts').orderBy('created_at', 'desc') });
 exports.getAdminById = async (req, res) => { const post = await db('posts').where({ id: req.params.id }).first(); if (!post) return res.status(404).json({ message: 'Post not found' }); return res.json(post); };

@@ -96,7 +96,7 @@ features:
   posts_public:
     name: "Danh sách & Chi tiết bài viết (public)"
     status: "implemented"
-    cycle_checkpoint: "plan"
+    cycle_checkpoint: "review"
     docs:
       fe_screen:
         - "demo_docs/fe/[Design][SCREEN] HOME_TrangChu.md"
@@ -157,7 +157,7 @@ features:
   posts_member:
     name: "Tạo / Sửa / Xóa bài viết (member)"
     status: "implemented"
-    cycle_checkpoint: "plan"
+    cycle_checkpoint: "review"
     docs:
       fe_screen:
         - "demo_docs/fe/[Design][SCREEN] ADMIN_POST_LIST_DanhSachBai.md"
@@ -188,7 +188,7 @@ features:
   admin_posts:
     name: "Admin quản lý bài viết (duyệt/xóa)"
     status: "implemented"
-    cycle_checkpoint: "plan"
+    cycle_checkpoint: "review"
     docs:
       fe_screen:
         - "demo_docs/fe/[Design][SCREEN] ADMIN_POST_LIST_DanhSachBai.md"

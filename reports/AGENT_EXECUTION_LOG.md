@@ -1,3 +1,29 @@
+### [2026-06-05 00:00:00] - docs-agent
+- **Task**: Review và fix toàn bộ design docs chức năng quản lý post theo workflow doc-fe/doc-be implement-review
+- **Skill Used**: doc-fe-implement, doc-fe-review, doc-be-implement, doc-be-review
+- **Target Feature**: posts_public, posts_member, admin_posts
+- **Files Processed**:
+	- `PROJECT_MANIFEST.yml` [Modified]
+	- `demo_docs/[Design][COMMON] MESSAGE_Catalog.md` [Verified/Unchanged]
+	- `demo_docs/fe/[Design][SCREEN] HOME_TrangChu.md` [Verified/Unchanged]
+	- `demo_docs/fe/[Design][SCREEN] CATEGORY_DanhMuc.md` [Verified/Unchanged]
+	- `demo_docs/fe/[Design][SCREEN] POST_DETAIL_ChiTietBai.md` [Verified/Unchanged]
+	- `demo_docs/fe/[Design][SCREEN] ADMIN_POST_LIST_DanhSachBai.md` [Verified/Unchanged]
+	- `demo_docs/fe/[Design][SCREEN] ADMIN_POST_FORM_TaoSuaBai.md` [Verified/Unchanged]
+	- `demo_docs/api/[Design][API] API04_Posts_DanhSach.md` [Verified/Unchanged]
+	- `demo_docs/api/[Design][API] API05_Posts_ChiTiet.md` [Verified/Unchanged]
+	- `demo_docs/api/[Design][API] API06_Posts_CuaToi.md` [Modified]
+	- `demo_docs/api/[Design][API] API07_Posts_TaoBai.md` [Modified]
+	- `demo_docs/api/[Design][API] API08_Posts_CapNhat.md` [Modified]
+	- `demo_docs/api/[Design][API] API09_Posts_Xoa.md` [Modified]
+	- `demo_docs/api/[Design][API] API10_AdminPosts_DanhSach.md` [Modified]
+	- `demo_docs/api/[Design][API] API11_AdminPosts_ChiTiet.md` [Modified]
+	- `demo_docs/api/[Design][API] API12_AdminPosts_DoiStatus.md` [Modified]
+	- `demo_docs/api/[Design][API] API13_AdminPosts_Xoa.md` [Modified]
+	- `reports/AGENT_EXECUTION_LOG.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Xóa các section legacy còn sót sau Section 10 trong API06-API13 để loại bỏ contract cũ sai code như pagination/filter ở API10, nested author/category ở admin detail/list, error text không đúng controller. Self-review PASS: FE docs 95/100, BE docs 94/100.
+
 ### [2026-06-05] - docs-agent
 
 - Task: Verify git diff và fix lại design docs chức năng post sau manual review.

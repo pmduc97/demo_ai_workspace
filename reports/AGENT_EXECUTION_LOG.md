@@ -104,3 +104,23 @@
 	- `.github/agents/orchestrator.agent.md` [Modified]
 - **Status**: SUCCESS
 - **Notes**: Đã tạo template, skills và prompt cho việc tạo/review Workflow Design. Đã cập nhật skill ITb để bắt buộc lấy input từ file Workflow thay vì tự suy luận từ FE/BE docs. Đã cập nhật README, copilot-instructions và orchestrator agent để phản ánh vòng lặp phát triển mới (thêm bước WORKFLOW).
+
+### [2026-06-05] - docs-agent
+- **Task**: Tạo và review tài liệu Workflow Design cho luồng Admin quản lý user và user đăng nhập
+- **Skill Used**: doc-workflow-implement, doc-workflow-review
+- **Target Feature**: admin_users
+- **Files Processed**:
+	- `demo_docs/workflow/[Design][WORKFLOW] WF01_AdminQuanLyUserVaDangNhap.md` [Created]
+	- `PROJECT_MANIFEST.yml` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Đã tổng hợp logic từ các file FE/BE (Login, Dashboard, User List) thành một luồng xuyên suốt. Sơ đồ Mermaid và các nhánh ALT/EX bao phủ đầy đủ các case (khóa tài khoản, hạ quyền, tự khóa chính mình). Review đạt 100/100 điểm (PASS). Cập nhật `cycle_checkpoint` thành `workflow`.
+
+### [2026-06-05] - qa-design-agent
+- **Task**: Tạo và review tài liệu Test Case ITb cho luồng Admin quản lý user và user đăng nhập
+- **Skill Used**: doc-itb-implement, doc-itb-review
+- **Target Feature**: admin_users
+- **Files Processed**:
+	- `demo_docs/tests/ITb/[Test][ITb] TC_WF01_AdminQuanLyUserVaDangNhap.md` [Created]
+	- `PROJECT_MANIFEST.yml` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Đã sử dụng MCP để lấy cấu trúc bảng `users` và dữ liệu mẫu. Đã tạo file Test Case ITb dựa trên tài liệu Workflow Design. File bao gồm Sơ đồ Mermaid, DB Confirmation Matrix, và 4 Test Cases (HP, ALT, STATE-VIO) đi qua nhiều màn hình và role. Review đạt 95/100 điểm (PASS). Cập nhật `cycle_checkpoint` thành `create`.

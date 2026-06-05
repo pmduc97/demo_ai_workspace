@@ -242,7 +242,7 @@ features:
   admin_users:
     name: "Quản lý người dùng"
     status: "implemented"
-    cycle_checkpoint: "qa_gate"
+    cycle_checkpoint: "create"
     e2e_verdict: "FAIL"
     e2e_pass_rate: "43/48 (89.6%)"
     open_bugs:
@@ -251,6 +251,7 @@ features:
       - "[Medium] TC_UI_015/TC_API_019: future birthdate không validate ở BE"
     e2e_report: "test-results/ITa/Report_ITa_ADMIN_USER_LIST_20260604.md"
     docs:
+      workflow: "demo_docs/workflow/[Design][WORKFLOW] WF01_AdminQuanLyUserVaDangNhap.md"
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md"
       be_api:
         - "demo_docs/api/[Design][API] API19_AdminUsers_DanhSach.md"
@@ -279,7 +280,7 @@ features:
         - "demo_playwright/tests/ITa_functional/admin-users.05-api-auth-security-concurrency.spec.ts"
       test_cases:
         ita: "demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_USER_LIST_QuanLyNguoiDung.md"
-        itb: null
+        itb: "demo_docs/tests/ITb/[Test][ITb] TC_WF01_AdminQuanLyUserVaDangNhap.md"
 
   admin_dashboard:
     name: "Dashboard thống kê"

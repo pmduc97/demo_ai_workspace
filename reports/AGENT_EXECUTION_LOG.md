@@ -124,3 +124,33 @@
 	- `PROJECT_MANIFEST.yml` [Modified]
 - **Status**: SUCCESS
 - **Notes**: Đã sử dụng MCP để lấy cấu trúc bảng `users` và dữ liệu mẫu. Đã tạo file Test Case ITb dựa trên tài liệu Workflow Design. File bao gồm Sơ đồ Mermaid, DB Confirmation Matrix, và 4 Test Cases (HP, ALT, STATE-VIO) đi qua nhiều màn hình và role. Review đạt 95/100 điểm (PASS). Cập nhật `cycle_checkpoint` thành `create`.
+
+### [2026-06-05 10:00:00] - docs-agent
+- **Task**: Tạo và review tài liệu Test Case ITa cho chức năng Quản lý danh mục
+- **Skill Used**: doc-ita-implement, doc-ita-review
+- **Target Feature**: admin_categories
+- **Files Processed**:
+  - `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md` [Modified]
+  - `PROJECT_MANIFEST.yml` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Đã tạo file Test Case ITa sử dụng MCP để lấy dữ liệu mẫu từ DB. Đã review và chấm điểm file vừa tạo.
+
+### [2026-06-05 10:05:00] - docs-agent
+- **Task**: Fix bugs và final review tài liệu Test Case ITa cho chức năng Quản lý danh mục
+- **Skill Used**: doc-ita-review
+- **Target Feature**: admin_categories
+- **Files Processed**:
+  - `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Đã bổ sung các TC Boundary (exact-max), Empty State và Double-click Prevention. Tài liệu đạt 100/100 điểm.
+
+### [2026-06-05 10:10:00] - playwright-agent
+- **Task**: Tạo và chạy Smoke Test ITa cho chức năng Quản lý danh mục
+- **Skill Used**: playwright-suite
+- **Target Feature**: admin_categories
+- **Files Processed**:
+  - `demo_playwright/tests/ITa_functional/admin-categories.01-smoke.spec.ts` [Modified]
+  - `test-results/ITa/Report_ITa_ADMIN_CATEGORY_LIST_SMOKE_20260605.md` [Modified]
+  - `PROJECT_MANIFEST.yml` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Đã tạo và chạy 3 TC smoke test. Phát hiện 1 Bug App (thiếu toast báo lỗi khi sai quyền). Đã xuất báo cáo.

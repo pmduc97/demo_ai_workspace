@@ -38,6 +38,7 @@ Trang quản lý danh mục bài viết. Chỉ Admin mới truy cập được. 
 | Hành động | Destination |
 |----------|------------|
 | Member truy cập | Redirect `/admin/dashboard` (403 guard) |
+| Token hết hạn / Lỗi 401 | Redirect `/admin/login` |
 
 ## 4. Layout & Components
 
@@ -235,7 +236,7 @@ sequenceDiagram
 
 ## 12. Message List
 
-## Master action sync
+**Master action sync**
 
 - Table action chuẩn cho master: `Xem`, `Sửa`, `Xóa`.
 - Button `Xem` mở detail modal từ dữ liệu row hiện tại hoặc API detail nếu cần.

@@ -215,7 +215,7 @@ features:
   admin_categories:
     name: "Quản lý danh mục"
     status: "implemented"
-    cycle_checkpoint: "test"
+    cycle_checkpoint: "e2e"
     docs:
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md"
       be_api:
@@ -236,7 +236,7 @@ features:
       be: "demo_source_be/src/__tests__/category.test.js"
       playwright: null
       test_cases:
-        ita: null
+        ita: "demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md"
         itb: null
 
   admin_users:

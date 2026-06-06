@@ -95,6 +95,16 @@ status: stable
 |---|---|---|---|---|---|
 | 21 | POST | `/upload` | Upload ảnh | Member | [[Design][API] API21_Upload_AnhBai.md]([Design][API] API21_Upload_AnhBai.md) |
 
+## Tags
+
+| # | Method | Endpoint | Mô tả | Role | File |
+|---|---|---|---|---|---|
+| 28 | GET | `/tags` | Danh sách tags | Public | [[Design][API] API28_Tags_DanhSach.md]([Design][API] API28_Tags_DanhSach.md) |
+| 29 | GET | `/admin/tags` | Danh sách tags (Admin) | Admin | [[Design][API] API29_AdminTags_DanhSach.md]([Design][API] API29_AdminTags_DanhSach.md) |
+| 30 | POST | `/admin/tags` | Tạo tag | Admin | [[Design][API] API30_AdminTags_Tao.md]([Design][API] API30_AdminTags_Tao.md) |
+| 31 | PUT | `/admin/tags/:id` | Cập nhật tag | Admin | [[Design][API] API31_AdminTags_CapNhat.md]([Design][API] API31_AdminTags_CapNhat.md) |
+| 32 | DELETE | `/admin/tags/:id` | Xóa tag | Admin | [[Design][API] API32_AdminTags_Xoa.md]([Design][API] API32_AdminTags_Xoa.md) |
+
 ## Stats
 
 | # | Method | Endpoint | Mô tả | Role | File |

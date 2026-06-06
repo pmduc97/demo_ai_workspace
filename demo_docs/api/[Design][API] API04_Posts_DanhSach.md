@@ -11,6 +11,7 @@ status: stable
 | Ver | Ngày | Nội dung | Người tạo |
 |---|---|---|---|
 | 1.2 | 2026-06-05 | Chuẩn hóa 10 sections, đồng bộ `posts.controller.js#listPublic` | docs-agent |
+| 1.3 | 2026-06-06 | Bổ sung mảng `tags` vào response | AI |
 
 ## 1. Tổng quan
 API lấy danh sách bài viết public đã xuất bản. Tài liệu tham chiếu: API list, DB schema, Message Catalog, `posts.controller.js`, `posts.routes.js`.
@@ -25,6 +26,7 @@ API lấy danh sách bài viết public đã xuất bản. Tài liệu tham chi�
 | `posts` | Lấy bài viết published |
 | `categories` | Lấy tên/slug danh mục và lọc category |
 | `users` | Lấy tên tác giả |
+| `tags`, `post_tags` | Lấy danh sách tags của từng bài viết |
 
 ## 3. Request
 | Vị trí | Field | Kiểu | Bắt buộc | Mặc định | Mô tả |
@@ -66,7 +68,10 @@ GET /api/posts?page=1&pageSize=10&category=du-lich
       "created_at": "2026-06-05T00:00:00.000Z",
       "category_name": "Du lịch",
       "category_slug": "du-lich",
-      "author_name": "Admin"
+      "author_name": "Admin",
+      "tags": [
+        { "id": 1, "name": "Du lịch Việt Nam", "slug": "du-lich-viet-nam" }
+      ]
     }
   ],
   "page": 1,
@@ -90,6 +95,10 @@ sequenceDiagram
   P->>DB: [Q1] select published posts
   P->>DB: [Q2] count distinct posts
   DB-->>P: rows + count
+  opt Có rows
+    P->>DB: [Q3] select tags for post_ids
+    P->>P: Map tags vào từng post
+  end
   P-->>C: 200 { items, page, pageSize, total }
 ```
 
@@ -98,6 +107,23 @@ sequenceDiagram
 2. Chuẩn hóa `page` tối thiểu 1, `pageSize` trong khoảng 1..50.
 3. [Q1] Query `posts` published, left join `categories`, `users`, sort `p.created_at desc`, áp dụng category nếu có.
 4. [Q2] Count tổng số bài matching filter.
+5. Nếu có bài viết, lấy danh sách `post_id`.
+6. [Q3] Query bảng `tags` join `post_tags` với `post_id IN (...)`.
+7. Map mảng tags vào từng bài viết tương ứng.
+8. Trả về `{ items, page, pageSize, total }`.
+
+## 8. Database Queries & Mapping
+| Query ID | Điều kiện OK | Điều kiện NG | Knex.js snippet |
+|---|---|---|---|
+| Q1 | Luôn OK | N/A | `db('posts as p').leftJoin('categories as c','p.category_id','c.id').leftJoin('users as u','p.author_id','u.id').where('p.status','published').select('p.id','p.title','p.slug','p.thumbnail_url','p.created_at','c.name as category_name','c.slug as category_slug','u.name as author_name').orderBy('p.created_at','desc').limit(pageSize).offset((page-1)*pageSize)` |
+| Q2 | Luôn OK | N/A | `db('posts as p').leftJoin('categories as c','p.category_id','c.id').where('p.status','published').count('p.id as total').first()` |
+| Q3 | Luôn OK | N/A | `db('tags as t').join('post_tags as pt', 't.id', 'pt.tag_id').whereIn('pt.post_id', postIds).select('t.id', 't.name', 't.slug', 'pt.post_id')` |
+
+| Source | Target |
+|---|---|
+| `p.*` | `items[].*` |
+| `c.name/c.slug` | `items[].category_name/category_slug` |
+| `t.id, t.name, t.slug` | `items[].tags` |
 5. Trả `{ items, page, pageSize, total }`.
 
 ## 8. Database Queries & Mapping

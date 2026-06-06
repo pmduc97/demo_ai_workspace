@@ -12,6 +12,7 @@ status: stable
 |---|---|---|---|
 | 1.1 | 2026-06-05 | Chuẩn hóa 10 sections, đồng bộ code `listAdmin` | docs-agent |
 | 1.2 | 2026-06-05 | Thêm filter, sort, pagination, join author & category | docs-agent |
+| 1.3 | 2026-06-06 | Bổ sung mảng `tags` vào response | AI |
 
 ## 1. Tổng quan
 Admin lấy danh sách bài viết có hỗ trợ phân trang, tìm kiếm, lọc theo category/status/author, và sắp xếp. Tham chiếu: API List, UTILS, MESSAGE_Catalog, DB Schema, `posts.controller.js`, `admin.routes.js`.
@@ -26,6 +27,7 @@ Admin lấy danh sách bài viết có hỗ trợ phân trang, tìm kiếm, lọ
 | `posts` | Select danh sách bài viết |
 | `users` | Join lấy thông tin tác giả |
 | `categories` | Join lấy thông tin danh mục |
+| `tags`, `post_tags` | Lấy danh sách tags của từng bài viết |
 
 ## 3. Request
 | Vị trí | Field | Kiểu | Bắt buộc | Mặc định | Mô tả |
@@ -85,7 +87,10 @@ Admin lấy danh sách bài viết có hỗ trợ phân trang, tìm kiếm, lọ
         "id": 1,
         "name": "Du lịch",
         "slug": "du-lich"
-      }
+      },
+      "tags": [
+        { "id": 1, "name": "Du lịch Việt Nam", "slug": "du-lich-viet-nam" }
+      ]
     }
   ],
   "total": 1,
@@ -114,6 +119,10 @@ sequenceDiagram
   P->>P: Validate query params
   P->>DB: [Q1] Count total posts (with filters)
   P->>DB: [Q2] Select posts with joins (with filters, sort, pagination)
+  opt Có rows
+    P->>DB: [Q3] Select tags for post_ids
+    P->>P: Map tags vào từng post
+  end
   P-->>C: 200 {items, total, page, limit, total_pages}
 ```
 
@@ -129,20 +138,24 @@ sequenceDiagram
    - Áp dụng các điều kiện filter (`search` LIKE title, `category_id`, `status`, `author_id`).
    - Sắp xếp theo `sort_by` và `sort_order`.
    - Phân trang bằng `limit` và `offset = (page - 1) * limit`.
-7. Format dữ liệu trả về: map các trường join thành object `author` và `category` lồng nhau.
-8. Trả về response 200 với `{ items, total, page, limit, total_pages }`.
+7. Nếu có bài viết, lấy danh sách `post_id`.
+8. [Q3] Query bảng `tags` join `post_tags` với `post_id IN (...)`.
+9. Format dữ liệu trả về: map các trường join thành object `author` và `category` lồng nhau, và map mảng `tags` vào từng bài viết.
+10. Trả về response 200 với `{ items, total, page, limit, total_pages }`.
 
 ## 8. Database Queries & Mapping
 | Query ID | Điều kiện OK | Điều kiện NG | Knex.js snippet |
 |---|---|---|---|
 | Q1 | Trả về số lượng | DB error → 500 | `db('posts').count('* as total').where(...)` |
 | Q2 | Trả list, có thể rỗng | DB error → 500 | `db('posts').select('posts.*', 'users.id as author_id', 'users.name as author_name', 'users.email as author_email', 'categories.id as category_id', 'categories.name as category_name', 'categories.slug as category_slug').leftJoin('users', 'posts.author_id', 'users.id').leftJoin('categories', 'posts.category_id', 'categories.id').where(...).orderBy(sort_by, sort_order).limit(limit).offset(offset)` |
+| Q3 | Luôn OK | N/A | `db('tags as t').join('post_tags as pt', 't.id', 'pt.tag_id').whereIn('pt.post_id', postIds).select('t.id', 't.name', 't.slug', 'pt.post_id')` |
 
 | Source | Target |
 |---|---|
 | `posts.id` | `items[].id` |
 | `posts.title` | `items[].title` |
 | `posts.slug` | `items[].slug` |
+| `t.id, t.name, t.slug` | `items[].tags` |
 | `posts.thumbnail_url` | `items[].thumbnail_url` |
 | `posts.status` | `items[].status` |
 | `posts.view_count` | `items[].view_count` |

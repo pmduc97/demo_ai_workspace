@@ -7,8 +7,17 @@ status: stable
 
 # [Design][LIST] UTILS_DanhSach
 
-Tài liệu này đóng vai trò là **Registry cho các hàm tiện ích (Utils) và Custom Hooks** của dự án Frontend.
-Khi thiết kế logic xử lý (đặc biệt là Section 10 - Events & Actions), **BẮT BUỘC** phải tra cứu tài liệu này để tái sử dụng hàm, tránh việc viết lại logic (ví dụ: mỗi trang tự viết một hàm format ngày tháng riêng).
+Tài liệu này đóng vai trò là **Registry cho các hàm tiện ích (Utils), Custom Hooks và Quy chuẩn Framework** của dự án Frontend.
+Khi thiết kế logic xử lý hoặc sinh code, **BẮT BUỘC** phải tra cứu tài liệu này để tái sử dụng hàm và tuân thủ đúng cú pháp import của dự án.
+
+## 0. Quy chuẩn Import & Framework (Common Framework)
+> Các quy tắc bắt buộc khi viết code Frontend để đảm bảo tính nhất quán.
+
+| Thành phần | Cú pháp Import chuẩn | Ghi chú |
+|---|---|---|
+| **API Client (Axios)** | `import api from '../../services/api';` | **Tuyệt đối không dùng** `axios.get(...)` trực tiếp. Phải dùng instance `api` đã được cấu hình sẵn interceptor. |
+| **Routing** | `import { Link, useNavigate, useParams } from 'react-router-dom';` | Sử dụng React Router v6. |
+| **Auth Context** | `import { useAuth } from '../../context/AuthContext';` | Lấy thông tin user và token từ Context. |
 
 ## 1. String & Format Helpers (`src/utils/format.js`)
 > Các hàm xử lý chuỗi, định dạng hiển thị. *(Thư mục và file sẽ được tạo khi implement code thực tế).*

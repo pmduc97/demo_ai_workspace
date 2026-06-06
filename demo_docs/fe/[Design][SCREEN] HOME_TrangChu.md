@@ -11,9 +11,10 @@ status: stable
 | Ver | Ngày | Nội dung | Người tạo |
 |---|---|---|---|
 | 1.1 | 2026-06-05 | Chuẩn hóa 12 sections, đồng bộ `HomePage.jsx` và API04 | docs-agent |
+| 1.2 | 2026-06-06 | Nâng cấp UI/UX chuẩn báo chí: Hero Grid, Layout 2 cột, Sidebar Widgets | AI |
 
 ## 1. Tổng quan
-Trang chủ public hiển thị hero tĩnh, bài nổi bật lấy từ item đầu tiên của API04 và grid bài viết mới nhất.
+Trang chủ public hiển thị danh sách các bài viết mới nhất. Giao diện được thiết kế theo chuẩn các trang tin tức/blog du lịch chuyên nghiệp (như blogdulich.net, gody.vn) với Hero Grid (1 bài lớn, 2 bài nhỏ) và bố cục 2 cột (Nội dung chính + Sidebar).
 
 ## 2. Thông tin chung
 | Thuộc tính | Giá trị |
@@ -31,30 +32,49 @@ Trang chủ public hiển thị hero tĩnh, bài nổi bật lấy từ item đ�
 | Đi đến đâu | Destination |
 |---|---|
 | Click Đọc bài viết / PostCard | `/post/:slug` |
-| Click Về blog | `/about` |
+| Click Xem tất cả | `/category/all` |
 
 ## 4. Layout & Components
 ```jsx
 <Navbar />
-<main>
-  <HeroSection />
-  <FeaturedPost />
-  <LatestPostsGrid>
-    <PostCard />
-  </LatestPostsGrid>
+<main className="bg-gray-50 min-h-screen pb-16">
+  {/* Hero Section - Magazine Style Grid */}
+  <section className="bg-white pt-8 pb-12 border-b border-gray-200">
+    <div className="max-w-7xl mx-auto">
+      <HeroGrid featuredPosts={items.slice(0, 3)} />
+    </div>
+  </section>
+
+  {/* Main Content Area (2 Columns) */}
+  <section className="max-w-7xl mx-auto mt-12 flex flex-col lg:flex-row gap-12">
+    {/* Left Column: Latest Posts */}
+    <div className="lg:w-2/3">
+      <SectionHeader title="Bài viết mới nhất" />
+      <div className="grid gap-8 sm:grid-cols-2">
+        <PostCard />
+      </div>
+      <LoadMoreButton />
+    </div>
+
+    {/* Right Column: Sidebar */}
+    <aside className="lg:w-1/3 sticky top-8">
+      <NewsletterWidget />
+      <CategoriesWidget />
+      <PopularPostsWidget />
+    </aside>
+  </section>
 </main>
 <Footer />
 ```
 Components dùng lại: `Navbar`, `Footer`, `PostCard`.
 
 ## 5. Ma trận trạng thái UI
-| Trạng thái | Hero | FeaturedPost | PostGrid | ErrorBanner |
+| Trạng thái | Hero Grid | Latest Posts (Left) | Sidebar (Right) | Error Banner |
 |---|---|---|---|---|
-| Init | Hiển thị | Ẩn | Ẩn | Ẩn |
-| Loading | Hiển thị | Skeleton | Skeleton | Ẩn |
-| Loaded có data | Hiển thị | Hiển thị item đầu | Hiển thị items còn lại hoặc toàn bộ | Ẩn |
-| Empty | Hiển thị | Ẩn | EmptyState | Ẩn |
-| Error | Hiển thị | Ẩn | Ẩn | Hiển thị |
+| Init/Loading | Skeleton Grid | Ẩn | Ẩn | Ẩn |
+| Loaded có data | Hiển thị (Top 3) | Hiển thị (Các bài còn lại) | Hiển thị | Ẩn |
+| Empty | Ẩn | EmptyState | Ẩn | Ẩn |
+| Error | Ẩn | Ẩn | Ẩn | Hiển thị |
 
 ## 6. Chi tiết UI từng section
 | Control | Loại | I/O | Ràng buộc | Giá trị khởi tạo | Nguồn dữ liệu | Event ID | JSON Field | Ghi chú |
@@ -63,6 +83,7 @@ Components dùng lại: `Navbar`, `Footer`, `PostCard`.
 | Featured image | Image | Output | Fallback URL | N/A | API04 | N/A | `thumbnail_url` | Item đầu tiên |
 | Featured title | Text | Output | N/A | N/A | API04 | N/A | `title` | Link `/post/:slug` |
 | PostCard grid | List | Output | N/A | `[]` | API04 | E02 | `items[]` | Dùng `PostCard` |
+| PostCard tags | List | Output | N/A | `[]` | API04 | N/A | `items[].tags` | Hiển thị tags trên card (nếu có) |
 | Error banner | Text | Output | N/A | `''` | API error | N/A | N/A | Text hiện tại trong code |
 
 ## 7. API Calls

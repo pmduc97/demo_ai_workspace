@@ -14,6 +14,7 @@ import PostListPage from './pages/admin/PostListPage';
 import PostFormPage from './pages/admin/PostFormPage';
 import CategoryListPage from './pages/admin/CategoryListPage';
 import UserListPage from './pages/admin/UserListPage';
+import TagList from './pages/admin/TagList';
 
 function AppShell() {
   const location = useLocation();
@@ -35,6 +36,7 @@ function AppShell() {
         <Route path="/admin/posts/new" element={<ProtectedRoute><PostFormPage /></ProtectedRoute>} />
         <Route path="/admin/posts/:id/edit" element={<ProtectedRoute><PostFormPage /></ProtectedRoute>} />
         <Route path="/admin/categories" element={<ProtectedRoute role="admin"><CategoryListPage /></ProtectedRoute>} />
+        <Route path="/admin/tags" element={<ProtectedRoute role="admin"><TagList /></ProtectedRoute>} />
         <Route path="/admin/users" element={<ProtectedRoute role="admin"><UserListPage /></ProtectedRoute>} />
       </Routes>
       {!isAdminRoute && <Footer />}

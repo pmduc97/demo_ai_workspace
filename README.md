@@ -23,6 +23,19 @@ Hai mục tiêu song song:
 | AI Workflow | GitHub Copilot — custom agents, skills, instructions |
 | MCP Server | `mcp-db-sampler` (Query DB thật để sinh Test Data) |
 
+## Tài khoản Đăng nhập (Credentials)
+
+Do dự án sử dụng chung Database cho cả Development và E2E Testing, dữ liệu trong DB có thể thay đổi tùy thuộc vào hành động cuối cùng bạn thực hiện:
+
+1. **Dữ liệu gốc (Seed Data)** - *Dùng khi mới setup hoặc sau khi chạy `npx knex seed:run`:*
+   - Admin: `admin@hoianblog.vn` / `password123`
+   - Member: `member@hoianblog.vn` / `password123`
+
+2. **Dữ liệu Test (Mock Data)** - *Dùng sau khi chạy Playwright E2E Test (test script tự động xóa DB và nạp data này):*
+   - Admin: `admin1@test.com` / `password123`
+   - Member: `member1@test.com` / `password123`
+   - Member 2: `member2@test.com` / `password123`
+
 ## Cấu trúc thư mục
 
 ```text

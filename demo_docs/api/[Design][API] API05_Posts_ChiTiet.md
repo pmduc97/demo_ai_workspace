@@ -11,6 +11,7 @@ status: stable
 | Ver | Ngày | Nội dung | Người tạo |
 |---|---|---|---|
 | 1.2 | 2026-06-05 | Chuẩn hóa 10 sections, đồng bộ `posts.controller.js#getBySlug` | docs-agent |
+| 1.3 | 2026-06-06 | Bổ sung mảng `tags` vào response | AI |
 
 ## 1. Tổng quan
 API lấy chi tiết một bài viết public theo slug. Chỉ trả bài có `status = published`.
@@ -25,6 +26,7 @@ API lấy chi tiết một bài viết public theo slug. Chỉ trả bài có `s
 | `posts` | Lấy chi tiết bài viết |
 | `categories` | Lấy tên/slug danh mục |
 | `users` | Lấy tên tác giả |
+| `tags`, `post_tags` | Lấy danh sách tags của bài viết |
 
 ## 3. Request
 | Vị trí | Field | Kiểu | Bắt buộc | Mặc định | Mô tả |
@@ -62,7 +64,11 @@ GET /api/posts/kham-pha-hoi-an
   "updated_at": "2026-06-05T00:00:00.000Z",
   "category_name": "Du lịch",
   "category_slug": "du-lich",
-  "author_name": "Admin"
+  "author_name": "Admin",
+  "tags": [
+    { "id": 1, "name": "Du lịch Việt Nam", "slug": "du-lich-viet-nam" },
+    { "id": 2, "name": "Khám phá", "slug": "kham-pha" }
+  ]
 }
 ```
 
@@ -80,24 +86,30 @@ sequenceDiagram
   P->>DB: [Q1] select post by slug and published
   DB-->>P: row/null
   P-->>C: 404 nếu null
-  P-->>C: 200 post flat fields
+  P->>DB: [Q2] select tags by post_id
+  DB-->>P: tags array
+  P-->>C: 200 post flat fields + tags array
 ```
 
 ## 7. Logic xử lý
 1. Đọc `req.params.slug`.
 2. [Q1] Query bài viết theo slug, `status = published`, left join category/user.
 3. Nếu không có row, trả 404 `{ message: 'Post not found' }`.
-4. Trả toàn bộ row từ DB, gồm `content` và các flat fields join.
+4. [Q2] Query danh sách tags của bài viết từ bảng `tags` join `post_tags`.
+5. Gắn mảng tags vào object post.
+6. Trả toàn bộ row từ DB, gồm `content`, các flat fields join và mảng `tags`.
 
 ## 8. Database Queries & Mapping
 | Query ID | Điều kiện OK | Điều kiện NG | Knex.js snippet |
 |---|---|---|---|
 | Q1 | Có bài published matching slug | Không có row → 404 | `db('posts as p').leftJoin('categories as c','p.category_id','c.id').leftJoin('users as u','p.author_id','u.id').where('p.slug', req.params.slug).andWhere('p.status','published').select('p.*','c.name as category_name','c.slug as category_slug','u.name as author_name').first()` |
+| Q2 | Luôn OK (có thể rỗng) | N/A | `db('tags as t').join('post_tags as pt', 't.id', 'pt.tag_id').where('pt.post_id', post.id).select('t.id', 't.name', 't.slug')` |
 
 | DB Field | Response Field |
 |---|---|
 | `p.*` | Các field gốc của bài viết |
 | `c.name/c.slug` | `category_name/category_slug` |
+| `t.id, t.name, t.slug` | `tags` (array of objects) |
 | `u.name` | `author_name` |
 
 ## 9. Message List

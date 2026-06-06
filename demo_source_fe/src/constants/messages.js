@@ -17,6 +17,14 @@ export const MESSAGES = {
   'CATEGORY-S-003': 'Xóa danh mục thành công',
   'CATEGORY-C-001': 'Xóa mềm danh mục này? Danh mục sẽ bị ẩn khỏi danh sách public nhưng dữ liệu bài viết vẫn được giữ.',
   'CATEGORY-I-001': 'Chưa có danh mục nào. Hãy thêm danh mục đầu tiên!',
+  'TAG-E-001': 'Dữ liệu tag không hợp lệ',
+  'TAG-E-002': 'Slug tag đã tồn tại',
+  'TAG-E-004': 'Bạn không có quyền quản lý tag',
+  'TAG-S-001': 'Tạo tag thành công',
+  'TAG-S-002': 'Cập nhật tag thành công',
+  'TAG-S-003': 'Xóa tag thành công',
+  'TAG-C-001': 'Bạn có chắc chắn muốn xóa tag này không? Hành động này không thể hoàn tác.',
+  'TAG-I-001': 'Chưa có tag nào. Hãy thêm tag đầu tiên!',
 };
 
 export function getMessage(messageId, fallback = MESSAGES['COMMON-E-001']) {

@@ -1,3 +1,12 @@
+### [2026-06-06] - test-agent
+- **Task**: Viết Unit Test cho tính năng Tags (API28-API32)
+- **Skill Used**: test-suite
+- **Target Feature**: tags
+- **Files Processed**:
+	- `demo_source_be/src/__tests__/tags.test.js` [Created]
+- **Status**: SUCCESS
+- **Notes**: Đã tạo test suite cho 5 API Tags (GET public, GET admin, POST, PUT, DELETE). Test cover các case thành công, lỗi validation, lỗi auth, lỗi not found, lỗi conflict slug.
+
 ### [2026-06-05 10:20:00] - Orchestrator
 Task: Review/fix ITa/ITb test design docs and Playwright test code for Admin Login/User/Category/Post flows
 Status: PASS (review/fix completed, execution not run per user constraint)
@@ -199,6 +208,22 @@ Residual risks:
 - **Status**: SUCCESS
 - **Notes**: Đã tạo template, skills và prompt cho việc tạo/review Workflow Design. Đã cập nhật skill ITb để bắt buộc lấy input từ file Workflow thay vì tự suy luận từ FE/BE docs. Đã cập nhật README, copilot-instructions và orchestrator agent để phản ánh vòng lặp phát triển mới (thêm bước WORKFLOW).
 
+### [2026-06-06] - fe-agent
+- **Task**: Implement tính năng Tags cho Frontend
+- **Skill Used**: fe-implement
+- **Target Feature**: tags
+- **Files Processed**:
+	- `demo_source_fe/src/constants/messages.js` [Modified]
+	- `demo_source_fe/src/pages/admin/TagList.jsx` [Created]
+	- `demo_source_fe/src/App.jsx` [Modified]
+	- `demo_source_fe/src/components/AdminLayout.jsx` [Modified]
+	- `demo_source_fe/src/pages/admin/PostFormPage.jsx` [Modified]
+	- `demo_source_fe/src/components/PostCard.jsx` [Modified]
+	- `demo_source_fe/src/pages/public/HomePage.jsx` [Modified]
+	- `demo_source_fe/src/pages/public/PostDetailPage.jsx` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Đã tạo trang quản lý Tags (CRUD) cho Admin, thêm route và link sidebar. Đã cập nhật form tạo/sửa bài viết để chọn Tags. Đã cập nhật trang chủ và trang chi tiết bài viết để hiển thị Tags thật từ API.
+
 ### [2026-06-05] - docs-agent
 - **Task**: Tạo và review tài liệu Workflow Design cho luồng Admin quản lý user và user đăng nhập
 - **Skill Used**: doc-workflow-implement, doc-workflow-review
@@ -249,6 +274,20 @@ Residual risks:
 - **Status**: SUCCESS
 - **Notes**: Đã tạo và chạy 3 TC smoke test. Phát hiện 1 Bug App (thiếu toast báo lỗi khi sai quyền). Đã xuất báo cáo.
 
+### [2026-06-06] - be-agent
+- **Task**: Implement tính năng Tags cho Backend
+- **Skill Used**: be-implement
+- **Target Feature**: tags
+- **Files Processed**:
+  - `demo_source_be/src/db/migrations/20260606_01_tags_and_post_tags.js` [Created]
+  - `demo_source_be/src/controllers/tags.controller.js` [Created]
+  - `demo_source_be/src/routes/tags.routes.js` [Created]
+  - `demo_source_be/src/routes/admin.routes.js` [Modified]
+  - `demo_source_be/src/app.js` [Modified]
+  - `demo_source_be/src/controllers/posts.controller.js` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Đã tạo migration cho bảng `tags` và `post_tags`. Đã tạo controller và routes cho 5 API quản lý tags (Public GET, Admin GET, POST, PUT, DELETE). Đã cập nhật `posts.controller.js` để trả về `tags` trong các API GET và xử lý lưu `tag_ids` trong API POST/PUT. Đã tự review code và không phát hiện lỗi.
+
 ### [2026-06-05] - fe-agent
 - **Task**: Implement Admin Post List screen (`PostListPage.jsx`) based on design doc.
 - **Skill Used**: fe-implement
@@ -298,3 +337,12 @@ Residual risks:
 	- Added tests for `DELETE /api/admin/posts/:id` (delete post, auth checks, 404).
 	- Updated `PROJECT_MANIFEST.yml` to link the new test file to the `admin_posts` feature.
 - **Run command**: `cd demo_source_be && npm test`
+
+### [2026-06-06] - docs-agent
+- **Task**: Tạo tài liệu thiết kế màn hình FE cho chức năng Quản lý Tags
+- **Skill Used**: doc-fe-implement
+- **Target Feature**: admin_tags
+- **Files Processed**:
+  - `demo_docs/fe/[Design][SCREEN] ADMIN_TAG_LIST_QuanLyTags.md` [Created]
+- **Status**: SUCCESS
+- **Notes**: Đã tạo tài liệu thiết kế màn hình Quản lý Tags theo đúng chuẩn 12 sections + Change Log, tương tự màn hình Quản lý Danh mục.

@@ -48,6 +48,9 @@ export default function AdminLayout({ children, title }) {
               <NavLink to="/admin/categories" className={({ isActive }) => `${navItem} ${isActive ? activeClass : inactiveClass}`}>
                 <span>🗂️</span> Danh mục
               </NavLink>
+              <NavLink to="/admin/tags" className={({ isActive }) => `${navItem} ${isActive ? activeClass : inactiveClass}`}>
+                <span>🏷️</span> Tags
+              </NavLink>
               <NavLink to="/admin/users" className={({ isActive }) => `${navItem} ${isActive ? activeClass : inactiveClass}`}>
                 <span>👥</span> Người dùng
               </NavLink>

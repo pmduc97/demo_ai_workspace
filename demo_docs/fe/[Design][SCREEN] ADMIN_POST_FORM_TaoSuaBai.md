@@ -11,9 +11,10 @@ status: stable
 | Ver | Ngày | Nội dung | Người tạo |
 |---|---|---|---|
 | 1.1 | 2026-06-05 | Chuẩn hóa 12 sections, đồng bộ `PostFormPage.jsx` | docs-agent |
+| 1.2 | 2026-06-06 | Bổ sung Category và Tags vào form | AI |
 
 ## 1. Tổng quan
-Form tạo/sửa bài viết. Code hiện tại dùng input title, slug, textarea content HTML và select status; submit về API07 hoặc API08.
+Form tạo/sửa bài viết. Code hiện tại dùng input title, slug, textarea content HTML, select status, select category và multi-select tags; submit về API07 hoặc API08.
 
 ## 2. Thông tin chung
 | Thuộc tính | Giá trị |
@@ -39,6 +40,8 @@ Form tạo/sửa bài viết. Code hiện tại dùng input title, slug, textare
   <PostForm>
     <TitleInput />
     <SlugInput />
+    <CategorySelect />
+    <TagsMultiSelect />
     <ContentTextarea />
     <StatusSelect />
     <SaveButton />
@@ -59,45 +62,52 @@ Components dùng lại theo target master: `AdminLayout`, `ProtectedRoute`, `Err
 ## 6. Chi tiết UI từng section
 | Control | Loại | I/O | Ràng buộc | Giá trị khởi tạo | Nguồn dữ liệu | Event ID | JSON Field | Ghi chú |
 |---|---|---|---|---|---|---|---|---|
-| Title | Input | Input | API07 min 5 | `''` | User/API10 | E01 | `title` | Không auto slug trong code |
-| Slug | Input | Input | lowercase/number/hyphen ở API07 | `''` | User/API10 | E01 | `slug` | |
-| Content | Textarea | Input | Required ở API07 | `''` | User/API10 | E01 | `content` | HTML string |
-| Status | Select | Input | `draft/published` | `draft` | User/API10 | E01 | `status` | |
+| Title | Input | Input | API07 min 5 | `''` | User/API11 | E01 | `title` | Không auto slug trong code |
+| Slug | Input | Input | lowercase/number/hyphen ở API07 | `''` | User/API11 | E01 | `slug` | |
+| Category | Select | Input | Required ở API07 | `''` | User/API11/API14 | E01 | `category_id` | Lấy danh sách từ API14 |
+| Tags | MultiSelect | Input | Array of numbers | `[]` | User/API11/API29 | E01 | `tag_ids` | Lấy danh sách từ API29 |
+| Content | Textarea | Input | Required ở API07 | `''` | User/API11 | E01 | `content` | HTML string |
+| Status | Select | Input | `draft/published` | `draft` | User/API11 | E01 | `status` | |
 | Save | Button | Input | N/A | N/A | User | E03 | form | Submit |
 
 ## 7. API Calls
 | Event ID | API | Endpoint | Khi gọi | Link |
 |---|---|---|---|---|
-| E02 | API10 | `GET /api/admin/posts` | Khi edit để tìm bài theo id | [[Design][API] API10_AdminPosts_DanhSach.md](../api/[Design][API]%20API10_AdminPosts_DanhSach.md) |
+| E02 | API11 | `GET /api/admin/posts/:id` | Khi edit để lấy chi tiết bài | [[Design][API] API11_AdminPosts_ChiTiet.md](../api/[Design][API]%20API11_AdminPosts_ChiTiet.md) |
 | E03 | API07 | `POST /api/posts` | Submit create | [[Design][API] API07_Posts_TaoBai.md](../api/[Design][API]%20API07_Posts_TaoBai.md) |
 | E04 | API08 | `PUT /api/posts/:id` | Submit edit | [[Design][API] API08_Posts_CapNhat.md](../api/[Design][API]%20API08_Posts_CapNhat.md) |
+| E05 | API14 | `GET /api/categories` | Lấy danh sách danh mục | [[Design][API] API14_Categories_DanhSach.md](../api/[Design][API]%20API14_Categories_DanhSach.md) |
+| E06 | API29 | `GET /api/admin/tags` | Lấy danh sách tags | [[Design][API] API29_AdminTags_DanhSach.md](../api/[Design][API]%20API29_AdminTags_DanhSach.md) |
 
 ### Request Mapping
 | Event ID | Body/Path |
 |---|---|
-| E02 | Không query; client find `id` trong `items` |
-| E03 | `{ title, slug, content, status }` theo code hiện tại |
+| E02 | Path `id` |
+| E03 | `{ title, slug, content, status, category_id, tag_ids }` |
 | E04 | Path `id`, body `form` |
 
 ### Response Mapping
 | API Field | UI State |
 |---|---|
-| API10 `items.find(id)` | `form` khi edit |
+| API11 response | `form` khi edit |
 | API07/API08 response | Redirect `/admin/posts` |
+| API14 response | Options cho CategorySelect |
+| API29 response | Options cho TagsMultiSelect |
 
 ## 8. State Management
 ```js
 const { id } = useParams();
 const isEdit = Boolean(id);
-const [form, setForm] = useState({ title: '', slug: '', content: '', status: 'draft' });
+const [form, setForm] = useState({ title: '', slug: '', content: '', status: 'draft', category_id: '', tag_ids: [] });
+const [categories, setCategories] = useState([]);
+const [tags, setTags] = useState([]);
 ```
 
 ## 9. Xử lý lỗi & Edge Cases
 | Tình huống | HTTP Status | Component | Xử lý |
 |---|---|---|---|
-| Create thiếu `category_id` theo API07 | 422 | Error target | Code hiện chưa có field category; cần đồng bộ ở phase implement |
 | Validate fail | 422 | Error target | `POST-E-004` |
-| Không tìm thấy bài khi edit | 200/404 target | Form giữ default | Code hiện chưa xử lý riêng |
+| Không tìm thấy bài khi edit | 404 | Error target | Redirect về list hoặc báo lỗi |
 | Submit thành công | 200/201 | Redirect | `/admin/posts` |
 
 ## 10. Responsive

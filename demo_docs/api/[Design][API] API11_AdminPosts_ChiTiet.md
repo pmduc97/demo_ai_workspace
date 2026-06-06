@@ -11,6 +11,7 @@ status: stable
 | Ver | Ngày | Nội dung | Người tạo |
 |---|---|---|---|
 | 1.1 | 2026-06-05 | Chuẩn hóa 10 sections, đồng bộ code `getAdminById` | docs-agent |
+| 1.2 | 2026-06-06 | Bổ sung mảng `tags` vào response | AI |
 
 ## 1. Tổng quan
 Admin xem chi tiết bài theo ID, bao gồm cả draft. Tham chiếu: API List, UTILS, MESSAGE_Catalog, DB Schema, `posts.controller.js`, `admin.routes.js`.
@@ -23,6 +24,7 @@ Admin xem chi tiết bài theo ID, bao gồm cả draft. Tham chiếu: API List,
 | Bảng DB | Mục đích |
 |---|---|
 | `posts` | Select bài theo ID |
+| `tags`, `post_tags` | Lấy danh sách tags của bài viết |
 
 ## 3. Request
 | Vị trí | Field | Kiểu | Bắt buộc | Mặc định | Mô tả |
@@ -51,7 +53,18 @@ Admin xem chi tiết bài theo ID, bao gồm cả draft. Tham chiếu: API List,
 | 200 | Trả record `posts` |
 
 ```json
-{ "id": 1, "title": "Bài viết", "slug": "bai-viet", "content": "...", "status": "draft", "author_id": 2, "category_id": 1 }
+{ 
+  "id": 1, 
+  "title": "Bài viết", 
+  "slug": "bai-viet", 
+  "content": "...", 
+  "status": "draft", 
+  "author_id": 2, 
+  "category_id": 1,
+  "tags": [
+    { "id": 1, "name": "Du lịch Việt Nam", "slug": "du-lich-viet-nam" }
+  ]
+}
 ```
 
 | Error Code | HTTP | Contract hiện tại | Chuẩn messageId |
@@ -71,24 +84,29 @@ sequenceDiagram
   A-->>C: 401/403 nếu lỗi
   P->>DB: [Q1] select post
   P-->>C: 404 nếu không có
-  P-->>C: 200 row
+  P->>DB: [Q2] select tags by post_id
+  P-->>C: 200 row + tags array
 ```
 
 ## 7. Logic xử lý
 1. `auth` và `role('admin')` kiểm tra quyền.
 2. [Q1] Tìm bài theo `req.params.id`.
 3. Nếu không có trả 404 `{ message: 'Post not found' }`.
-4. Trả row.
+4. [Q2] Query danh sách tags của bài viết từ bảng `tags` join `post_tags`.
+5. Gắn mảng tags vào object post.
+6. Trả row.
 
 ## 8. Database Queries & Mapping
 | Query ID | Điều kiện OK | Điều kiện NG | Knex.js snippet |
 |---|---|---|---|
 | Q1 | Có post | Không có → 404 | `db('posts').where({ id: req.params.id }).first()` |
+| Q2 | Luôn OK (có thể rỗng) | N/A | `db('tags as t').join('post_tags as pt', 't.id', 'pt.tag_id').where('pt.post_id', post.id).select('t.id', 't.name', 't.slug')` |
 
 | Source | Target |
 |---|---|
 | `req.params.id` | `posts.id` |
 | `posts.*` | response body |
+| `t.id, t.name, t.slug` | `tags` (array of objects) |
 
 ## 9. Message List
 | MessageId | Loại | HTTP Status | Nội dung | Điều kiện |

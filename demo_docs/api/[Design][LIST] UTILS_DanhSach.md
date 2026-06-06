@@ -7,8 +7,17 @@ status: stable
 
 # [Design][LIST] UTILS_DanhSach (Backend)
 
-Tài liệu này đóng vai trò là **Registry cho các hàm tiện ích (Utils) và Middlewares** của dự án Backend.
-Khi thiết kế logic xử lý (đặc biệt là Section 5 - Logic xử lý), **BẮT BUỘC** phải tra cứu tài liệu này để tái sử dụng hàm/middleware, tránh việc viết lại logic (ví dụ: tự viết lại logic verify token hay hash password trong từng controller).
+Tài liệu này đóng vai trò là **Registry cho các hàm tiện ích (Utils), Middlewares và Quy chuẩn Framework** của dự án Backend.
+Khi thiết kế logic xử lý hoặc sinh code, **BẮT BUỘC** phải tra cứu tài liệu này để tái sử dụng hàm/middleware và tuân thủ đúng cú pháp import của dự án.
+
+## 0. Quy chuẩn Import & Framework (Common Framework)
+> Các quy tắc bắt buộc khi viết code Backend để tránh lỗi `MODULE_NOT_FOUND` hoặc sai kiến trúc.
+
+| Thành phần | Cú pháp Import chuẩn | Ghi chú |
+|---|---|---|
+| **Database (Knex)** | `const db = require('../db');` | **Tuyệt đối không dùng** `require('../db/knex')`. File cấu hình DB nằm tại `src/db/index.js`. |
+| **Middlewares** | `const { auth, role } = require('../middlewares/auth');` | Import từ đúng file middleware tương ứng. |
+| **Validation** | `const { validate } = require('../middlewares/validate');` | Dùng chung hàm validate cho mọi request. |
 
 ## 1. Middlewares (`src/middlewares/`)
 > Các hàm trung gian xử lý request trước khi vào Controller. *(Đã có sẵn trong source code).*

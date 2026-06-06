@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const posts = require('../controllers/posts.controller');
 const users = require('../controllers/users.controller');
+const tags = require('../controllers/tags.controller');
 const auth = require('../middlewares/auth');
 const role = require('../middlewares/role');
 
@@ -17,5 +18,9 @@ router.get('/users/:id', role('admin'), users.getAdminUserDetail);
 router.put('/users/:id', role('admin'), users.updateAdminUserProfile);
 router.put('/users/:id/status', role('admin'), users.updateAdminUserStatus);
 router.delete('/users/:id', role('admin'), users.deleteAdminUser);
+router.get('/tags', role('admin'), tags.getAdminTags);
+router.post('/tags', role('admin'), tags.createTag);
+router.put('/tags/:id', role('admin'), tags.updateTag);
+router.delete('/tags/:id', role('admin'), tags.deleteTag);
 
 module.exports = router;

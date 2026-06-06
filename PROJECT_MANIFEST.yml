@@ -17,6 +17,7 @@ db_state:
     - "demo_source_be/src/db/migrations/20260604_01_audit_soft_delete_category_enhancement.js"
     - "demo_source_be/src/db/migrations/20260604_02_add_missing_created_at_common_columns.js"
     - "demo_source_be/src/db/migrations/20260604_03_user_profile_status_enhancement.js"
+    - "demo_source_be/src/db/migrations/20260606_01_tags_and_post_tags.js"
   notes: "DB hoian_blog trên PostgreSQL local. .env đã cấu hình."
 
 features:
@@ -297,7 +298,58 @@ features:
       fe:
         - "demo_source_fe/src/pages/admin/DashboardPage.jsx"
         - "demo_source_fe/src/App.jsx"
+
+  tags:
+    name: "Quản lý Tags"
+    status: "implemented"
+    cycle_checkpoint: "review"
+    docs:
+      fe_screen: 
+        - "demo_docs/fe/[Design][SCREEN] ADMIN_TAG_LIST_QuanLyTags.md"
+      be_api:
+        - "demo_docs/api/[Design][API] API28_Tags_DanhSach.md"
+        - "demo_docs/api/[Design][API] API29_AdminTags_DanhSach.md"
+        - "demo_docs/api/[Design][API] API30_AdminTags_Tao.md"
+        - "demo_docs/api/[Design][API] API31_AdminTags_CapNhat.md"
+        - "demo_docs/api/[Design][API] API32_AdminTags_Xoa.md"
+    code:
+      fe: 
+        - "demo_source_fe/src/pages/admin/TagList.jsx"
+        - "demo_source_fe/src/App.jsx"
+        - "demo_source_fe/src/components/AdminLayout.jsx"
+        - "demo_source_fe/src/pages/admin/PostFormPage.jsx"
+        - "demo_source_fe/src/components/PostCard.jsx"
+        - "demo_source_fe/src/pages/public/HomePage.jsx"
+        - "demo_source_fe/src/pages/public/PostDetailPage.jsx"
       be:
+        - "demo_source_be/src/controllers/tags.controller.js"
+        - "demo_source_be/src/routes/tags.routes.js"
+        - "demo_source_be/src/routes/admin.routes.js"
+        - "demo_source_be/src/app.js"
+        - "demo_source_be/src/controllers/posts.controller.js"
+    db_tables:
+      - "tags"
+      - "post_tags"
+    tests:
+      be: "demo_source_be/src/__tests__/tags.test.js"
+      playwright: null
+      test_cases:
+        ita: null
+        itb: null
+
+  admin_dashboard:
+    name: "Dashboard Thống kê"
+    status: "tested"
+    cycle_checkpoint: "e2e"
+    docs:
+      fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_DASHBOARD_TongQuan.md"
+      be_api:
+        - "demo_docs/api/[Design][API] API22_AdminStats_ThongKe.md"
+    code:
+      fe:
+        - "demo_source_fe/src/pages/admin/DashboardPage.jsx"
+      be:
+        - "demo_source_be/src/controllers/admin.controller.js"
         - "demo_source_be/src/routes/admin.routes.js"
     db_tables:
       - "users"

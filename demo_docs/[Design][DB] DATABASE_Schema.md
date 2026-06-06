@@ -61,10 +61,27 @@ Index/constraint:
 - `category_id` (FK -> categories.id, on delete set null)
 - common columns: `created_at`, `created_by`, `updated_at`, `updated_by`, `deleted_at`, `deleted_by`
 
+### `tags`
+- `id` (PK, serial)
+- `name` (varchar, not null)
+- `slug` (varchar, not null)
+- `description` (text, null)
+- common columns: `created_at`, `created_by`, `updated_at`, `updated_by`, `deleted_at`, `deleted_by`
+
+Index/constraint:
+- Unique slug chỉ áp dụng cho record chưa xóa: `UNIQUE(slug) WHERE deleted_at IS NULL`
+
+### `post_tags`
+- `post_id` (FK -> posts.id, on delete cascade)
+- `tag_id` (FK -> tags.id, on delete cascade)
+- `created_at` (timestamp, default now)
+- PK: `(post_id, tag_id)`
+
 ## 3) Quan hệ
 - 1 user có nhiều posts (`users.id` -> `posts.author_id`)
 - 1 category có nhiều posts (`categories.id` -> `posts.category_id`)
 - 1 user có thể tạo/cập nhật/xóa nhiều categories qua `created_by`, `updated_by`, `deleted_by`
+- Quan hệ n-n giữa `posts` và `tags` thông qua bảng trung gian `post_tags`
 
 ## 4) Migration & Seed
 ```bash

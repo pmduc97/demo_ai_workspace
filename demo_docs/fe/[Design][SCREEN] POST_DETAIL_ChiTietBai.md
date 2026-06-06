@@ -11,9 +11,11 @@ status: stable
 | Ver | Ngày | Nội dung | Người tạo |
 |---|---|---|---|
 | 1.1 | 2026-06-05 | Chuẩn hóa 12 sections, đồng bộ `PostDetailPage.jsx` và API05 | docs-agent |
+| 1.2 | 2026-06-06 | Cập nhật UI/UX: Thêm Hero section, Meta info, Skeleton loading, Typography | AI |
+| 1.3 | 2026-06-06 | Nâng cấp UI/UX chuẩn báo chí: Hero Banner full-width, Layout 2 cột (Content + Sidebar) | AI |
 
 ## 1. Tổng quan
-Trang public hiển thị tiêu đề và nội dung HTML của một bài viết theo slug.
+Trang public hiển thị chi tiết một bài viết theo slug. Giao diện được thiết kế theo chuẩn các trang tin tức/blog du lịch chuyên nghiệp (như blogdulich.net, gody.vn) với Hero Banner tràn viền và bố cục 2 cột (Nội dung chính + Sidebar).
 
 ## 2. Thông tin chung
 | Thuộc tính | Giá trị |
@@ -30,32 +32,64 @@ Trang public hiển thị tiêu đề và nội dung HTML của một bài viế
 
 | Đi đến đâu | Destination |
 |---|---|
-| Không có action nội bộ trong code hiện tại | N/A |
+| Click Category Badge | `/category/:category_slug` |
+| Click Breadcrumb "Trang chủ" | `/` |
 
 ## 4. Layout & Components
 ```jsx
 <Navbar />
-<main>
-  <h1>{post.title}</h1>
-  <div dangerouslySetInnerHTML={{ __html: post.content }} />
+<main className="bg-white min-h-screen pb-16">
+  {/* Hero Banner (Full width) */}
+  <div className="relative w-full h-[550px] bg-gray-900">
+    <img src={post.thumbnail_url} className="opacity-70 object-cover" />
+    <div className="absolute bottom-0">
+      <Badge>{post.category_name}</Badge>
+      <h1>{post.title}</h1>
+      <AuthorInfo />
+    </div>
+  </div>
+
+  {/* Main Content Area (2 Columns) */}
+  <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 mt-10">
+    {/* Left Column: Article */}
+    <article className="lg:w-2/3">
+      <Breadcrumbs />
+      <SocialShare />
+      <div className="prose prose-lg" dangerouslySetInnerHTML={{ __html: post.content }} />
+      <Tags />
+    </article>
+
+    {/* Right Column: Sidebar */}
+    <aside className="lg:w-1/3 sticky top-8">
+      <AuthorWidget />
+      <PopularPostsWidget />
+    </aside>
+  </div>
 </main>
 <Footer />
 ```
 Components dùng lại: `Navbar`, `Footer`.
+Components mới/cần tạo: `SkeletonPostDetail`, `ErrorState`.
 
 ## 5. Ma trận trạng thái UI
-| Trạng thái | Title | Content | Loading |
-|---|---|---|---|
-| Init/Loading | Ẩn | Ẩn | `Loading...` |
-| Loaded | Hiển thị | Hiển thị HTML | Ẩn |
-| Error/404 | Code hiện chưa catch riêng | Code hiện chưa catch riêng | Có thể giữ loading nếu request fail |
+| Trạng thái | Hero Banner | Content (Left) | Sidebar (Right) | Loading Skeleton | Error Message |
+|---|---|---|---|---|---|
+| Init/Loading | Ẩn | Ẩn | Ẩn | Hiển thị (2 cột) | Ẩn |
+| Loaded | Hiển thị | Hiển thị HTML | Hiển thị | Ẩn | Ẩn |
+| Error/404 | Ẩn | Ẩn | Ẩn | Ẩn | Hiển thị (Post not found) |
 
 ## 6. Chi tiết UI từng section
 | Control | Loại | I/O | Ràng buộc | Giá trị khởi tạo | Nguồn dữ liệu | Event ID | JSON Field | Ghi chú |
 |---|---|---|---|---|---|---|---|---|
 | Route slug | Param | Input | string | URL | React Router | E01 | `slug` | Path API05 |
-| Title | Text | Output | N/A | N/A | API05 | N/A | `title` | h1 |
-| Content | HTML | Output | HTML string | `''` | API05 | N/A | `content` | Render bằng `dangerouslySetInnerHTML` |
+| Breadcrumb | Link | Output | N/A | N/A | API05 | N/A | `category_name`, `title` | Điều hướng về Home/Category |
+| Category Badge | Link | Output | N/A | N/A | API05 | N/A | `category_name` | Link tới `/category/:slug` |
+| Date | Text | Output | Format DD/MM/YYYY | N/A | API05 | N/A | `created_at` | |
+| Title | Text | Output | N/A | N/A | API05 | N/A | `title` | h1, text-4xl, bold |
+| Author | Text | Output | N/A | N/A | API05 | N/A | `author_name` | Kèm avatar placeholder |
+| Thumbnail | Image | Output | N/A | N/A | API05 | N/A | `thumbnail_url` | object-cover, h-[400px] |
+| Content | HTML | Output | HTML string | `''` | API05 | N/A | `content` | Render bằng `dangerouslySetInnerHTML` trong class `prose` |
+| Tags | List | Output | N/A | `[]` | API05 | N/A | `tags` | Hiển thị danh sách tags ở cuối bài |
 
 ## 7. API Calls
 | Event ID | API | Endpoint | Khi gọi | Link |
@@ -83,15 +117,16 @@ const [post, setPost] = useState(null);
 ## 9. Xử lý lỗi & Edge Cases
 | Tình huống | HTTP Status | Component | Xử lý |
 |---|---|---|---|
-| Đang tải | N/A | Text | Hiển thị `Loading...` |
-| Không có content | 200 | Content | Render chuỗi rỗng |
-| API 404/lỗi | 404/500 | Chưa xử lý riêng | Target message `POST-E-003` hoặc `POST-E-005` |
+| Đang tải | N/A | Skeleton | Hiển thị `SkeletonPostDetail` (khung xám nhấp nháy cho title, image, content) |
+| Không có content | 200 | Content | Render chuỗi rỗng hoặc thông báo "Nội dung đang cập nhật" |
+| API 404/lỗi | 404/500 | ErrorState | Hiển thị UI 404 đẹp mắt với nút "Quay lại trang chủ" |
 
 ## 10. Responsive
 | Breakpoint | Layout |
 |---|---|
-| Mobile | Padding `p-4`, content stack |
-| Desktop | Padding `p-4`, content full width hiện tại |
+| Mobile (< 768px) | Padding `p-4`, Thumbnail height `h-[250px]`, Title `text-2xl`, Content `prose-base` |
+| Tablet (768px - 1024px) | Padding `p-6`, Thumbnail height `h-[300px]`, Title `text-3xl` |
+| Desktop (> 1024px) | Container `max-w-4xl` căn giữa, Thumbnail height `h-[400px]`, Title `text-4xl`, Content `prose-lg` |
 
 ## 11. Events & Actions
 | Event ID | Tên | Control | Trigger | API | Mô tả |

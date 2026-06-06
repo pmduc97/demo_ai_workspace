@@ -35,6 +35,7 @@ status: stable
 | ADMIN_POST_LIST | Danh sách bài viết | `/admin/posts` | Quản lý bài viết | Admin, Member | `src/pages/admin/PostList.jsx` | [[Design][SCREEN] ADMIN_POST_LIST_DanhSachBai.md]([Design][SCREEN] ADMIN_POST_LIST_DanhSachBai.md) |
 | ADMIN_POST_FORM | Tạo/Sửa bài viết | `/admin/posts/new`, `/admin/posts/:id/edit` | Form soạn thảo bài | Admin, Member | `src/pages/admin/PostForm.jsx` | [[Design][SCREEN] ADMIN_POST_FORM_TaoSuaBai.md]([Design][SCREEN] ADMIN_POST_FORM_TaoSuaBai.md) |
 | ADMIN_CATEGORY_LIST | Quản lý danh mục | `/admin/categories` | CRUD danh mục | Admin | `src/pages/admin/CategoryList.jsx` | [[Design][SCREEN] ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md]([Design][SCREEN] ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md) |
+| ADMIN_TAG_LIST | Quản lý Tags | `/admin/tags` | CRUD tags | Admin | `src/pages/admin/TagList.jsx` | [[Design][SCREEN] ADMIN_TAG_LIST_QuanLyTags.md]([Design][SCREEN] ADMIN_TAG_LIST_QuanLyTags.md) |
 | ADMIN_USER_LIST | Quản lý người dùng | `/admin/users` | Danh sách, đổi role | Admin | `src/pages/admin/UserList.jsx` | [[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md]([Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md) |
 
 ## Shared Components

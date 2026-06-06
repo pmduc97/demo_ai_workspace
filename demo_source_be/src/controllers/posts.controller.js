@@ -12,12 +12,36 @@ exports.listPublic = async (req, res) => {
     q.clone().select('p.id', 'p.title', 'p.slug', 'p.thumbnail_url', 'p.created_at', 'c.name as category_name', 'c.slug as category_slug', 'u.name as author_name').orderBy('p.created_at', 'desc').limit(ps).offset((p - 1) * ps), 
     q.clone().count('p.id as c').first()
   ]);
+
+  const postIds = items.map(p => p.id);
+  let tagsMap = {};
+  if (postIds.length > 0) {
+    const tags = await db('tags')
+      .join('post_tags', 'tags.id', 'post_tags.tag_id')
+      .whereIn('post_tags.post_id', postIds)
+      .whereNull('tags.deleted_at')
+      .select('tags.id', 'tags.name', 'tags.slug', 'post_tags.post_id');
+    tags.forEach(t => {
+      if (!tagsMap[t.post_id]) tagsMap[t.post_id] = [];
+      tagsMap[t.post_id].push({ id: t.id, name: t.name, slug: t.slug });
+    });
+  }
+  items.forEach(p => p.tags = tagsMap[p.id] || []);
+
   res.json({ items, page: p, pageSize: ps, total: Number(countRow.c || 0) });
 };
 
 exports.getBySlug = async (req, res) => {
   const item = await db('posts as p').leftJoin('categories as c', 'p.category_id', 'c.id').leftJoin('users as u', 'p.author_id', 'u.id').where('p.slug', req.params.slug).andWhere('p.status', 'published').select('p.*', 'c.name as category_name', 'c.slug as category_slug', 'u.name as author_name').first();
   if (!item) return res.status(404).json({ message: 'Post not found' });
+
+  const tags = await db('tags')
+    .join('post_tags', 'tags.id', 'post_tags.tag_id')
+    .where('post_tags.post_id', item.id)
+    .whereNull('tags.deleted_at')
+    .select('tags.id', 'tags.name', 'tags.slug');
+  item.tags = tags;
+
   return res.json(item);
 };
 
@@ -43,9 +67,27 @@ exports.create = async (req, res) => {
     { field: 'category_id', required: true, type: 'number' },
   ], req.body);
   if (errors.length) return res.status(422).json({ message: 'Validation failed', details: errors });
-  const { title, slug, content, thumbnail_url, status = 'draft', category_id } = req.body;
-  const rows = await db('posts').insert({ title, slug, content, thumbnail_url, status, category_id, author_id: req.user.id }).returning('*');
-  return res.status(201).json(rows[0]);
+  const { title, slug, content, thumbnail_url, status = 'draft', category_id, tag_ids } = req.body;
+  
+  const trx = await db.transaction();
+  try {
+    const rows = await trx('posts').insert({ title, slug, content, thumbnail_url, status, category_id, author_id: req.user.id }).returning('*');
+    const post = rows[0];
+
+    if (Array.isArray(tag_ids) && tag_ids.length > 0) {
+      const postTags = tag_ids.map(tag_id => ({ post_id: post.id, tag_id }));
+      await trx('post_tags').insert(postTags);
+      post.tags = await trx('tags').whereIn('id', tag_ids).whereNull('deleted_at').select('id', 'name', 'slug');
+    } else {
+      post.tags = [];
+    }
+
+    await trx.commit();
+    return res.status(201).json(post);
+  } catch (error) {
+    await trx.rollback();
+    return res.status(500).json({ message: 'Internal server error', details: error.message });
+  }
 };
 
 exports.update = async (req, res) => {
@@ -62,7 +104,7 @@ exports.update = async (req, res) => {
   ], req.body);
   if (errors.length) return res.status(422).json({ message: 'Validation failed', details: errors });
 
-  const { title, slug, content, thumbnail_url, status, category_id } = req.body;
+  const { title, slug, content, thumbnail_url, status, category_id, tag_ids } = req.body;
   const updateData = { updated_at: db.fn.now() };
   if (title !== undefined) updateData.title = title;
   if (slug !== undefined) updateData.slug = slug;
@@ -71,8 +113,32 @@ exports.update = async (req, res) => {
   if (status !== undefined) updateData.status = status;
   if (category_id !== undefined) updateData.category_id = category_id;
 
-  const rows = await db('posts').where({ id: req.params.id }).update(updateData).returning('*');
-  return res.json(rows[0]);
+  const trx = await db.transaction();
+  try {
+    const rows = await trx('posts').where({ id: req.params.id }).update(updateData).returning('*');
+    const updatedPost = rows[0];
+
+    if (Array.isArray(tag_ids)) {
+      await trx('post_tags').where({ post_id: updatedPost.id }).del();
+      if (tag_ids.length > 0) {
+        const postTags = tag_ids.map(tag_id => ({ post_id: updatedPost.id, tag_id }));
+        await trx('post_tags').insert(postTags);
+      }
+    }
+
+    await trx.commit();
+
+    if (Array.isArray(tag_ids)) {
+      updatedPost.tags = await db('tags').whereIn('id', tag_ids).whereNull('deleted_at').select('id', 'name', 'slug');
+    } else {
+      updatedPost.tags = await db('tags').join('post_tags', 'tags.id', 'post_tags.tag_id').where('post_tags.post_id', updatedPost.id).whereNull('tags.deleted_at').select('tags.id', 'tags.name', 'tags.slug');
+    }
+
+    return res.json(updatedPost);
+  } catch (error) {
+    await trx.rollback();
+    return res.status(500).json({ message: 'Internal server error', details: error.message });
+  }
 };
 exports.remove = async (req, res) => { const post = await db('posts').where({ id: req.params.id }).first(); if (!post) return res.status(404).json({ message: 'Post not found' }); if (req.user.role !== 'admin' && post.author_id !== req.user.id) return res.status(403).json({ message: 'Forbidden' }); await db('posts').where({ id: req.params.id }).del(); return res.json({ message: 'Deleted' }); };
 exports.listAdmin = async (req, res) => {
@@ -156,6 +222,21 @@ exports.listAdmin = async (req, res) => {
     } : null
   }));
 
+  const postIds = items.map(p => p.id);
+  let tagsMap = {};
+  if (postIds.length > 0) {
+    const tags = await db('tags')
+      .join('post_tags', 'tags.id', 'post_tags.tag_id')
+      .whereIn('post_tags.post_id', postIds)
+      .whereNull('tags.deleted_at')
+      .select('tags.id', 'tags.name', 'tags.slug', 'post_tags.post_id');
+    tags.forEach(t => {
+      if (!tagsMap[t.post_id]) tagsMap[t.post_id] = [];
+      tagsMap[t.post_id].push({ id: t.id, name: t.name, slug: t.slug });
+    });
+  }
+  items.forEach(p => p.tags = tagsMap[p.id] || []);
+
   return res.json({
     items,
     total,
@@ -164,6 +245,18 @@ exports.listAdmin = async (req, res) => {
     total_pages
   });
 };
-exports.getAdminById = async (req, res) => { const post = await db('posts').where({ id: req.params.id }).first(); if (!post) return res.status(404).json({ message: 'Post not found' }); return res.json(post); };
+exports.getAdminById = async (req, res) => { 
+  const post = await db('posts').where({ id: req.params.id }).first(); 
+  if (!post) return res.status(404).json({ message: 'Post not found' }); 
+
+  const tags = await db('tags')
+    .join('post_tags', 'tags.id', 'post_tags.tag_id')
+    .where('post_tags.post_id', post.id)
+    .whereNull('tags.deleted_at')
+    .select('tags.id', 'tags.name', 'tags.slug');
+  post.tags = tags;
+
+  return res.json(post); 
+};
 exports.updateStatus = async (req, res) => { if (!['draft', 'published'].includes(req.body.status)) return res.status(422).json({ message: 'Validation failed', details: [{ field: 'status', message: 'status must be draft or published' }] }); const rows = await db('posts').where({ id: req.params.id }).update({ status: req.body.status, updated_at: db.fn.now() }).returning('*'); if (!rows[0]) return res.status(404).json({ message: 'Post not found' }); return res.json(rows[0]); };
 exports.adminStats = async (req, res) => { const scoped = req.user.role === 'admin' ? db('posts') : db('posts').where('author_id', req.user.id); const [totalRow, pubRow, draftRow, catRow] = await Promise.all([scoped.clone().count('* as c').first(), scoped.clone().where('status', 'published').count('* as c').first(), scoped.clone().where('status', 'draft').count('* as c').first(), db('categories').count('* as c').first()]); res.json({ totalPosts: Number(totalRow.c || 0), publishedPosts: Number(pubRow.c || 0), draftPosts: Number(draftRow.c || 0), totalCategories: Number(catRow.c || 0) }); };

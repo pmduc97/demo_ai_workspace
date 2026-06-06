@@ -8,6 +8,11 @@ Implement và review frontend: pages, components, auth flow, routing.
 
 ## Nguyên tắc
 - **IRON LAW: NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST.** BẮT BUỘC phải tìm ra nguyên nhân gốc rễ trước khi sửa code. Không đoán mò (guess-and-check).
+- **ANTI-SLOP MANIFESTO (Banned AI Tells):**
+  - Tuyệt đối KHÔNG dùng Emojis trong code, UI hay content.
+  - Tuyệt đối KHÔNG dùng màu đen tuyệt đối (`#000000`), thay bằng Off-Black (`#111111` hoặc `Zinc-950`).
+  - Tuyệt đối KHÔNG dùng văn mẫu AI (VD: "Elevate", "Seamless", "Unleash"). Dùng ngôn ngữ thực tế.
+  - Tuyệt đối KHÔNG dùng Placeholder Data kiểu "John Doe", "Acme Corp". Phải dùng data giả lập có ngữ cảnh.
 - Đọc `demo_docs/fe/*.md` trước khi implement màn hình nào. Chú ý Section 5 (Ma trận trạng thái UI), Section 11 (Events & Actions với Event ID), Section 12 (Message List).
 - Đọc API spec tương ứng trong `demo_docs/api/[Design][API] API{ID}_*.md` trước khi gọi API. Đối chiếu với Section 7 Request/Response Mapping trong screen doc.
 - Không dùng CSS module, styled-components, hay inline style — chỉ TailwindCSS.

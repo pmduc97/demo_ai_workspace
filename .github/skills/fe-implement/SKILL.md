@@ -43,6 +43,9 @@ Tóm tắt bắt buộc:
 - Form disable submit khi đang loading
 - Lỗi API hiển thị rõ cho user
 - Message hiển thị phải map từ Message Catalog hoặc từ `messageId` API response.
+- **Web Engineering:** Bắt buộc dùng `min-h-[100dvh]` (không dùng `h-screen`). Ưu tiên CSS Grid hơn Flexbox cho layout lớn. Dùng `clamp()` cho spacing/typography.
+- **Performance:** Chỉ animate `transform` và `opacity`. Bắt buộc có `cleanup` trong `useEffect`.
+- **Strategic Omissions:** Bắt buộc có Client-side Form Validation và xử lý đủ 3 trạng thái UI (Empty/Loading/Error).
 
 ### Bước 3 — Self-review (Two-Stage)
 Thực hiện review theo 2 giai đoạn:

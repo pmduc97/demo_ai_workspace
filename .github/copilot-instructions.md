@@ -17,6 +17,10 @@ Blog tin tức về du lịch Việt Nam và các điểm đến du lịch.
 - Validate dữ liệu nhiều lớp (Defense-in-Depth): Boundary (Route/Middleware) -> Business (Controller/Service) -> Data (Database Constraints).
 - Không dùng `var`, ưu tiên `const` > `let`
 
+### Output Control (Chống Lười Biếng)
+- **Cấm Placeholder Code:** Tuyệt đối cấm viết code rút gọn kiểu `// ...`, `// TODO`, hoặc `/* rest of code */`. BẮT BUỘC phải viết full implementation.
+- **Graceful Token Limit Management:** Nếu file quá dài và sắp hết token, hãy dừng lại ở một "clean breakpoint" (ví dụ cuối function) và in ra thông báo: `[PAUSED — X of Y complete. Send "continue" to resume...]`.
+
 ### Receiving Code Review (Quy trình nhận Feedback)
 - **TUYỆT ĐỐI KHÔNG** xin lỗi hay khen ngợi khi nhận được feedback sửa lỗi từ user (VD: cấm nói "Bạn nói đúng quá", "Xin lỗi vì sự nhầm lẫn").
 - **BẮT BUỘC** tuân theo quy trình: `READ -> UNDERSTAND -> VERIFY -> EVALUATE -> RESPOND`.

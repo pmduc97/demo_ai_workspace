@@ -325,7 +325,9 @@ Fork tự do. Không commit file `.env` hay secret local.
 
 ## Lời cảm ơn (Acknowledgments)
 
-Dự án này có tham khảo và áp dụng một số phương pháp luận tiên tiến về AI Workflow từ dự án mã nguồn mở [obra/superpowers](https://github.com/obra/superpowers). Cụ thể, các concept sau đã được điều chỉnh và tích hợp để phù hợp với ngữ cảnh của Blog Du Lịch:
+Dự án này có tham khảo và áp dụng một số phương pháp luận tiên tiến về AI Workflow từ các dự án mã nguồn mở:
+
+**Từ [obra/superpowers](https://github.com/obra/superpowers):**
 - **"Iron Law" trong Debugging & TDD:** Kỷ luật thép bắt buộc AI viết test fail trước khi code và tìm root cause trước khi fix bug.
 - **Two-Stage Review Process:** Tách quy trình review thành 2 bước (Spec Compliance và Code Quality).
 - **Condition-Based Waiting:** Kỹ thuật chờ theo điều kiện trong test E2E thay vì dùng timeout cứng.
@@ -334,4 +336,11 @@ Dự án này có tham khảo và áp dụng một số phương pháp luận ti
 - **Test Polluter Identification:** Kỹ thuật dò tìm và dọn dẹp các test case gây ô nhiễm Database.
 - **Receiving Code Review:** Quy trình chuẩn hóa cách AI tiếp nhận và phản hồi feedback.
 
-Xin gửi lời cảm ơn đến tác giả và những người đóng góp cho dự án `obra/superpowers` vì những ý tưởng tuyệt vời này!
+**Từ [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill):**
+- **Anti-Slop Manifesto:** Cấm các dấu hiệu nhận biết AI (AI Tells) như Emojis, màu đen tuyệt đối (`#000000`), văn mẫu AI, và placeholder data.
+- **Web Engineering Directives:** Bắt buộc dùng `min-h-[100dvh]`, ưu tiên CSS Grid, và dùng `clamp()` cho Premium Whitespace.
+- **Performance Guardrails:** Chỉ animate `transform/opacity` (Hardware Acceleration) và bắt buộc dọn dẹp memory leak trong `useEffect`.
+- **Strategic Omissions:** Ép AI không được quên Client-side Form Validation và các trạng thái UI (Empty/Loading/Error).
+- **Output Control:** Cấm viết code rút gọn (`// ...`) và quản lý token thông minh bằng `[PAUSED]`.
+
+Xin gửi lời cảm ơn đến tác giả và những người đóng góp cho các dự án trên vì những ý tưởng tuyệt vời này!

@@ -53,10 +53,12 @@ src/
 
 - **IRON LAW: NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST.** BẮT BUỘC phải tìm ra nguyên nhân gốc rễ trước khi sửa code. TUYỆT ĐỐI KHÔNG đoán mò (guess-and-check).
 - **RECEIVING CODE REVIEW:** Khi nhận feedback sửa lỗi, TUYỆT ĐỐI KHÔNG xin lỗi/khen ngợi. BẮT BUỘC tuân theo quy trình: `READ -> UNDERSTAND -> VERIFY -> EVALUATE -> RESPOND`. Trả lời bằng fact kỹ thuật.
+- **ANTI-SLOP MANIFESTO:** Cấm Emojis, cấm `#000000`, cấm văn mẫu AI, cấm data "John Doe".
 - Styling: **chỉ TailwindCSS** — không CSS module, không styled-components, không inline style
 - HTTP: **chỉ qua `src/services/api.js`** — không gọi axios trực tiếp trong component
 - Auth state: **chỉ qua AuthContext** — không lưu token vào state local
 - KHÔNG hardcode URL, token, hay ID trong component
+- **Performance:** Chỉ animate `transform` và `opacity`. Bắt buộc có `cleanup` trong `useEffect`. Dùng `min-h-[100dvh]`.
 
 ## Checklist CREATE (bắt buộc trước khi báo xong)
 

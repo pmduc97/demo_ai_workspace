@@ -38,6 +38,7 @@ Chuyên gia viết End-to-End (E2E) test sử dụng Playwright. Đảm bảo ch
 - Nhóm TC khuyến nghị: list/filter/pagination, profile edit, role/status, create/delete, permission/auth, security/error, concurrency.
 - Không vượt quá 10 TC trong một spec file. Nếu một nhóm có hơn 10 TC, tách tiếp thành `part-1`, `part-2`.
 - Chạy và sửa lỗi theo từng spec file để giảm flaky và dễ root cause.
+- **KHÔNG tự động chạy `npx playwright show-report`** sau khi test chạy xong. Chỉ cần verify, phân tích log/trace, fix test code và chạy lại. Nếu là bug app thì tổng hợp report 1 lần ở cuối. User sẽ tự mở report nếu cần.
 
 ## Cấu trúc thư mục
 - `demo_playwright/tests/ITa_functional/`: Chứa các file test chức năng (`*.spec.ts`).

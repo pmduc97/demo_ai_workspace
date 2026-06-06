@@ -11,7 +11,7 @@ test.describe('ITa: Kiểm thử chức năng Đăng Nhập Admin', () => {
 
   test.beforeAll(async () => {
     const client = new Client({
-      host: 'localhost',
+      host: 'db.tvsdhpzpqxobkkotuhkh.supabase.co',
       port: 5432,
       database: 'postgres',
       user: 'postgres',

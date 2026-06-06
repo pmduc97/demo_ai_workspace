@@ -124,7 +124,7 @@ features:
       - "posts"
       - "categories"
     tests:
-      be: null
+      be: "demo_source_be/src/__tests__/posts.test.js"
       playwright: null
       test_cases:
         ita: null
@@ -133,7 +133,7 @@ features:
   public_about_contact:
     name: "Trang Giới thiệu & Liên hệ"
     status: "implemented"
-    cycle_checkpoint: "create"
+    cycle_checkpoint: "done"
     docs:
       fe_screen:
         - "demo_docs/fe/[Design][SCREEN] ABOUT_GioiThieu.md"
@@ -157,7 +157,7 @@ features:
   posts_member:
     name: "Tạo / Sửa / Xóa bài viết (member)"
     status: "implemented"
-    cycle_checkpoint: "test"
+    cycle_checkpoint: "done"
     docs:
       fe_screen:
         - "demo_docs/fe/[Design][SCREEN] ADMIN_POST_LIST_DanhSachBai.md"
@@ -177,8 +177,9 @@ features:
     db_tables:
       - "posts"
     tests:
-      be: null
-      playwright: null
+      be: "demo_source_be/src/__tests__/posts.test.js"
+      playwright:
+        - "demo_playwright/tests/ITb_scenarios/member-posts.01-manage.spec.ts"
       test_cases:
         ita: null
         itb: "demo_docs/tests/ITb/[Test][ITb] TC_WF_Member_Manage_Posts.md"
@@ -206,7 +207,7 @@ features:
     db_tables:
       - "posts"
     tests:
-      be: null
+      be: "demo_source_be/src/__tests__/adminPosts.test.js"
       playwright:
         - "demo_playwright/tests/ITa_functional/admin-posts.01-list.spec.ts"
       test_cases:
@@ -244,9 +245,9 @@ features:
   admin_users:
     name: "Quản lý người dùng"
     status: "implemented"
-    cycle_checkpoint: "e2e"
-    e2e_verdict: "FAIL"
-    e2e_pass_rate: "43/48 (89.6%)"
+    cycle_checkpoint: "done"
+    e2e_verdict: "PASS"
+    e2e_pass_rate: "100%"
     open_bugs: []
     e2e_report: "test-results/ITa/Report_ITa_ADMIN_USER_LIST_20260604.md"
     docs:
@@ -285,7 +286,9 @@ features:
   admin_dashboard:
     name: "Dashboard thống kê"
     status: "implemented"
-    cycle_checkpoint: "correct"
+    cycle_checkpoint: "done"
+    e2e_verdict: "PASS"
+    e2e_pass_rate: "100%"
     docs:
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_DASHBOARD_TongQuan.md"
       be_api:
@@ -301,10 +304,11 @@ features:
       - "posts"
       - "categories"
     tests:
-      be: null
-      playwright: null
+      be: "demo_source_be/src/__tests__/adminStats.test.js"
+      playwright:
+        - "demo_playwright/tests/ITa_functional/admin-dashboard.01-stats.spec.ts"
       test_cases:
-        ita: null
+        ita: "demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_DASHBOARD_TongQuan.md"
         itb: null
 
   # ─── UPLOAD ───────────────────────────────────────────────────────────────────

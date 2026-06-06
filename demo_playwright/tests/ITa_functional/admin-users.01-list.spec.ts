@@ -12,7 +12,7 @@ test.describe('ITa: Kiểm thử chức năng Quản Lý Người Dùng', () => 
 
   test.beforeAll(async () => {
     const client = new Client({
-      host: 'localhost',
+      host: 'db.tvsdhpzpqxobkkotuhkh.supabase.co',
       port: 5432,
       database: 'postgres',
       user: 'postgres',
@@ -74,7 +74,7 @@ test.describe('ITa: Kiểm thử chức năng Quản Lý Người Dùng', () => 
     await userListPage.openWithAdmin();
     await userListPage.openStatusModalByEmail('member1@testuser.vn');
     await userListPage.expectNoPutProfileRequest(async () => {
-      await page.getByRole('button', { name: 'Xác nhận' }).click();
+      await page.getByRole('button', { name: 'Xác nhận' }).click({ force: true });
     });
     await expect(page.getByRole('button', { name: 'Xác nhận' })).toBeDisabled();
     await captureEvidence(page, testInfo, 'TC_USER_09-Error');

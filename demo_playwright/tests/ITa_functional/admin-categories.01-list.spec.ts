@@ -9,7 +9,7 @@ test.describe('ITa: Kiểm thử chức năng Quản Lý Danh Mục', () => {
   let categoryPage: AdminCategoryListPage;
 
   test.beforeAll(async () => {
-    const client = new Client({ host: 'localhost', port: 5432, database: 'postgres', user: 'postgres', password: 'trteam10T@123' });
+    const client = new Client({ host: 'db.tvsdhpzpqxobkkotuhkh.supabase.co', port: 5432, database: 'postgres', user: 'postgres', password: 'trteam10T@123' });
     await client.connect();
     await client.query(`DELETE FROM categories WHERE slug LIKE 'ita-category-%' OR slug IN ('duplicate-slug', 'test-category-1', 'test-category-2');`);
     await client.query(`

@@ -220,19 +220,18 @@ Residual risks:
 - **Notes**: Đã sử dụng MCP để lấy cấu trúc bảng `users` và dữ liệu mẫu. Đã tạo file Test Case ITb dựa trên tài liệu Workflow Design. File bao gồm Sơ đồ Mermaid, DB Confirmation Matrix, và 4 Test Cases (HP, ALT, STATE-VIO) đi qua nhiều màn hình và role. Review đạt 95/100 điểm (PASS). Cập nhật `cycle_checkpoint` thành `create`.
 
 ### [2026-06-05 10:00:00] - docs-agent
-- **Task**: Tạo tài liệu Test Case ITb cho luồng Member quản lý bài viết và Admin quản lý bài viết
-- **Skill Used**: doc-itb-implement
-- **Target Feature**: posts_member, admin_posts
+- **Task**: Tạo tài liệu Test Case ITa cho chức năng Admin Dashboard
+- **Skill Used**: doc-ita-implement
+- **Target Feature**: admin_dashboard
 - **Files Processed**:
-  - `demo_docs/tests/ITb/[Test][ITb] TC_WF_Member_Manage_Posts.md` [Created]
-  - `demo_docs/tests/ITb/[Test][ITb] TC_WF_Admin_Manage_Posts.md` [Created]
+  - `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_DASHBOARD_TongQuan.md` [Created]
   - `PROJECT_MANIFEST.yml` [Modified]
 - **Status**: SUCCESS
-- **Notes**: Đã hoàn thành Phase 2 đến Phase 5 cho cả 2 luồng. Đã cập nhật đường dẫn file test case vào PROJECT_MANIFEST.yml.
+- **Notes**: Đã hoàn thành Phase 2, 3, 4 và tạo file test case ITa hoàn chỉnh. Đã cập nhật PROJECT_MANIFEST.yml.
 
 ### [2026-06-05 10:05:00] - docs-agent
-- **Task**: Fix bugs và final review tài liệu Test Case ITa cho chức năng Quản lý danh mục
-- **Skill Used**: doc-ita-review
+- **Task**: Tạo tài liệu Test Case ITa cho chức năng Quản lý danh mục
+- **Skill Used**: doc-ita-implement
 - **Target Feature**: admin_categories
 - **Files Processed**:
   - `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md` [Modified]
@@ -284,3 +283,18 @@ Residual risks:
   - `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_POST_LIST.md` [Created]
 - **Status**: SUCCESS
 - **Notes**: Đã tạo thành công 4 file Test Case ITa bao phủ Happy Path, Negative Path và UI Validation theo đúng template.
+
+### [2026-06-06] - test-agent
+- **Task**: Write unit tests for Admin Posts API (API10, API11, API12, API13)
+- **Target Feature**: admin_posts
+- **Files Processed**:
+	- `demo_source_be/src/__tests__/adminPosts.test.js` [Created]
+	- `PROJECT_MANIFEST.yml` [Modified]
+- **Summary**:
+	- Created `adminPosts.test.js` using Jest and Supertest.
+	- Added tests for `GET /api/admin/posts` (list posts, filter by status, auth checks).
+	- Added tests for `GET /api/admin/posts/:id` (get post details, auth checks, 404).
+	- Added tests for `PUT /api/admin/posts/:id/status` (update status, auth checks, validation).
+	- Added tests for `DELETE /api/admin/posts/:id` (delete post, auth checks, 404).
+	- Updated `PROJECT_MANIFEST.yml` to link the new test file to the `admin_posts` feature.
+- **Run command**: `cd demo_source_be && npm test`

@@ -5,9 +5,13 @@ exports.listPublic = async (req, res) => {
   const { category, page = 1, pageSize = 10 } = req.query;
   const p = Math.max(1, Number(page) || 1);
   const ps = Math.min(50, Math.max(1, Number(pageSize) || 10));
-  let q = db('posts as p').leftJoin('categories as c', 'p.category_id', 'c.id').leftJoin('users as u', 'p.author_id', 'u.id').where('p.status', 'published').select('p.id', 'p.title', 'p.slug', 'p.thumbnail_url', 'p.created_at', 'c.name as category_name', 'c.slug as category_slug', 'u.name as author_name').orderBy('p.created_at', 'desc');
+  let q = db('posts as p').leftJoin('categories as c', 'p.category_id', 'c.id').leftJoin('users as u', 'p.author_id', 'u.id').where('p.status', 'published');
   if (category) q = q.andWhere('c.slug', category);
-  const [items, countRow] = await Promise.all([q.clone().limit(ps).offset((p - 1) * ps), q.clone().countDistinct('p.id as c').first()]);
+  
+  const [items, countRow] = await Promise.all([
+    q.clone().select('p.id', 'p.title', 'p.slug', 'p.thumbnail_url', 'p.created_at', 'c.name as category_name', 'c.slug as category_slug', 'u.name as author_name').orderBy('p.created_at', 'desc').limit(ps).offset((p - 1) * ps), 
+    q.clone().count('p.id as c').first()
+  ]);
   res.json({ items, page: p, pageSize: ps, total: Number(countRow.c || 0) });
 };
 

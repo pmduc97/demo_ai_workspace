@@ -74,7 +74,7 @@ export class AdminPostListPage {
     const row = this.rowByTitle(title);
     await expect(row).toBeVisible();
     await row.getByRole('button', { name: 'Xóa' }).click();
-    await this.page.getByRole('button', { name: 'Xóa' }).click(); // Confirm modal
+    await this.page.getByRole('button', { name: 'Xác nhận' }).click(); // Confirm modal
   }
 
   async openCreateModal() {
@@ -86,11 +86,24 @@ export class AdminPostListPage {
     await this.openCreateModal();
     await this.page.getByPlaceholder('Tiêu đề bài viết').fill(data.title);
     if (data.slug !== undefined) await this.page.getByPlaceholder('slug-bai-viet').fill(data.slug);
-    await this.page.getByRole('combobox').first().selectOption({ label: data.categoryName });
+    await this.page.locator('select[name="category_id"]').selectOption({ label: data.categoryName });
     if (data.status) await this.page.locator('select[name="status"]').selectOption(data.status);
     if (data.thumbnail_url !== undefined) await this.page.getByPlaceholder('Thumbnail URL').fill(data.thumbnail_url);
     await this.page.getByPlaceholder('Nội dung bài viết').fill(data.content);
-    await this.page.getByRole('button', { name: 'Tạo mới' }).click();
+    await this.page.getByRole('button', { name: 'Tạo mới', exact: true }).click();
     await expect(this.page.getByText('Tạo bài viết thành công')).toBeVisible({ timeout: 8000 });
+  }
+
+  async editPost(title: string, data: { title?: string; content?: string }) {
+    const row = this.rowByTitle(title);
+    await expect(row).toBeVisible();
+    await row.getByRole('link', { name: 'Sửa' }).click();
+    await expect(this.page.getByText('Edit Post')).toBeVisible();
+    
+    if (data.title !== undefined) await this.page.getByPlaceholder('Title').fill(data.title);
+    if (data.content !== undefined) await this.page.getByPlaceholder('Content (HTML)').fill(data.content);
+    
+    await this.page.getByRole('button', { name: 'Save' }).click();
+    await expect(this.page).toHaveURL(/\/admin\/posts/);
   }
 }

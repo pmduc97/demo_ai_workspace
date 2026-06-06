@@ -43,7 +43,7 @@ export default function DashboardPage() {
         ]);
 
         if (!mounted) return;
-        const postItems = Array.isArray(postsRes.data) ? postsRes.data : postsRes.data?.items || [];
+        const postItems = Array.isArray(postsRes.data) ? postsRes.data : (postsRes.data?.items || postsRes.data?.posts || []);
         setStats({ ...fallbackStats, ...statsRes.data });
         setRecentPosts(postItems.slice(0, 5));
       } catch (err) {

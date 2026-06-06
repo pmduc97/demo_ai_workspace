@@ -64,6 +64,7 @@ Viết một bộ test E2E hoàn chỉnh cho một tính năng, áp dụng Page 
    - **Lỗi do Test Code (Flaky, sai locator, timeout, logic test sai):** Phải tiến hành fix lại code test (hoặc POM) và chạy lại riêng test case đó (`-g "Tên TC"`) cho đến khi PASS.
    - **Lỗi do Bug App (FE/BE code không đúng spec):** Ghi nhận lại thành Bug Report. KHÔNG sửa test code để bypass lỗi của app.
 6. Lặp lại quá trình này cho đến khi tất cả các test case đều PASS, hoặc các test case FAIL đã được xác nhận chắc chắn là do Bug App.
+7. **KHÔNG tự động chạy `npx playwright show-report`**. Chỉ cần verify, phân tích log/trace, fix test code và chạy lại. Nếu là bug app thì tổng hợp report 1 lần ở cuối. User sẽ tự mở report nếu cần.
 
 ## Output
 ```

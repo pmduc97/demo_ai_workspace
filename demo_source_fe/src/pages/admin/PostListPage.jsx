@@ -30,7 +30,8 @@ export default function PostListPage() {
   const [creating, setCreating] = useState(false);
 
   const fetchPosts = React.useCallback(async (params) => {
-    const { data } = await api.get('/admin/posts', {
+    const endpoint = user?.role === 'admin' ? '/admin/posts' : '/posts/my';
+    const { data } = await api.get(endpoint, {
       params: {
         page: params.page,
         limit: params.limit,
@@ -42,8 +43,9 @@ export default function PostListPage() {
         sort_order: params.sortOrder,
       }
     });
-    return { data: data.items || [], total: data.total || 0 };
-  }, []);
+    // /posts/my returns { posts, total }, /admin/posts returns { items, total }
+    return { data: data.items || data.posts || [], total: data.total || 0 };
+  }, [user?.role]);
 
   const {
     data: items,
@@ -68,7 +70,7 @@ export default function PostListPage() {
 
   const fetchCategories = async () => {
     try {
-      const { data } = await api.get('/categories', { params: { status: 'all' } });
+      const { data } = await api.get('/categories', { params: { status: user?.role === 'admin' ? 'all' : 'active' } });
       setCategories(data.items || []);
     } catch (err) {
       console.error('Failed to fetch categories', err);
@@ -96,7 +98,8 @@ export default function PostListPage() {
 
   const handleDelete = async (id) => {
     try {
-      await api.delete(`/admin/posts/${id}`);
+      const endpoint = user?.role === 'admin' ? `/admin/posts/${id}` : `/posts/${id}`;
+      await api.delete(endpoint);
       showToast('Deleted', 'success');
       fetchData();
     } catch (err) {
@@ -107,7 +110,11 @@ export default function PostListPage() {
   const handleToggleStatus = async (id, currentStatus) => {
     const newStatus = currentStatus === 'draft' ? 'published' : 'draft';
     try {
-      await api.put(`/admin/posts/${id}/status`, { status: newStatus });
+      if (user?.role === 'admin') {
+        await api.put(`/admin/posts/${id}/status`, { status: newStatus });
+      } else {
+        await api.put(`/posts/${id}`, { status: newStatus });
+      }
       showToast('Đổi trạng thái bài viết thành công', 'success');
       fetchData();
     } catch (err) {

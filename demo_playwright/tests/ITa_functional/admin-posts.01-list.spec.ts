@@ -9,7 +9,7 @@ test.describe('ITa: Kiểm thử chức năng Quản Lý Bài Viết', () => {
   let postPage: AdminPostListPage;
 
   test.beforeAll(async () => {
-    const client = new Client({ host: 'localhost', port: 5432, database: 'postgres', user: 'postgres', password: 'trteam10T@123' });
+    const client = new Client({ host: 'db.tvsdhpzpqxobkkotuhkh.supabase.co', port: 5432, database: 'postgres', user: 'postgres', password: 'trteam10T@123' });
     await client.connect();
     await client.query(`DELETE FROM posts WHERE slug LIKE 'ita-post-%' OR slug IN ('admin-post-1', 'member-post-1', 'member-post-2');`);
     await client.query(`DELETE FROM categories WHERE slug IN ('ita-post-category', 'cat-1', 'cat-2');`);

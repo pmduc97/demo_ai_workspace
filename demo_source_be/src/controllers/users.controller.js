@@ -25,7 +25,7 @@ exports.list = async (req, res) => {
     if (page !== undefined) {
       const parsedPage = parseInt(page, 10);
       if (isNaN(parsedPage) || parsedPage < 1) {
-        return res.status(400).json({ messageId: 'USER-E-001', message: 'Pagination không hợp lệ' });
+        return res.status(422).json({ messageId: 'USER-E-001', message: 'Pagination không hợp lệ' });
       }
       page = parsedPage;
     } else {
@@ -35,7 +35,7 @@ exports.list = async (req, res) => {
     if (limit !== undefined) {
       const parsedLimit = parseInt(limit, 10);
       if (isNaN(parsedLimit) || parsedLimit < 1 || parsedLimit > 100) {
-        return res.status(400).json({ messageId: 'USER-E-001', message: 'Pagination không hợp lệ' });
+        return res.status(422).json({ messageId: 'USER-E-001', message: 'Pagination không hợp lệ' });
       }
       limit = parsedLimit;
     } else {
@@ -153,14 +153,14 @@ exports.createAdminUser = async (req, res) => {
     if (phone) {
       phone = String(phone).trim();
       if (!/^0\d{9,10}$/.test(phone)) {
-        return res.status(400).json({ messageId: 'USER-E-001', message: 'Số điện thoại không hợp lệ' });
+        return res.status(422).json({ messageId: 'USER-E-001', message: 'Số điện thoại không hợp lệ' });
       }
     }
 
     if (birthdate) {
       const bd = new Date(birthdate);
       if (isNaN(bd.getTime()) || bd > new Date()) {
-        return res.status(400).json({ messageId: 'USER-E-001', message: 'Ngày sinh không hợp lệ' });
+        return res.status(422).json({ messageId: 'USER-E-001', message: 'Ngày sinh không hợp lệ' });
       }
     }
 
@@ -198,7 +198,7 @@ exports.deleteAdminUser = async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     if (!isPositiveId(id)) return res.status(422).json({ messageId: 'USER-E-001', message: 'ID không hợp lệ' });
-    if (id === req.user.id) return res.status(400).json({ messageId: 'USER-E-007', message: 'Không thể tự xóa chính mình' });
+    if (id === req.user.id) return res.status(403).json({ messageId: 'USER-E-007', message: 'Không thể tự xóa chính mình' });
 
     const user = await db('users').where({ id }).whereNull('deleted_at').first();
     if (!user) return res.status(404).json({ messageId: 'USER-E-003', message: 'Người dùng không tồn tại' });
@@ -228,7 +228,7 @@ exports.updateRole = async (req, res) => {
       return res.status(422).json({ messageId: 'USER-E-001', message: 'Role không hợp lệ' });
     }
     if (id === req.user.id) {
-      return res.status(400).json({ messageId: 'USER-E-005', message: 'Không thể tự đổi role của chính mình' });
+      return res.status(403).json({ messageId: 'USER-E-005', message: 'Không thể tự đổi role của chính mình' });
     }
 
     const user = await db('users').where({ id }).whereNull('deleted_at').first();
@@ -314,13 +314,13 @@ exports.updateAdminUserProfile = async (req, res) => {
     }
 
     if (phone && !/^0\d{9,10}$/.test(phone)) {
-      return res.status(400).json({ messageId: 'USER-E-001', message: 'Số điện thoại không hợp lệ' });
+      return res.status(422).json({ messageId: 'USER-E-001', message: 'Số điện thoại không hợp lệ' });
     }
 
     if (birthdate) {
       const bd = new Date(birthdate);
       if (isNaN(bd.getTime()) || bd > new Date()) {
-        return res.status(400).json({ messageId: 'USER-E-001', message: 'Ngày sinh không hợp lệ' });
+        return res.status(422).json({ messageId: 'USER-E-001', message: 'Ngày sinh không hợp lệ' });
       }
     }
 
@@ -373,7 +373,7 @@ exports.updateAdminUserStatus = async (req, res) => {
         return res.status(422).json({ messageId: 'USER-E-001', message: 'Lý do khóa không hợp lệ' });
       }
       if (id === req.user.id) {
-        return res.status(400).json({ messageId: 'USER-E-006', message: 'Không thể tự khóa chính mình' });
+        return res.status(403).json({ messageId: 'USER-E-006', message: 'Không thể tự khóa chính mình' });
       }
     }
 

@@ -39,9 +39,9 @@ describe('Tags API', () => {
       expect(slugs).not.toContain('test-tag-3');
     });
 
-    it('should return 400 for invalid pagination', async () => {
+    it('should return 422 for invalid pagination', async () => {
       const res = await request(app).get('/api/tags?page=-1');
-      expect(res.statusCode).toBe(400);
+      expect(res.statusCode).toBe(422);
     });
   });
 
@@ -85,12 +85,12 @@ describe('Tags API', () => {
       expect(res.statusCode).toBe(403);
     });
 
-    it('should return 400 if missing required fields', async () => {
+    it('should return 422 if missing required fields', async () => {
       const res = await request(app)
         .post('/api/admin/tags')
         .set('Authorization', `Bearer ${tokenFor(admin)}`)
         .send({ name: 'New' });
-      expect(res.statusCode).toBe(400);
+      expect(res.statusCode).toBe(422);
     });
 
     it('should return 409 if slug already exists', async () => {
@@ -113,12 +113,12 @@ describe('Tags API', () => {
   });
 
   describe('PUT /api/admin/tags/:id', () => {
-    it('should return 400 for invalid ID', async () => {
+    it('should return 422 for invalid ID', async () => {
       const res = await request(app)
         .put('/api/admin/tags/abc')
         .set('Authorization', `Bearer ${tokenFor(admin)}`)
         .send({ name: 'Update', slug: 'update' });
-      expect(res.statusCode).toBe(400);
+      expect(res.statusCode).toBe(422);
     });
 
     it('should return 404 if tag not found', async () => {
@@ -151,11 +151,11 @@ describe('Tags API', () => {
   });
 
   describe('DELETE /api/admin/tags/:id', () => {
-    it('should return 400 for invalid ID', async () => {
+    it('should return 422 for invalid ID', async () => {
       const res = await request(app)
         .delete('/api/admin/tags/abc')
         .set('Authorization', `Bearer ${tokenFor(admin)}`);
-      expect(res.statusCode).toBe(400);
+      expect(res.statusCode).toBe(422);
     });
 
     it('should return 404 if tag not found', async () => {

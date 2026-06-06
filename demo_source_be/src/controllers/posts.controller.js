@@ -33,7 +33,7 @@ exports.listPublic = async (req, res) => {
 
 exports.getBySlug = async (req, res) => {
   const item = await db('posts as p').leftJoin('categories as c', 'p.category_id', 'c.id').leftJoin('users as u', 'p.author_id', 'u.id').where('p.slug', req.params.slug).andWhere('p.status', 'published').select('p.*', 'c.name as category_name', 'c.slug as category_slug', 'u.name as author_name').first();
-  if (!item) return res.status(404).json({ message: 'Post not found' });
+  if (!item) return res.status(404).json({ messageId: 'POST-E-003', message: 'Post not found' });
 
   const tags = await db('tags')
     .join('post_tags', 'tags.id', 'post_tags.tag_id')
@@ -66,7 +66,7 @@ exports.create = async (req, res) => {
     { field: 'status', required: false, enum: ['draft', 'published'] },
     { field: 'category_id', required: true, type: 'number' },
   ], req.body);
-  if (errors.length) return res.status(422).json({ message: 'Validation failed', details: errors });
+  if (errors.length) return res.status(422).json({ messageId: 'POST-E-004', message: 'Validation failed', details: errors });
   const { title, slug, content, thumbnail_url, status = 'draft', category_id, tag_ids } = req.body;
   
   const trx = await db.transaction();
@@ -86,14 +86,14 @@ exports.create = async (req, res) => {
     return res.status(201).json(post);
   } catch (error) {
     await trx.rollback();
-    return res.status(500).json({ message: 'Internal server error', details: error.message });
+    return res.status(500).json({ messageId: 'COMMON-E-001', message: 'Internal server error', details: error.message });
   }
 };
 
 exports.update = async (req, res) => {
   const post = await db('posts').where({ id: req.params.id }).first();
-  if (!post) return res.status(404).json({ message: 'Post not found' });
-  if (req.user.role !== 'admin' && post.author_id !== req.user.id) return res.status(403).json({ message: 'Forbidden' });
+  if (!post) return res.status(404).json({ messageId: 'POST-E-003', message: 'Post not found' });
+  if (req.user.role !== 'admin' && post.author_id !== req.user.id) return res.status(403).json({ messageId: 'POST-E-002', message: 'Forbidden' });
 
   const errors = validate([
     { field: 'title', required: false, type: 'string', min: 5 },
@@ -102,7 +102,7 @@ exports.update = async (req, res) => {
     { field: 'status', required: false, enum: ['draft', 'published'] },
     { field: 'category_id', required: false, type: 'number' },
   ], req.body);
-  if (errors.length) return res.status(422).json({ message: 'Validation failed', details: errors });
+  if (errors.length) return res.status(422).json({ messageId: 'POST-E-004', message: 'Validation failed', details: errors });
 
   const { title, slug, content, thumbnail_url, status, category_id, tag_ids } = req.body;
   const updateData = { updated_at: db.fn.now() };
@@ -137,10 +137,10 @@ exports.update = async (req, res) => {
     return res.json(updatedPost);
   } catch (error) {
     await trx.rollback();
-    return res.status(500).json({ message: 'Internal server error', details: error.message });
+    return res.status(500).json({ messageId: 'COMMON-E-001', message: 'Internal server error', details: error.message });
   }
 };
-exports.remove = async (req, res) => { const post = await db('posts').where({ id: req.params.id }).first(); if (!post) return res.status(404).json({ message: 'Post not found' }); if (req.user.role !== 'admin' && post.author_id !== req.user.id) return res.status(403).json({ message: 'Forbidden' }); await db('posts').where({ id: req.params.id }).del(); return res.json({ message: 'Deleted' }); };
+exports.remove = async (req, res) => { const post = await db('posts').where({ id: req.params.id }).first(); if (!post) return res.status(404).json({ messageId: 'POST-E-003', message: 'Post not found' }); if (req.user.role !== 'admin' && post.author_id !== req.user.id) return res.status(403).json({ messageId: 'POST-E-002', message: 'Forbidden' }); await db('posts').where({ id: req.params.id }).del(); return res.json({ message: 'Deleted' }); };
 exports.listAdmin = async (req, res) => {
   const { search, category_id, status, author_id, sort_by = 'created_at', sort_order = 'desc' } = req.query;
 
@@ -148,7 +148,7 @@ exports.listAdmin = async (req, res) => {
   if (req.query.page !== undefined) {
     p = Number(req.query.page);
     if (!Number.isInteger(p) || p < 1) {
-      return res.status(400).json({ message: 'Invalid page parameter' });
+      return res.status(422).json({ messageId: 'POST-E-004', message: 'Invalid page parameter' });
     }
   }
 
@@ -156,18 +156,18 @@ exports.listAdmin = async (req, res) => {
   if (req.query.limit !== undefined) {
     l = Number(req.query.limit);
     if (!Number.isInteger(l) || l < 1) {
-      return res.status(400).json({ message: 'Invalid limit parameter' });
+      return res.status(422).json({ messageId: 'POST-E-004', message: 'Invalid limit parameter' });
     }
   }
 
   if (!['created_at', 'view_count'].includes(sort_by)) {
-    return res.status(400).json({ message: 'Invalid sort_by parameter' });
+    return res.status(422).json({ messageId: 'POST-E-004', message: 'Invalid sort_by parameter' });
   }
   if (!['asc', 'desc'].includes(sort_order)) {
-    return res.status(400).json({ message: 'Invalid sort_order parameter' });
+    return res.status(422).json({ messageId: 'POST-E-004', message: 'Invalid sort_order parameter' });
   }
   if (status && !['draft', 'published'].includes(status)) {
-    return res.status(400).json({ message: 'Invalid status parameter' });
+    return res.status(422).json({ messageId: 'POST-E-004', message: 'Invalid status parameter' });
   }
 
   let q = db('posts as p')
@@ -247,7 +247,7 @@ exports.listAdmin = async (req, res) => {
 };
 exports.getAdminById = async (req, res) => { 
   const post = await db('posts').where({ id: req.params.id }).first(); 
-  if (!post) return res.status(404).json({ message: 'Post not found' }); 
+  if (!post) return res.status(404).json({ messageId: 'POST-E-003', message: 'Post not found' }); 
 
   const tags = await db('tags')
     .join('post_tags', 'tags.id', 'post_tags.tag_id')
@@ -258,5 +258,5 @@ exports.getAdminById = async (req, res) => {
 
   return res.json(post); 
 };
-exports.updateStatus = async (req, res) => { if (!['draft', 'published'].includes(req.body.status)) return res.status(422).json({ message: 'Validation failed', details: [{ field: 'status', message: 'status must be draft or published' }] }); const rows = await db('posts').where({ id: req.params.id }).update({ status: req.body.status, updated_at: db.fn.now() }).returning('*'); if (!rows[0]) return res.status(404).json({ message: 'Post not found' }); return res.json(rows[0]); };
+exports.updateStatus = async (req, res) => { if (!['draft', 'published'].includes(req.body.status)) return res.status(422).json({ messageId: 'POST-E-004', message: 'Validation failed', details: [{ field: 'status', message: 'status must be draft or published' }] }); const rows = await db('posts').where({ id: req.params.id }).update({ status: req.body.status, updated_at: db.fn.now() }).returning('*'); if (!rows[0]) return res.status(404).json({ messageId: 'POST-E-003', message: 'Post not found' }); return res.json(rows[0]); };
 exports.adminStats = async (req, res) => { const scoped = req.user.role === 'admin' ? db('posts') : db('posts').where('author_id', req.user.id); const [totalRow, pubRow, draftRow, catRow] = await Promise.all([scoped.clone().count('* as c').first(), scoped.clone().where('status', 'published').count('* as c').first(), scoped.clone().where('status', 'draft').count('* as c').first(), db('categories').count('* as c').first()]); res.json({ totalPosts: Number(totalRow.c || 0), publishedPosts: Number(pubRow.c || 0), draftPosts: Number(draftRow.c || 0), totalCategories: Number(catRow.c || 0) }); };

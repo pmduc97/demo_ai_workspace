@@ -12,6 +12,7 @@ status: DRAFT
 Kiểm tra tính năng hiển thị Dashboard tổng quan của Admin/Member, đảm bảo hiển thị đúng thống kê (số lượng bài viết, danh mục) và danh sách bài viết gần đây theo đúng phân quyền (Admin thấy toàn bộ, Member chỉ thấy của mình).
 
 ## 2. Điều kiện tiền quyết (Pre-conditions)
+> **Lưu ý:** Quá trình test phải sử dụng Condition-Based Waiting (chờ element, chờ API response), tuyệt đối không dùng hard sleep (`waitForTimeout`).
 - User đã đăng nhập với role `admin` hoặc `member`.
 - Đang đứng tại trang `/admin/dashboard`.
 
@@ -44,6 +45,8 @@ Kiểm tra tính năng hiển thị Dashboard tổng quan của Admin/Member, đ
 ---
 
 ## 5. Dữ liệu Test (Test Data)
+
+> **Lưu ý:** Test Data được lấy trực tiếp từ DB thật qua MCP (không dùng data giả hardcode). Các câu lệnh SQL dưới đây mang tính chất tham khảo cấu trúc.
 
 ### 5.1. Dữ liệu nền (Setup Data - DB State)
 ```sql

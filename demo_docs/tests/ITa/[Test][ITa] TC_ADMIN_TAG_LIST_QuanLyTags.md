@@ -12,6 +12,7 @@ status: DRAFT
 Kiểm thử chức năng Quản lý Tags trên giao diện Admin, bao gồm hiển thị danh sách (phân trang, tìm kiếm), thêm mới, cập nhật và xóa tag. Đảm bảo form hoạt động đúng, gọi đúng API (API29, API30, API31, API32) và xử lý chính xác các phản hồi từ server.
 
 ## 2. Điều kiện tiền quyết (Pre-conditions)
+> **Lưu ý:** Quá trình test phải sử dụng Condition-Based Waiting (chờ element, chờ API response), tuyệt đối không dùng hard sleep (`waitForTimeout`).
 - User đã đăng nhập với role `admin`.
 - Đang đứng tại trang `/admin/tags`.
 
@@ -50,6 +51,8 @@ Kiểm thử chức năng Quản lý Tags trên giao diện Admin, bao gồm hi�
 ---
 
 ## 5. Dữ liệu Test (Test Data)
+
+> **Lưu ý:** Test Data được lấy trực tiếp từ DB thật qua MCP (không dùng data giả hardcode). Các câu lệnh SQL dưới đây mang tính chất tham khảo cấu trúc.
 
 ### 5.1. Dữ liệu nền (Setup Data - DB State)
 ```sql

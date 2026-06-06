@@ -6,7 +6,7 @@ exports.getTags = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
 
     if (page < 1 || limit < 1) {
-      return res.status(400).json({ message: 'Validation failed', details: 'Page and limit must be positive integers' });
+      return res.status(422).json({ messageId: 'TAG-E-001', message: 'Validation failed', details: 'Page and limit must be positive integers' });
     }
 
     const offset = (page - 1) * limit;
@@ -30,7 +30,7 @@ exports.getTags = async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', details: error.message });
+    res.status(500).json({ messageId: 'COMMON-E-001', message: 'Internal server error', details: error.message });
   }
 };
 
@@ -41,7 +41,7 @@ exports.getAdminTags = async (req, res) => {
     const search = req.query.search || '';
 
     if (page < 1 || limit < 1) {
-      return res.status(400).json({ message: 'Validation failed', details: 'Page and limit must be positive integers' });
+      return res.status(422).json({ messageId: 'TAG-E-001', message: 'Validation failed', details: 'Page and limit must be positive integers' });
     }
 
     const offset = (page - 1) * limit;
@@ -69,7 +69,7 @@ exports.getAdminTags = async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', details: error.message });
+    res.status(500).json({ messageId: 'COMMON-E-001', message: 'Internal server error', details: error.message });
   }
 };
 
@@ -78,17 +78,17 @@ exports.createTag = async (req, res) => {
     const { name, slug, description } = req.body;
 
     if (!name || !name.trim()) {
-      return res.status(400).json({ message: 'Validation failed', details: 'Name is required' });
+      return res.status(422).json({ messageId: 'TAG-E-001', message: 'Validation failed', details: 'Name is required' });
     }
     if (!slug || !slug.trim()) {
-      return res.status(400).json({ message: 'Validation failed', details: 'Slug is required' });
+      return res.status(422).json({ messageId: 'TAG-E-001', message: 'Validation failed', details: 'Slug is required' });
     }
 
     const normalizedSlug = slug.trim().toLowerCase();
 
     const existingTag = await db('tags').where({ slug: normalizedSlug }).whereNull('deleted_at').first();
     if (existingTag) {
-      return res.status(409).json({ message: 'Conflict', details: 'Slug already exists' });
+      return res.status(409).json({ messageId: 'TAG-E-002', message: 'Conflict', details: 'Slug already exists' });
     }
 
     const [newTag] = await db('tags').insert({
@@ -104,7 +104,7 @@ exports.createTag = async (req, res) => {
       data: { id: newTag.id }
     });
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', details: error.message });
+    res.status(500).json({ messageId: 'COMMON-E-001', message: 'Internal server error', details: error.message });
   }
 };
 
@@ -112,28 +112,28 @@ exports.updateTag = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     if (isNaN(id) || id <= 0) {
-      return res.status(400).json({ message: 'Validation failed', details: 'Invalid ID' });
+      return res.status(422).json({ messageId: 'TAG-E-001', message: 'Validation failed', details: 'Invalid ID' });
     }
 
     const { name, slug, description } = req.body;
 
     if (!name || !name.trim()) {
-      return res.status(400).json({ message: 'Validation failed', details: 'Name is required' });
+      return res.status(422).json({ messageId: 'TAG-E-001', message: 'Validation failed', details: 'Name is required' });
     }
     if (!slug || !slug.trim()) {
-      return res.status(400).json({ message: 'Validation failed', details: 'Slug is required' });
+      return res.status(422).json({ messageId: 'TAG-E-001', message: 'Validation failed', details: 'Slug is required' });
     }
 
     const normalizedSlug = slug.trim().toLowerCase();
 
     const tag = await db('tags').where({ id }).whereNull('deleted_at').first();
     if (!tag) {
-      return res.status(404).json({ message: 'Not found', details: 'Tag not found' });
+      return res.status(404).json({ messageId: 'TAG-E-003', message: 'Not found', details: 'Tag not found' });
     }
 
     const existingTag = await db('tags').where({ slug: normalizedSlug }).whereNot({ id }).whereNull('deleted_at').first();
     if (existingTag) {
-      return res.status(409).json({ message: 'Conflict', details: 'Slug already exists' });
+      return res.status(409).json({ messageId: 'TAG-E-002', message: 'Conflict', details: 'Slug already exists' });
     }
 
     await db('tags').where({ id }).update({
@@ -149,7 +149,7 @@ exports.updateTag = async (req, res) => {
       data: { id }
     });
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', details: error.message });
+    res.status(500).json({ messageId: 'COMMON-E-001', message: 'Internal server error', details: error.message });
   }
 };
 
@@ -157,12 +157,12 @@ exports.deleteTag = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     if (isNaN(id) || id <= 0) {
-      return res.status(400).json({ message: 'Validation failed', details: 'Invalid ID' });
+      return res.status(422).json({ messageId: 'TAG-E-001', message: 'Validation failed', details: 'Invalid ID' });
     }
 
     const tag = await db('tags').where({ id }).whereNull('deleted_at').first();
     if (!tag) {
-      return res.status(404).json({ message: 'Not found', details: 'Tag not found' });
+      return res.status(404).json({ messageId: 'TAG-E-003', message: 'Not found', details: 'Tag not found' });
     }
 
     await db('tags').where({ id }).update({
@@ -174,6 +174,6 @@ exports.deleteTag = async (req, res) => {
       message: 'Xóa tag thành công'
     });
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', details: error.message });
+    res.status(500).json({ messageId: 'COMMON-E-001', message: 'Internal server error', details: error.message });
   }
 };

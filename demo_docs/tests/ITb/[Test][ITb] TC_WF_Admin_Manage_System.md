@@ -35,6 +35,8 @@ sequenceDiagram
 
 ## 3. Dữ liệu Test (Test Data)
 
+> **Lưu ý:** Test Data được lấy trực tiếp từ DB thật qua MCP (không dùng data giả hardcode). Các câu lệnh SQL dưới đây mang tính chất tham khảo cấu trúc.
+
 ### 3.1. Dữ liệu nền (Setup Data - DB State)
 ```sql
 -- Xóa data cũ để clean state
@@ -67,6 +69,8 @@ INSERT INTO users (id, name, email, password_hash, role, status) VALUES
 ---
 
 ## 5. Kịch bản Kiểm thử Chi tiết (TC Detail)
+
+> **Lưu ý:** Quá trình test phải sử dụng Condition-Based Waiting (chờ element, chờ API response), tuyệt đối không dùng hard sleep (`waitForTimeout`).
 
 ### TC_ITB_01: Luồng Admin đăng nhập, tạo danh mục, tạo bài viết và đổi role user
 - **Pattern:** `HP` (Happy Path)

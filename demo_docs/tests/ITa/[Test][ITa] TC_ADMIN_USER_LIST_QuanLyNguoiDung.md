@@ -19,6 +19,7 @@ status: DRAFT
 Kiểm thử tích hợp chức năng màn `ADMIN_USER_LIST_QuanLyNguoiDung`, đảm bảo Admin xem danh sách, tìm kiếm/lọc/sắp xếp/phân trang/export, xem chi tiết, tạo mới, cập nhật profile, đổi role, khóa/mở khóa và xóa mềm người dùng đúng theo FE/API design, dữ liệu DB và phân quyền.
 
 ## 2. Điều kiện tiền quyết (Pre-conditions)
+> **Lưu ý:** Quá trình test phải sử dụng Condition-Based Waiting (chờ element, chờ API response), tuyệt đối không dùng hard sleep (`waitForTimeout`).
 - PostgreSQL database `hoian_blog` đã migrate và seed.
 - Admin đăng nhập thành công bằng `admin@hoianblog.vn` / `password123` và có JWT hợp lệ.
 - Member test tồn tại bằng `member@hoianblog.vn` / `password123`.
@@ -106,6 +107,8 @@ Kiểm thử tích hợp chức năng màn `ADMIN_USER_LIST_QuanLyNguoiDung`, đ
 ---
 
 ## 5. Dữ liệu Test (Test Data)
+
+> **Lưu ý:** Test Data được lấy trực tiếp từ DB thật qua MCP (không dùng data giả hardcode). Các câu lệnh SQL dưới đây mang tính chất tham khảo cấu trúc.
 
 ### 5.1. Dữ liệu nền (Setup Data - DB State)
 Dữ liệu dưới đây dựa trên schema và sample thật từ MCP: bảng `users` có các user seed `id=3` admin, `id=4` member; bảng `posts` có bài của `author_id=3` và `author_id=4` để test counter.

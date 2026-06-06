@@ -107,3 +107,11 @@ Khi tạo hoặc cập nhật API docs / FE screen docs:
 | POST-I-001 | Post | I | N/A | `Chưa có bài viết nào.` | EmptyState | `PostListPage.jsx` | Danh sách bài viết rỗng |
 | POST-I-002 | Post | I | N/A | `Không tìm thấy bài viết phù hợp với bộ lọc.` | EmptyState | `PostListPage.jsx` | Filter/search không có kết quả |
 | POST-E-005 | Post | E | 500 | `Không thể tải bài viết. Vui lòng thử lại.` | ErrorBanner | `PostListPage.jsx` | API lỗi khi tải danh sách |
+| TAG-E-001 | Tag | E | 400/422 | `Dữ liệu tag không hợp lệ` | InlineError / Toast | `tags.controller.js` | Validate request fail |
+| TAG-E-002 | Tag | E | 409 | `Slug tag đã tồn tại` | InlineError | `tags.controller.js` | Slug trùng với tag chưa xóa |
+| TAG-E-003 | Tag | E | 404 | `Tag không tồn tại` | Toast | `tags.controller.js` | Không tìm thấy tag theo ID |
+| TAG-S-001 | Tag | S | 201 | `Tạo tag thành công` | Toast | `TagList.jsx` | Tạo tag thành công |
+| TAG-S-002 | Tag | S | 200 | `Cập nhật tag thành công` | Toast | `TagList.jsx` | Cập nhật tag thành công |
+| TAG-S-003 | Tag | S | 200 | `Xóa tag thành công` | Toast | `TagList.jsx` | Xóa tag thành công |
+| TAG-C-001 | Tag | C | N/A | `Bạn có chắc chắn muốn xóa tag này?` | ConfirmModal | `TagList.jsx` | Admin click nút xóa |
+| TAG-I-001 | Tag | I | N/A | `Chưa có tag nào. Hãy thêm tag đầu tiên!` | EmptyState | `TagList.jsx` | Danh sách rỗng |

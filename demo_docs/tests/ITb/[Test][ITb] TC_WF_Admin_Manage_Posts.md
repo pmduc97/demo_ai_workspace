@@ -34,6 +34,8 @@ sequenceDiagram
 
 ## 3. Dữ liệu Test (Test Data)
 
+> **Lưu ý:** Test Data được lấy trực tiếp từ DB thật qua MCP (không dùng data giả hardcode). Các câu lệnh SQL dưới đây mang tính chất tham khảo cấu trúc.
+
 ### 3.1. Dữ liệu nền (Setup Data - DB State)
 ```sql
 DELETE FROM posts WHERE slug IN ('bai-viet-can-duyet', 'bai-viet-vi-pham');
@@ -69,6 +71,8 @@ INSERT INTO posts (id, title, slug, content, excerpt, category_id, author_id, st
 ---
 
 ## 5. Kịch bản Kiểm thử Chi tiết (TC Detail)
+
+> **Lưu ý:** Quá trình test phải sử dụng Condition-Based Waiting (chờ element, chờ API response), tuyệt đối không dùng hard sleep (`waitForTimeout`).
 
 ### TC_ITB_ADM_01: Admin duyệt bài viết và xóa bài viết vi phạm
 - **Pattern:** `HP` (Happy Path)

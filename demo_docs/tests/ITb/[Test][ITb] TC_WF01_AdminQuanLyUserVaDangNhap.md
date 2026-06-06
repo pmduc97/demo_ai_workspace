@@ -68,6 +68,8 @@ sequenceDiagram
 
 ## 3. Dữ liệu Test (Test Data)
 
+> **Lưu ý:** Test Data được lấy trực tiếp từ DB thật qua MCP (không dùng data giả hardcode). Các câu lệnh SQL dưới đây mang tính chất tham khảo cấu trúc.
+
 ### 3.1. Dữ liệu nền (Setup Data - DB State)
 *Dữ liệu bắt buộc phải được insert vào DB trước khi chạy test suite này.*
 ```sql
@@ -106,6 +108,8 @@ VALUES (9902, 'test_target_itb@hoianblog.vn', '$2b$10$9br.361KuQ9FFBIXQzBS5eIuFS
 ---
 
 ## 5. Kịch bản Kiểm thử Chi tiết (TC Detail)
+
+> **Lưu ý:** Quá trình test phải sử dụng Condition-Based Waiting (chờ element, chờ API response), tuyệt đối không dùng hard sleep (`waitForTimeout`).
 
 ### TC_ITB_01: Admin cấp quyền Admin cho Member, Member đăng nhập và xem được Dashboard
 - **Pattern:** `HP` (Happy Path)

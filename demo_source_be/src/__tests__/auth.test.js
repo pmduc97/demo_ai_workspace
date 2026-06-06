@@ -49,26 +49,26 @@ describe('POST /api/auth/login', () => {
     expect(res.body.user).not.toHaveProperty('password_hash');
   });
 
-  it('should return 400 if email is missing', async () => {
+  it('should return 422 if email is missing', async () => {
     const res = await request(app)
       .post('/api/auth/login')
       .send({
         password: testUser.password
       });
 
-    expect(res.statusCode).toBe(400);
+    expect(res.statusCode).toBe(422);
     expect(res.body.messageId).toBe('AUTH-E-001');
     expect(res.body.message).toBe('Email và mật khẩu là bắt buộc');
   });
 
-  it('should return 400 if password is missing', async () => {
+  it('should return 422 if password is missing', async () => {
     const res = await request(app)
       .post('/api/auth/login')
       .send({
         email: testUser.email
       });
 
-    expect(res.statusCode).toBe(400);
+    expect(res.statusCode).toBe(422);
     expect(res.body.messageId).toBe('AUTH-E-001');
     expect(res.body.message).toBe('Email và mật khẩu là bắt buộc');
   });

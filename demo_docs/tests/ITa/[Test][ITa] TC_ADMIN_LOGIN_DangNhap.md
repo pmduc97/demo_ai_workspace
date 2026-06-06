@@ -13,6 +13,7 @@ status: DRAFT
 Kiểm thử tích hợp chức năng Đăng nhập trên giao diện Admin, đảm bảo form hoạt động đúng, gọi đúng API `/api/auth/login`, xử lý chính xác các phản hồi từ server (thành công, sai thông tin, lỗi server) và lưu trữ JWT/User vào context thành công.
 
 ## 2. Điều kiện tiền quyết (Pre-conditions)
+> **Lưu ý:** Quá trình test phải sử dụng Condition-Based Waiting (chờ element, chờ API response), tuyệt đối không dùng hard sleep (`waitForTimeout`).
 - PostgreSQL database `hoian_blog` đã migrate và seed.
 - User chưa đăng nhập (không có token trong localStorage/context).
 - Đang đứng tại trang `/admin/login`.
@@ -45,6 +46,8 @@ Kiểm thử tích hợp chức năng Đăng nhập trên giao diện Admin, đ�
 ---
 
 ## 5. Dữ liệu Test (Test Data)
+
+> **Lưu ý:** Test Data được lấy trực tiếp từ DB thật qua MCP (không dùng data giả hardcode). Các câu lệnh SQL dưới đây mang tính chất tham khảo cấu trúc.
 
 ### 5.1. Dữ liệu nền (Setup Data - DB State)
 ```sql

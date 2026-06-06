@@ -15,6 +15,7 @@ status: DRAFT
 Kiểm thử tích hợp chức năng Quản lý bài viết trên giao diện Admin, đảm bảo Admin/Member xem danh sách bài viết (có phân trang, tìm kiếm, lọc, sắp xếp), thay đổi trạng thái (Publish/Draft) và xóa bài viết. Đảm bảo phân quyền đúng (Member chỉ thấy/sửa bài của mình, Admin thấy/sửa tất cả).
 
 ## 2. Điều kiện tiền quyết (Pre-conditions)
+> **Lưu ý:** Quá trình test phải sử dụng Condition-Based Waiting (chờ element, chờ API response), tuyệt đối không dùng hard sleep (`waitForTimeout`).
 - PostgreSQL database `hoian_blog` đã migrate và seed.
 - User đã đăng nhập với role `admin` hoặc `member`.
 - Đang đứng tại trang `/admin/posts`.
@@ -52,6 +53,8 @@ Kiểm thử tích hợp chức năng Quản lý bài viết trên giao diện A
 ---
 
 ## 5. Dữ liệu Test (Test Data)
+
+> **Lưu ý:** Test Data được lấy trực tiếp từ DB thật qua MCP (không dùng data giả hardcode). Các câu lệnh SQL dưới đây mang tính chất tham khảo cấu trúc.
 
 ### 5.1. Dữ liệu nền (Setup Data - DB State)
 ```sql

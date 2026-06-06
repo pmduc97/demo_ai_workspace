@@ -66,7 +66,7 @@ const DataToolbar = ({
               <button
                 key={index}
                 onClick={() => action.onClick(selectedIds)}
-                className={`text-sm px-3 py-1 rounded-md transition-colors ${
+                className={`text-sm px-3 py-1 rounded-md transition-opacity ${
                   action.variant === 'danger'
                     ? 'bg-red-100 text-red-700 hover:bg-red-200'
                     : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'

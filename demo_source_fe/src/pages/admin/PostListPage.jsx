@@ -88,8 +88,10 @@ export default function PostListPage() {
   };
 
   useEffect(() => {
-    fetchCategories();
-    fetchAuthors();
+    let mounted = true;
+    if (mounted) fetchCategories();
+    if (mounted) fetchAuthors();
+    return () => { mounted = false; };
   }, [user?.role]);
 
   const showToast = (message, type = 'success') => {

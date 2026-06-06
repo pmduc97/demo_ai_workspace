@@ -13,7 +13,7 @@ export default function PostCard({ post }) {
   };
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+    <article className="group flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl">
       <Link to={`/post/${post.slug}`} className="block overflow-hidden relative h-56">
         <img className="h-full w-full object-cover transition duration-500 group-hover:scale-110" src={image} alt={post.title} />
         {post.category_name && (
@@ -34,7 +34,7 @@ export default function PostCard({ post }) {
           </span>
         </div>
         <h3 className="line-clamp-2 text-xl font-bold text-gray-900 mb-3">
-          <Link className="hover:text-blue-600 transition-colors" to={`/post/${post.slug}`}>{post.title}</Link>
+          <Link className="hover:text-blue-600 transition-opacity" to={`/post/${post.slug}`}>{post.title}</Link>
         </h3>
         <p className="line-clamp-3 text-sm leading-relaxed text-gray-600 mb-4 flex-grow">{excerpt}</p>
         {post.tags && post.tags.length > 0 && (
@@ -47,7 +47,7 @@ export default function PostCard({ post }) {
           </div>
         )}
         <div className="mt-auto pt-4 border-t border-gray-100">
-          <Link className="inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors" to={`/post/${post.slug}`}>
+          <Link className="inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-800 transition-opacity" to={`/post/${post.slug}`}>
             Đọc tiếp 
             <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
           </Link>

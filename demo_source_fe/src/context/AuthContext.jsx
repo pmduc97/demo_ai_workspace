@@ -7,22 +7,28 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    let mounted = true;
     const token = localStorage.getItem('token');
     if (token) {
       api.get('/auth/me')
         .then(({ data }) => {
-          setUser(data);
-          localStorage.setItem('user', JSON.stringify(data));
+          if (mounted) {
+            setUser(data);
+            localStorage.setItem('user', JSON.stringify(data));
+          }
         })
         .catch(() => {
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          setUser(null);
+          if (mounted) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            setUser(null);
+          }
         });
     } else {
       const raw = localStorage.getItem('user');
-      if (raw) setUser(JSON.parse(raw));
+      if (raw && mounted) setUser(JSON.parse(raw));
     }
+    return () => { mounted = false; };
   }, []);
 
   const login = (token, userData) => {

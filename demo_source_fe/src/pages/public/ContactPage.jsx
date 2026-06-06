@@ -50,7 +50,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white py-12 px-4">
+    <div className="min-h-[100dvh] bg-white py-12 px-4">
       <div className="max-w-7xl mx-auto">
         {/* PageHeader */}
         <div className="text-center mb-16">
@@ -72,7 +72,7 @@ export default function ContactPage() {
                 <p className="text-green-700 mb-6">Chúng tôi đã nhận được tin nhắn của bạn.</p>
                 <button 
                   onClick={resetForm}
-                  className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition-colors"
+                  className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition-opacity"
                 >
                   Gửi tin nhắn khác
                 </button>
@@ -137,7 +137,7 @@ export default function ContactPage() {
                 <button 
                   type="submit" 
                   disabled={submitStatus === 'submitting'}
-                  className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition-colors disabled:bg-blue-400 flex justify-center items-center"
+                  className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition-opacity disabled:bg-blue-400 flex justify-center items-center"
                 >
                   {submitStatus === 'submitting' ? (
                     <>
@@ -187,10 +187,10 @@ export default function ContactPage() {
               <div className="mt-12">
                 <h3 className="font-medium text-gray-900 mb-4">Kết nối với chúng tôi</h3>
                 <div className="flex space-x-4">
-                  <a href="#" className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
+                  <a href="#" className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-opacity">
                     f
                   </a>
-                  <a href="#" className="w-10 h-10 bg-pink-600 text-white rounded-full flex items-center justify-center hover:bg-pink-700 transition-colors">
+                  <a href="#" className="w-10 h-10 bg-pink-600 text-white rounded-full flex items-center justify-center hover:bg-pink-700 transition-opacity">
                     ig
                   </a>
                 </div>

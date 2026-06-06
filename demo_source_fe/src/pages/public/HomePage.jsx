@@ -48,7 +48,7 @@ export default function HomePage() {
   const latestPosts = items.slice(3);
 
   return (
-    <main className="bg-gray-50 min-h-screen pb-16">
+    <main className="bg-gray-50 min-h-[100dvh] pb-16">
       {/* Hero Section - Magazine Style Grid */}
       <section className="bg-white pt-8 pb-12 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -86,7 +86,7 @@ export default function HomePage() {
                   <span className="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider text-white uppercase bg-blue-600 rounded-full">
                     {featuredPosts[0].category_name || 'Nổi bật'}
                   </span>
-                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 leading-tight group-hover:text-blue-200 transition-colors">
+                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 leading-tight group-hover:text-blue-200 transition-opacity">
                     {featuredPosts[0].title}
                   </h2>
                   <div className="flex items-center text-gray-300 text-sm">
@@ -110,7 +110,7 @@ export default function HomePage() {
                       <span className="inline-block px-2 py-1 mb-3 text-xs font-bold tracking-wider text-white uppercase bg-blue-600 rounded-full">
                         {post.category_name || 'Tin tức'}
                       </span>
-                      <h2 className="text-xl md:text-2xl font-bold text-white mb-2 leading-tight group-hover:text-blue-200 transition-colors">
+                      <h2 className="text-xl md:text-2xl font-bold text-white mb-2 leading-tight group-hover:text-blue-200 transition-opacity">
                         {post.title}
                       </h2>
                       <div className="flex items-center text-gray-300 text-xs">
@@ -145,7 +145,7 @@ export default function HomePage() {
 
             {!loading && !error && items.length > 0 && (
               <div className="mt-12 text-center">
-                <button className="inline-flex items-center justify-center px-8 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                <button className="inline-flex items-center justify-center px-8 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 transition-opacity">
                   Tải thêm bài viết
                 </button>
               </div>
@@ -163,7 +163,7 @@ export default function HomePage() {
                 <p className="text-blue-100 text-sm mb-6">Nhận những bài viết mới nhất và cẩm nang du lịch hữu ích mỗi tuần.</p>
                 <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
                   <input type="email" placeholder="Email của bạn..." className="w-full px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300" />
-                  <button type="submit" className="w-full px-4 py-3 rounded-lg bg-gray-900 text-white font-bold hover:bg-gray-800 transition-colors">Đăng ký ngay</button>
+                  <button type="submit" className="w-full px-4 py-3 rounded-lg bg-gray-900 text-white font-bold hover:bg-gray-800 transition-opacity">Đăng ký ngay</button>
                 </form>
               </div>
 
@@ -174,8 +174,8 @@ export default function HomePage() {
                   {['Du lịch biển', 'Khám phá núi rừng', 'Ẩm thực địa phương', 'Cẩm nang du lịch', 'Review khách sạn'].map((cat, idx) => (
                     <li key={idx}>
                       <Link to="#" className="flex items-center justify-between group">
-                        <span className="text-gray-600 group-hover:text-blue-600 font-medium transition-colors">{cat}</span>
-                        <span className="bg-gray-100 text-gray-500 text-xs font-bold px-2 py-1 rounded-full group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">{Math.floor(Math.random() * 20) + 5}</span>
+                        <span className="text-gray-600 group-hover:text-blue-600 font-medium transition-opacity">{cat}</span>
+                        <span className="bg-gray-100 text-gray-500 text-xs font-bold px-2 py-1 rounded-full group-hover:bg-blue-100 group-hover:text-blue-600 transition-opacity">{Math.floor(Math.random() * 20) + 5}</span>
                       </Link>
                     </li>
                   ))}
@@ -188,7 +188,7 @@ export default function HomePage() {
                   <h3 className="text-lg font-bold text-gray-900 mb-6 border-b pb-2 uppercase tracking-wider">Tags phổ biến</h3>
                   <div className="flex flex-wrap gap-2">
                     {tags.map(tag => (
-                      <Link key={tag.id} to={`/tag/${tag.slug}`} className="inline-block px-3 py-1.5 bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-700 text-sm font-medium rounded-lg transition-colors">
+                      <Link key={tag.id} to={`/tag/${tag.slug}`} className="inline-block px-3 py-1.5 bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-700 text-sm font-medium rounded-lg transition-opacity">
                         #{tag.name}
                       </Link>
                     ))}
@@ -206,7 +206,7 @@ export default function HomePage() {
                         <img src={`https://images.unsplash.com/photo-1506${i}05961270-5952a21dfa11?q=80&w=200&auto=format&fit=crop`} alt="Thumb" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                       </div>
                       <div className="flex flex-col justify-center">
-                        <h4 className="text-sm font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-1">
+                        <h4 className="text-sm font-bold text-gray-900 group-hover:text-blue-600 transition-opacity line-clamp-2 mb-1">
                           Kinh nghiệm du lịch tự túc tiết kiệm nhất năm 2026
                         </h4>
                         <span className="text-xs text-gray-500">12/05/2026</span>

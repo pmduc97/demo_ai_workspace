@@ -10,12 +10,13 @@ export default function PostFormPage() {
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
+    let mounted = true;
     api.get('/tags', { params: { limit: 100 } }).then((r) => {
-      setTags(Array.isArray(r.data) ? r.data : r.data?.items || []);
+      if (mounted) setTags(Array.isArray(r.data) ? r.data : r.data?.items || []);
     });
     if (isEdit) api.get('/admin/posts').then((r) => {
       const found = (r.data.items || []).find((x) => String(x.id) === id);
-      if (found) setForm({ 
+      if (found && mounted) setForm({ 
         title: found.title, 
         slug: found.slug, 
         content: found.content || '', 
@@ -23,6 +24,7 @@ export default function PostFormPage() {
         tag_ids: found.tags?.map(t => t.id) || []
       });
     });
+    return () => { mounted = false; };
   }, [id, isEdit]);
 
   const submit = async (e) => {

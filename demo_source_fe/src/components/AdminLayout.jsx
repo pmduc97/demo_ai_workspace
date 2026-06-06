@@ -12,12 +12,12 @@ export default function AdminLayout({ children, title }) {
     navigate('/admin/login');
   };
 
-  const navItem = 'flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors';
+  const navItem = 'flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-opacity';
   const activeClass = 'bg-amber-100 text-amber-700';
   const inactiveClass = 'text-gray-600 hover:bg-gray-100';
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-[100dvh] bg-gray-50 flex">
       {/* Overlay mobile */}
       {sidebarOpen && (
         <div
@@ -61,7 +61,7 @@ export default function AdminLayout({ children, title }) {
         <div className="p-3 border-t border-gray-200">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
+            className="w-full flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-opacity"
           >
             <span>🚪</span> Đăng xuất
           </button>

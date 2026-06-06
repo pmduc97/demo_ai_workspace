@@ -8,7 +8,11 @@ export default function CategoryPage() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    api.get(`/posts?category=${slug}`).then((r) => setItems(r.data.items || []));
+    let mounted = true;
+    api.get(`/posts?category=${slug}`).then((r) => {
+      if (mounted) setItems(r.data.items || []);
+    });
+    return () => { mounted = false; };
   }, [slug]);
 
   return <div className="p-4 grid gap-3">{items.map((p) => <PostCard key={p.id} post={p} />)}</div>;

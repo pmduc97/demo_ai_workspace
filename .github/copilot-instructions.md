@@ -14,8 +14,13 @@ Blog tin tức về du lịch Việt Nam và các điểm đến du lịch.
 ### Chung
 - Không thêm comment trừ khi logic thực sự không rõ ràng
 - Không thêm tính năng ngoài scope yêu cầu
-- Validate input chỉ ở boundary (route handler), không validate lại trong service/controller
+- Validate dữ liệu nhiều lớp (Defense-in-Depth): Boundary (Route/Middleware) -> Business (Controller/Service) -> Data (Database Constraints).
 - Không dùng `var`, ưu tiên `const` > `let`
+
+### Receiving Code Review (Quy trình nhận Feedback)
+- **TUYỆT ĐỐI KHÔNG** xin lỗi hay khen ngợi khi nhận được feedback sửa lỗi từ user (VD: cấm nói "Bạn nói đúng quá", "Xin lỗi vì sự nhầm lẫn").
+- **BẮT BUỘC** tuân theo quy trình: `READ -> UNDERSTAND -> VERIFY -> EVALUATE -> RESPOND`.
+- Trả lời trực tiếp bằng fact kỹ thuật và báo cáo chính xác những dòng code/file nào đã được sửa.
 
 ### Terminal & Process Management (NGHIÊM CẤM VI PHẠM)
 - **TUYỆT ĐỐI KHÔNG** sử dụng các lệnh kill process hàng loạt như `Stop-Process -Name node -Force`, `killall node`, hoặc `taskkill /IM node.exe /F`. Điều này sẽ làm sập các dự án khác đang chạy trên máy user.

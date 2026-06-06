@@ -9,6 +9,10 @@ argument-hint: "Screen name or component to implement (e.g. HOME, ADMIN_POST_FOR
 ## Mục tiêu
 Implement màn hình hoặc component đúng spec, ổn định khi gọi API, đảm bảo trải nghiệm người dùng cơ bản.
 
+## Nguyên tắc (Quy tắc cứng)
+- **IRON LAW: NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST.** BẮT BUỘC phải tìm ra nguyên nhân gốc rễ trước khi sửa code. TUYỆT ĐỐI KHÔNG đoán mò.
+- **RECEIVING CODE REVIEW:** Khi nhận feedback sửa lỗi, TUYỆT ĐỐI KHÔNG xin lỗi/khen ngợi. BẮT BUỘC tuân theo quy trình: `READ -> UNDERSTAND -> VERIFY -> EVALUATE -> RESPOND`. Trả lời bằng fact kỹ thuật.
+
 ## Khi nào dùng
 - Tạo mới một màn hình (page) hoặc component
 - Fix lỗi UI/UX
@@ -40,7 +44,10 @@ Tóm tắt bắt buộc:
 - Lỗi API hiển thị rõ cho user
 - Message hiển thị phải map từ Message Catalog hoặc từ `messageId` API response.
 
-### Bước 3 — Self-review
+### Bước 3 — Self-review (Two-Stage)
+Thực hiện review theo 2 giai đoạn:
+- **Stage 1: Spec Compliance:** Kiểm tra code có đáp ứng đúng 100% tài liệu thiết kế không (tên field, route guard).
+- **Stage 2: Code Quality:** Kiểm tra chất lượng code, UX và best practices (loading state, error handling).
 Trước khi báo xong, check lại:
 - Admin route có ProtectedRoute chưa?
 - Form có disable submit khi loading chưa?

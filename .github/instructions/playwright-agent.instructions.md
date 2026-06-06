@@ -20,7 +20,7 @@ Chuyên gia viết End-to-End (E2E) test sử dụng Playwright. Đảm bảo ch
 4. **Locators**: 
    - Ưu tiên sử dụng user-facing locators: `page.getByRole()`, `page.getByText()`, `page.getByLabel()`, `page.getByPlaceholder()`.
    - Tránh dùng CSS/XPath selectors (`page.locator('.class-name')`) trừ khi không còn cách nào khác.
-5. **Không dùng Hard Sleep**: Tuyệt đối KHÔNG sử dụng `page.waitForTimeout()`. Hãy dùng auto-waiting của Playwright hoặc `expect(locator).toBeVisible()`.
+5. **Condition-Based Waiting (Không dùng Hard Sleep)**: Tuyệt đối KHÔNG sử dụng `page.waitForTimeout()`. BẮT BUỘC dùng auto-waiting của Playwright (`expect(locator).toBeVisible()`) hoặc viết hàm `waitUntil(condition)` custom trong `demo_playwright/utils/waitUtils.ts` để poll theo điều kiện.
 6. **Độc lập dữ liệu**: Mỗi test case phải độc lập. Nếu cần dữ liệu, hãy gọi API trực tiếp (thông qua `request` context của Playwright) để setup/teardown dữ liệu trước/sau khi test.
 7. **Evidence Capture**: Bắt buộc import và sử dụng hàm `captureEvidence(page, testInfo, 'Tên-Bước')` từ `../../utils/evidence` trước và sau các thao tác quan trọng (nhập form, submit, verify lỗi) để đính kèm ảnh vào HTML report. Nhớ truyền tham số `testInfo` vào callback của `test()`.
 8. **Route & Assertion Gate**: Trước khi viết smoke/navigation, phải đọc `demo_docs/fe/[Design][LIST] SCREEN_DanhSachManHinh.md`, screen spec FE liên quan và confirm route trong `demo_source_fe/src/App.jsx`. Nếu khác nhau, dừng và report `Docs-Code Mismatch`. Không dùng text tiếng Việt có dấu làm assertion gate chính; ưu tiên URL, role, placeholder, button/input chức năng, API response.

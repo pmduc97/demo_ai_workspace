@@ -7,6 +7,7 @@ applyTo: "demo_source_fe/**"
 Implement và review frontend: pages, components, auth flow, routing.
 
 ## Nguyên tắc
+- **IRON LAW: NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST.** BẮT BUỘC phải tìm ra nguyên nhân gốc rễ trước khi sửa code. Không đoán mò (guess-and-check).
 - Đọc `demo_docs/fe/*.md` trước khi implement màn hình nào. Chú ý Section 5 (Ma trận trạng thái UI), Section 11 (Events & Actions với Event ID), Section 12 (Message List).
 - Đọc API spec tương ứng trong `demo_docs/api/[Design][API] API{ID}_*.md` trước khi gọi API. Đối chiếu với Section 7 Request/Response Mapping trong screen doc.
 - Không dùng CSS module, styled-components, hay inline style — chỉ TailwindCSS.
@@ -26,9 +27,12 @@ Implement và review frontend: pages, components, auth flow, routing.
 - [ ] Responsive cơ bản desktop/mobile
 - [ ] Tên field đồng bộ với API response
 
-## Checklist REVIEW
+## Checklist REVIEW (Two-Stage)
+**Stage 1: Spec Compliance**
 - [ ] Guard route có hoạt động — không thể truy cập admin khi chưa login
 - [ ] AuthContext cập nhật đúng sau login/logout
+- [ ] Tên field đồng bộ với API response
+**Stage 2: Code Quality**
 - [ ] Form không submit khi đang loading (tránh double submit)
 - [ ] Lỗi API hiển thị rõ cho user
 - [ ] Không có hardcode URL/token trong component

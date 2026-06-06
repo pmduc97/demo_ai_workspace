@@ -39,6 +39,8 @@ src/__tests__/
 
 ## Quy tắc cứng
 
+- **IRON LAW: NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST.** BẮT BUỘC phải viết test fail trước khi implement tính năng hoặc fix bug.
+- **RECEIVING CODE REVIEW:** Khi nhận feedback sửa lỗi, TUYỆT ĐỐI KHÔNG xin lỗi/khen ngợi. BẮT BUỘC tuân theo quy trình: `READ -> UNDERSTAND -> VERIFY -> EVALUATE -> RESPOND`. Trả lời bằng fact kỹ thuật.
 - Test phải **deterministic** — chạy lặp lại nhiều lần cùng kết quả
 - Mỗi suite **độc lập** — không phụ thuộc thứ tự chạy
 - KHÔNG hardcode ID/token từ DB thực

@@ -9,6 +9,10 @@ argument-hint: "Module to test: auth | posts | categories | admin | upload"
 ## Mục tiêu
 Viết và maintain test suite cho backend API (Jest + Supertest), bao phủ luồng chính và lỗi quan trọng.
 
+## Nguyên tắc (Quy tắc cứng)
+- **IRON LAW: NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST.** BẮT BUỘC phải viết test fail trước khi implement tính năng hoặc fix bug.
+- **RECEIVING CODE REVIEW:** Khi nhận feedback sửa lỗi, TUYỆT ĐỐI KHÔNG xin lỗi/khen ngợi. BẮT BUỘC tuân theo quy trình: `READ -> UNDERSTAND -> VERIFY -> EVALUATE -> RESPOND`. Trả lời bằng fact kỹ thuật.
+
 ## Khi nào dùng
 - Viết test cho module mới (auth, posts, categories, admin, upload)
 - Thêm test case cho endpoint vừa implement

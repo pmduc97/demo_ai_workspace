@@ -9,6 +9,10 @@ argument-hint: "Endpoint or feature to implement (e.g. POST /api/posts)"
 ## Mục tiêu
 Implement hoặc fix một backend feature đúng spec, an toàn phân quyền, dễ test.
 
+## Nguyên tắc (Quy tắc cứng)
+- **IRON LAW: NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST.** BẮT BUỘC phải tìm ra nguyên nhân gốc rễ trước khi sửa code. TUYỆT ĐỐI KHÔNG đoán mò.
+- **RECEIVING CODE REVIEW:** Khi nhận feedback sửa lỗi, TUYỆT ĐỐI KHÔNG xin lỗi/khen ngợi. BẮT BUỘC tuân theo quy trình: `READ -> UNDERSTAND -> VERIFY -> EVALUATE -> RESPOND`. Trả lời bằng fact kỹ thuật.
+
 ## Khi nào dùng
 - Tạo endpoint mới
 - Fix lỗi logic trong controller/route
@@ -29,12 +33,15 @@ Xem đầy đủ tại [checklist](./references/checklist.md).
 Tóm tắt bắt buộc:
 - Route đúng method/path/prefix (`/api/*` hoặc `/api/admin/*`)
 - Controller trả đúng status code
-- Validate input → 422 khi sai
+- Validate nhiều lớp (Defense-in-Depth): Boundary -> Business -> Data. Trả 422 khi sai format.
 - Auth + role guard đúng (public / member / admin)
 - Không expose `password_hash` hay secret
 - Error format: `{ messageId, message, details? }`
 
-### Bước 3 — Self-review
+### Bước 3 — Self-review (Two-Stage)
+Thực hiện review theo 2 giai đoạn:
+- **Stage 1: Spec Compliance:** Kiểm tra code có đáp ứng đúng 100% tài liệu thiết kế không.
+- **Stage 2: Code Quality:** Kiểm tra chất lượng code, bảo mật (Defense-in-Depth) và best practices.
 Chạy checklist review tại [review criteria](./references/review-criteria.md) trước khi báo xong.
 
 ### Bước 4 — Verify

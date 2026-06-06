@@ -322,3 +322,16 @@ npm test
 ## Đóng góp
 
 Fork tự do. Không commit file `.env` hay secret local.
+
+## Lời cảm ơn (Acknowledgments)
+
+Dự án này có tham khảo và áp dụng một số phương pháp luận tiên tiến về AI Workflow từ dự án mã nguồn mở [obra/superpowers](https://github.com/obra/superpowers). Cụ thể, các concept sau đã được điều chỉnh và tích hợp để phù hợp với ngữ cảnh của Blog Du Lịch:
+- **"Iron Law" trong Debugging & TDD:** Kỷ luật thép bắt buộc AI viết test fail trước khi code và tìm root cause trước khi fix bug.
+- **Two-Stage Review Process:** Tách quy trình review thành 2 bước (Spec Compliance và Code Quality).
+- **Condition-Based Waiting:** Kỹ thuật chờ theo điều kiện trong test E2E thay vì dùng timeout cứng.
+- **Defense-in-Depth Validation:** Validate dữ liệu ở nhiều lớp (Boundary -> Business -> Data).
+- **Persuasion Principles:** Sử dụng từ ngữ mạnh và yêu cầu cam kết để tăng độ tuân thủ của AI.
+- **Test Polluter Identification:** Kỹ thuật dò tìm và dọn dẹp các test case gây ô nhiễm Database.
+- **Receiving Code Review:** Quy trình chuẩn hóa cách AI tiếp nhận và phản hồi feedback.
+
+Xin gửi lời cảm ơn đến tác giả và những người đóng góp cho dự án `obra/superpowers` vì những ý tưởng tuyệt vời này!

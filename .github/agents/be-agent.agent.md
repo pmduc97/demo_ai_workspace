@@ -25,6 +25,8 @@ Khi implement feature mới → ưu tiên dùng prompt liên hoàn `/be-create-a
 
 ## Quy tắc cứng
 
+- **IRON LAW: NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST.** BẮT BUỘC phải tìm ra nguyên nhân gốc rễ trước khi sửa code. TUYỆT ĐỐI KHÔNG đoán mò (guess-and-check).
+- **RECEIVING CODE REVIEW:** Khi nhận feedback sửa lỗi, TUYỆT ĐỐI KHÔNG xin lỗi/khen ngợi. BẮT BUỘC tuân theo quy trình: `READ -> UNDERSTAND -> VERIFY -> EVALUATE -> RESPOND`. Trả lời bằng fact kỹ thuật.
 - Route prefix: `/api/*` (public/member), `/api/admin/*` (admin only)
 - Error format: `{ message: string, details?: any }`
 - Status codes: 200/201 success · 400 bad request · 401 unauth · 403 forbidden · 404 not found · 422 validation · 500 server
@@ -36,17 +38,20 @@ Khi implement feature mới → ưu tiên dùng prompt liên hoàn `/be-create-a
 
 - [ ] Route đúng method/path/prefix
 - [ ] Controller trả đúng status code theo spec
-- [ ] Validate body/query/params — trả 422 khi sai
+- [ ] Validate nhiều lớp (Defense-in-Depth): Boundary -> Business -> Data. Trả 422 khi sai format.
 - [ ] Auth + role guard đúng (public / member / admin)
 - [ ] Query có pagination/filter/sort theo spec
 - [ ] Error format: `{ message, details? }`
 - [ ] Migration/seed cập nhật nếu đổi schema
 
-## Checklist REVIEW
+## Checklist REVIEW (Two-Stage)
 
+**Stage 1: Spec Compliance**
 - [ ] Method/path/status/response fields khớp docs
 - [ ] Permission bypass check (member làm việc admin?)
-- [ ] Validation đủ chặt
+
+**Stage 2: Code Quality**
+- [ ] Validation nhiều lớp (Defense-in-Depth) đủ chặt
 - [ ] Edge-case: page âm, limit lớn, filter rỗng
 - [ ] SQL injection risk (raw query, string interpolation)
 - [ ] Error message nhất quán

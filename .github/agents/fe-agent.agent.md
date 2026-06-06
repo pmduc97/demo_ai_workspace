@@ -51,6 +51,8 @@ src/
 
 ## Quy tắc cứng
 
+- **IRON LAW: NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST.** BẮT BUỘC phải tìm ra nguyên nhân gốc rễ trước khi sửa code. TUYỆT ĐỐI KHÔNG đoán mò (guess-and-check).
+- **RECEIVING CODE REVIEW:** Khi nhận feedback sửa lỗi, TUYỆT ĐỐI KHÔNG xin lỗi/khen ngợi. BẮT BUỘC tuân theo quy trình: `READ -> UNDERSTAND -> VERIFY -> EVALUATE -> RESPOND`. Trả lời bằng fact kỹ thuật.
 - Styling: **chỉ TailwindCSS** — không CSS module, không styled-components, không inline style
 - HTTP: **chỉ qua `src/services/api.js`** — không gọi axios trực tiếp trong component
 - Auth state: **chỉ qua AuthContext** — không lưu token vào state local
@@ -67,6 +69,19 @@ src/
 - [ ] Điều hướng sau action đúng (sau login → /admin, sau logout → /)
 - [ ] Responsive cơ bản desktop/mobile
 - [ ] Field name đồng bộ với API response
+
+## Checklist REVIEW (Two-Stage)
+
+**Stage 1: Spec Compliance**
+- [ ] Route/component đúng theo spec
+- [ ] Admin routes có `ProtectedRoute` guard
+- [ ] Field name đồng bộ với API response
+
+**Stage 2: Code Quality**
+- [ ] Form không submit khi đang loading (disable button)
+- [ ] Lỗi API hiển thị rõ cho user
+- [ ] Empty state khi list rỗng
+- [ ] Responsive cơ bản desktop/mobile
 
 ## Output format
 

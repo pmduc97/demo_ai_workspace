@@ -58,7 +58,7 @@ describe('Tags API', () => {
       expect(res.statusCode).toBe(403);
     });
 
-    it('should return list of tags for admin including soft deleted', async () => {
+    it('should return list of tags for admin excluding soft deleted', async () => {
       const res = await request(app)
         .get('/api/admin/tags')
         .set('Authorization', `Bearer ${tokenFor(admin)}`);
@@ -67,7 +67,7 @@ describe('Tags API', () => {
       
       const slugs = res.body.data.map(t => t.slug);
       expect(slugs).toContain('test-tag-1');
-      expect(slugs).toContain('test-tag-3');
+      expect(slugs).not.toContain('test-tag-3');
     });
   });
 

@@ -34,15 +34,15 @@ export default function TagList() {
   const [deleteModal, setDeleteModal] = useState({ open: false, id: null, name: '' });
 
   const fetchTags = React.useCallback(async (params) => {
-    const { data } = await api.get('/tags', {
+    const { data } = await api.get('/admin/tags', {
       params: {
         page: params.page,
         limit: params.limit,
-        keyword: params.keyword,
+        search: params.keyword,
       }
     });
-    const items = Array.isArray(data) ? data : data?.items || [];
-    return { data: items, total: data?.pagination?.totalItems || items.length };
+    const items = Array.isArray(data.data) ? data.data : data?.items || [];
+    return { data: items, total: data?.meta?.total || items.length };
   }, []);
 
   const {
@@ -76,7 +76,7 @@ export default function TagList() {
     if (!canSubmitAdd) { setAddError(getMessage('TAG-E-001')); return; }
     setAdding(true); setAddError(''); setSuccess('');
     try {
-      await api.post('/tags', addForm);
+      await api.post('/admin/tags', addForm);
       setAddForm(emptyForm);
       setAddModalOpen(false);
       setSuccess(getMessage('TAG-S-001'));
@@ -102,7 +102,7 @@ export default function TagList() {
   const handleSave = async (id) => {
     setSaving(true); setError(''); setSuccess('');
     try {
-      await api.put(`/tags/${id}`, editForm);
+      await api.put(`/admin/tags/${id}`, editForm);
       setEditingId(null);
       setSuccess(getMessage('TAG-S-002'));
       load();
@@ -117,7 +117,7 @@ export default function TagList() {
   const confirmDelete = async () => {
     setDeleting(true); setError(''); setSuccess('');
     try {
-      await api.delete(`/tags/${deleteModal.id}`);
+      await api.delete(`/admin/tags/${deleteModal.id}`);
       setDeleteModal({ open: false, id: null, name: '' });
       setSuccess(getMessage('TAG-S-003'));
       load();

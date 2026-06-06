@@ -46,7 +46,7 @@ exports.getAdminTags = async (req, res) => {
 
     const offset = (page - 1) * limit;
 
-    const query = db('tags');
+    const query = db('tags').whereNull('deleted_at');
 
     if (search) {
       query.where('name', 'ilike', `%${search}%`);

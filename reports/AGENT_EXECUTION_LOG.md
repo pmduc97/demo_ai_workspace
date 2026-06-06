@@ -1,3 +1,21 @@
+### [2026-06-06 12:00:00] - docs-agent
+- **Task**: Tạo tài liệu Test Case ITa cho tính năng Quản lý Tags
+- **Skill Used**: doc-ita-implement
+- **Target Feature**: admin_tags
+- **Files Processed**:
+  - `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_TAG_LIST_QuanLyTags.md` [Modified]
+- **Status**: SUCCESS
+- **Notes**: Đã tạo file Test Case ITa bao phủ các Viewpoint (Validation, Happy Path, Permission, Advanced) theo đúng chuẩn `doc-ita-implement`.
+
+### [2026-06-06 12:00:00] - docs-agent
+- **Task**: Tạo và review tài liệu Test Case ITa cho tính năng Quản lý Tags
+- **Skill Used**: doc-ita-implement, doc-ita-review
+- **Target Feature**: admin_tags
+- **Files Processed**:
+  - `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_TAG_LIST_QuanLyTags.md` [Created]
+- **Status**: SUCCESS
+- **Notes**: Đã tạo file Test Case ITa bao phủ các Viewpoint (Validation, Happy Path, Permission, Advanced). Đã tự review và đạt 100/100 điểm.
+
 ### [2026-06-06] - test-agent
 - **Task**: Viết Unit Test cho tính năng Tags (API28-API32)
 - **Skill Used**: test-suite
@@ -346,3 +364,15 @@ Residual risks:
   - `demo_docs/fe/[Design][SCREEN] ADMIN_TAG_LIST_QuanLyTags.md` [Created]
 - **Status**: SUCCESS
 - **Notes**: Đã tạo tài liệu thiết kế màn hình Quản lý Tags theo đúng chuẩn 12 sections + Change Log, tương tự màn hình Quản lý Danh mục.
+
+## Playwright Agent - ITa Qu?n l� Tags
+- **Date**: 2026-06-06
+- **Task**: Vi?t v� ch?y Playwright E2E tests cho t�nh nang Qu?n l� Tags (ITa)
+- **Status**: Ho�n th�nh (C� bug app)
+- **Details**: �� t?o POM \AdminTagListPage.ts\ v� test spec \dmin-tags.spec.ts\. �� ch?y test v� ph�t hi?n bug mismatch gi?a FE v� BE (FE g?i \POST /api/tags\ nhung BE ch? c� \POST /api/admin/tags\). C�c test case validation UI pass, c�c test case g?i API th�m/s?a/x�a fail do bug n�y.
+
+## Playwright Agent - ITa Qu?n l� Tags
+- **Date**: 2026-06-06
+- **Task**: Vi?t v� ch?y Playwright E2E tests cho t�nh nang Qu?n l� Tags (ITa)
+- **Status**: SUCCESS
+- **Details**: �� t?o POM \AdminTagListPage.ts\ v� test spec \dmin-tags.spec.ts\. �� fix bug mismatch route gi?a FE v� BE (d?i \/api/tags\ th�nh \/api/admin/tags\ trong FE). �� fix l?i timeout khi search trong test script. T?t c? 6/6 test cases (Validation, Happy Path, Search, Error) d?u PASS 100%.

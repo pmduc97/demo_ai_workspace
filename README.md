@@ -271,11 +271,11 @@ npx knex seed:run
 ### Chạy development
 
 ```powershell
-# Terminal 1 — Backend (port 3000)
+# Terminal 1 — Backend (port 3001)
 cd demo_source_be
 npm run dev
 
-# Terminal 2 — Frontend (port 5173)
+# Terminal 2 — Frontend (port 3000)
 cd demo_source_fe
 npm run dev
 ```

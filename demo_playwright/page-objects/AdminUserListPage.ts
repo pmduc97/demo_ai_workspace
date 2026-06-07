@@ -78,7 +78,7 @@ export class AdminUserListPage {
     await row.getByRole('button', { name: /admin|member/i }).click();
     await expect(this.page.getByText('Xác nhận đổi role')).toBeVisible();
     const responsePromise = this.page.waitForResponse(response => response.url().includes('/api/admin/users/') && response.url().includes('/role') && response.status() === 200);
-    await this.page.getByRole('button', { name: `Đổi thành ${nextRole}` }).click();
+    await this.page.getByRole('button', { name: new RegExp(`Đổi thành ${nextRole}`, 'i') }).click();
     await responsePromise;
   }
 

@@ -11,6 +11,7 @@ test.describe('ITa: Kiểm thử chức năng Quản Lý Danh Mục', () => {
   test.beforeAll(async () => {
     const client = new Client({ host: 'db.tvsdhpzpqxobkkotuhkh.supabase.co', port: 5432, database: 'postgres', user: 'postgres', password: 'trteam10T@123' });
     await client.connect();
+    await client.query(`DELETE FROM posts WHERE category_id IN (SELECT id FROM categories WHERE slug IN ('duplicate-slug', 'test-category-1', 'test-category-2'));`);
     await client.query(`DELETE FROM categories WHERE slug LIKE 'ita-category-%' OR slug IN ('duplicate-slug', 'test-category-1', 'test-category-2');`);
     await client.query(`
       INSERT INTO users (email, password_hash, name, role, status) VALUES
@@ -22,7 +23,7 @@ test.describe('ITa: Kiểm thử chức năng Quản Lý Danh Mục', () => {
       ('Duplicate Slug', 'duplicate-slug', 'Category for duplicate slug test', 'active'),
       ('Test Category 1', 'test-category-1', 'Test category 1', 'active'),
       ('Test Category 2', 'test-category-2', 'Test category 2', 'hidden')
-      ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, description = EXCLUDED.description, status = EXCLUDED.status, deleted_at = NULL;
+      ON CONFLICT (slug) WHERE deleted_at IS NULL DO UPDATE SET name = EXCLUDED.name, description = EXCLUDED.description, status = EXCLUDED.status;
     `);
     await client.end();
   });
@@ -32,14 +33,14 @@ test.describe('ITa: Kiểm thử chức năng Quản Lý Danh Mục', () => {
   });
 
   test('TC_CAT_01: Hiển thị danh sách danh mục mặc định', async ({ page }, testInfo) => {
-    await categoryPage.openWithAdmin();
+    await categoryPage.openWithAdmin('ita.admin.category@hoianblog.vn');
     await expect(categoryPage.table).toBeVisible();
     await expect(categoryPage.rowBySlug('test-category-1')).toBeVisible();
     await captureEvidence(page, testInfo, 'TC_CAT_01-Success');
   });
 
   test('TC_CAT_02: Tạo mới danh mục bằng popup', async ({ page }, testInfo) => {
-    await categoryPage.openWithAdmin();
+    await categoryPage.openWithAdmin('ita.admin.category@hoianblog.vn');
     await categoryPage.createCategory({ name: 'ITa Category New', slug: 'ita-category-new', description: 'Mô tả ITa', status: 'active' });
     await categoryPage.search('ITa Category New');
     await expect(categoryPage.rowBySlug('ita-category-new')).toBeVisible();
@@ -47,7 +48,7 @@ test.describe('ITa: Kiểm thử chức năng Quản Lý Danh Mục', () => {
   });
 
   test('TC_CAT_03: Xem popup chi tiết danh mục', async ({ page }, testInfo) => {
-    await categoryPage.openWithAdmin();
+    await categoryPage.openWithAdmin('ita.admin.category@hoianblog.vn');
     await categoryPage.search('Test Category 1');
     await categoryPage.openDetailByName('Test Category 1');
     await expect(categoryPage.detailModal).toContainText('test-category-1');
@@ -55,7 +56,7 @@ test.describe('ITa: Kiểm thử chức năng Quản Lý Danh Mục', () => {
   });
 
   test('TC_CAT_04: Xóa mềm danh mục', async ({ page }, testInfo) => {
-    await categoryPage.openWithAdmin();
+    await categoryPage.openWithAdmin('ita.admin.category@hoianblog.vn');
     await categoryPage.search('Test Category 2');
     await categoryPage.deleteCategory('Test Category 2');
     await expect(categoryPage.rowByName('Test Category 2')).toHaveCount(0);

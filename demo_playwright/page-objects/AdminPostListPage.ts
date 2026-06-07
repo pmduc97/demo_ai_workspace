@@ -37,16 +37,16 @@ export class AdminPostListPage {
     await this.page.waitForURL(/\/admin\/(dashboard|users|posts|categories)/);
   }
 
-  async openWithAdmin() {
-    await this.loginAs('admin@hoianblog.vn', 'password123');
+  async openWithAdmin(email = 'admin@hoianblog.vn', password = 'password123') {
+    await this.loginAs(email, password);
     await this.page.locator('a[href="/admin/posts"]').first().click();
     await expect(this.page).toHaveURL(/\/admin\/posts/);
     await expect(this.searchInput).toBeVisible();
     await expect(this.createButton).toBeVisible();
   }
 
-  async openWithMember() {
-    await this.loginAs('member@hoianblog.vn', 'password123');
+  async openWithMember(email = 'member@hoianblog.vn', password = 'password123') {
+    await this.loginAs(email, password);
     await this.page.locator('a[href="/admin/posts"]').first().click();
     await expect(this.page).toHaveURL(/\/admin\/posts/);
     await expect(this.searchInput).toBeVisible();

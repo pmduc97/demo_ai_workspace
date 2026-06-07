@@ -20,9 +20,11 @@ test.describe('ITa: Kiểm thử chức năng Quản Lý Bài Viết', () => {
       ('ita.member.post@hoianblog.vn', $1, 'ITa Member Post', 'member', 'active')
       ON CONFLICT (email) DO UPDATE SET password_hash = EXCLUDED.password_hash, role = EXCLUDED.role, status = 'active';
     `, [PASSWORD_HASH]);
+    await client.query(`DELETE FROM posts WHERE category_id IN (SELECT id FROM categories WHERE slug = 'ita-post-category');`);
+    await client.query(`DELETE FROM categories WHERE slug = 'ita-post-category';`);
     await client.query(`
       INSERT INTO categories (name, slug, status) VALUES ('ITa Post Category', 'ita-post-category', 'active')
-      ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, status = 'active', deleted_at = NULL;
+      ON CONFLICT (slug) WHERE deleted_at IS NULL DO UPDATE SET name = EXCLUDED.name, status = 'active';
     `);
     await client.query(`
       INSERT INTO posts (title, slug, content, author_id, category_id, status, view_count)
@@ -42,21 +44,21 @@ test.describe('ITa: Kiểm thử chức năng Quản Lý Bài Viết', () => {
   });
 
   test('TC_POST_01: Hiển thị danh sách bài viết mặc định', async ({ page }, testInfo) => {
-    await postPage.openWithAdmin();
+    await postPage.openWithAdmin('ita.admin.post@hoianblog.vn');
     await expect(postPage.table).toBeVisible();
     await expect(postPage.rowByTitle('ITa Post Draft')).toBeVisible();
     await captureEvidence(page, testInfo, 'TC_POST_01-Success');
   });
 
   test('TC_POST_02: Tìm kiếm bài viết theo tiêu đề', async ({ page }, testInfo) => {
-    await postPage.openWithAdmin();
+    await postPage.openWithAdmin('ita.admin.post@hoianblog.vn');
     await postPage.search('ITa Post Draft');
     await expect(postPage.rowByTitle('ITa Post Draft')).toBeVisible();
     await captureEvidence(page, testInfo, 'TC_POST_02-Search');
   });
 
   test('TC_POST_03: Tạo mới bài viết bằng popup', async ({ page }, testInfo) => {
-    await postPage.openWithAdmin();
+    await postPage.openWithAdmin('ita.admin.post@hoianblog.vn');
     await postPage.createPost({ title: 'ITa Post New', slug: 'ita-post-new', categoryName: 'ITa Post Category', content: 'Nội dung ITa Post New', status: 'draft' });
     await postPage.search('ITa Post New');
     await expect(postPage.rowByTitle('ITa Post New')).toBeVisible();
@@ -64,7 +66,7 @@ test.describe('ITa: Kiểm thử chức năng Quản Lý Bài Viết', () => {
   });
 
   test('TC_POST_04: Đổi trạng thái bài viết', async ({ page }, testInfo) => {
-    await postPage.openWithAdmin();
+    await postPage.openWithAdmin('ita.admin.post@hoianblog.vn');
     await postPage.search('ITa Post Draft');
     await postPage.toggleStatus('ITa Post Draft');
     await expect(page.getByText('Đổi trạng thái bài viết thành công')).toBeVisible();
@@ -72,7 +74,7 @@ test.describe('ITa: Kiểm thử chức năng Quản Lý Bài Viết', () => {
   });
 
   test('TC_POST_05: Xóa bài viết', async ({ page }, testInfo) => {
-    await postPage.openWithAdmin();
+    await postPage.openWithAdmin('ita.admin.post@hoianblog.vn');
     await postPage.search('ITa Post Delete');
     await postPage.deletePost('ITa Post Delete');
     await expect(postPage.rowByTitle('ITa Post Delete')).toHaveCount(0);

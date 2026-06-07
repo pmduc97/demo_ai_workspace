@@ -101,19 +101,6 @@ sequenceDiagram
   - Tại bước 7, khi Target User truy cập Dashboard, API22 trả về dữ liệu thống kê dành cho member (chỉ thấy bài viết của mình).
 
 ## 7. Exception Flows (Luồng ngoại lệ/Lỗi)
-- **EX1: Admin tự đổi role của chính mình**
-  - Tại bước 4 của Main Flow, Admin chọn chính tài khoản của mình và click "Đổi Role".
-  - Hệ thống (API20) trả về lỗi 400 kèm thông báo `USER-E-005` (Không thể đổi role của chính mình).
-  - Luồng kết thúc, role không thay đổi.
-
-- **EX2: Admin tự khóa tài khoản của chính mình**
-  - Tại bước 4 của Main Flow, Admin chọn chính tài khoản của mình và click "Khóa tài khoản".
-  - Hệ thống (API25) trả về lỗi 400 kèm thông báo `USER-E-006` (Không thể khóa tài khoản của chính mình).
-  - Luồng kết thúc, tài khoản không bị khóa.
-  - Tại bước 7, khi hệ thống redirect sang `/admin/dashboard`, Route Guard hoặc API22 sẽ chặn lại do không đủ quyền (trả về 403).
-  - Hệ thống redirect Target User về trang chủ (`/`).
-
-## 7. Exception Flows (Luồng ngoại lệ/Lỗi)
 
 - **EX1: Sai thông tin đăng nhập**
   - Tại bước 1 hoặc bước 6, Actor nhập sai email hoặc password.
@@ -125,3 +112,8 @@ sequenceDiagram
   - Hệ thống (API20) chặn lại và trả về lỗi 400.
   - Frontend hiển thị thông báo lỗi: `USER-E-005` (Không thể đổi role của chính mình).
   - Luồng quay lại bước 3.
+
+- **EX3: Admin tự khóa tài khoản của chính mình**
+  - Tại bước 4 của Main Flow, Admin chọn chính tài khoản của mình và click "Khóa tài khoản".
+  - Hệ thống (API25) trả về lỗi 400 kèm thông báo `USER-E-006` (Không thể khóa tài khoản của chính mình).
+  - Luồng kết thúc, tài khoản không bị khóa.

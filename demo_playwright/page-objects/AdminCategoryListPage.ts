@@ -85,7 +85,7 @@ export class AdminCategoryListPage {
 
     // Add Modal
     this.addModal = page.locator('div.fixed').filter({ has: page.getByText('Thêm danh mục') });
-    this.addModalTitle = page.getByText('Thêm danh mục');
+    this.addModalTitle = page.getByRole('heading', { name: 'Thêm danh mục' });
     // Scoped vào modal để tránh conflict với inline edit
     this.addNameInput = this.addModal.getByPlaceholder('Tên danh mục');
     this.addSlugInput = this.addModal.getByPlaceholder('slug-danh-muc');
@@ -118,8 +118,8 @@ export class AdminCategoryListPage {
   }
 
   /** Login admin + navigate via sidebar link để tránh AuthContext race condition */
-  async openWithAdmin() {
-    await this.loginAs('admin@hoianblog.vn', 'password123');
+  async openWithAdmin(email = 'admin@hoianblog.vn', password = 'password123') {
+    await this.loginAs(email, password);
     await this.page.locator('a[href="/admin/categories"]').first().click();
     await expect(this.page).toHaveURL(/\/admin\/categories/);
     await expect(this.searchInput).toBeVisible();

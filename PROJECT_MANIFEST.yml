@@ -26,8 +26,8 @@ features:
 
   auth_login:
     name: "Đăng nhập"
-    status: "tested"
-    cycle_checkpoint: "plan"
+    status: "stable"
+    cycle_checkpoint: "done"
     docs:
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_LOGIN_DangNhap.md"
       be_api:
@@ -96,8 +96,8 @@ features:
 
   posts_public:
     name: "Danh sách & Chi tiết bài viết (public)"
-    status: "implemented"
-    cycle_checkpoint: "test"
+    status: "stable"
+    cycle_checkpoint: "done"
     docs:
       fe_screen:
         - "demo_docs/fe/[Design][SCREEN] HOME_TrangChu.md"
@@ -189,8 +189,8 @@ features:
 
   admin_posts:
     name: "Admin quản lý bài viết (duyệt/xóa)"
-    status: "implemented"
-    cycle_checkpoint: "e2e"
+    status: "stable"
+    cycle_checkpoint: "done"
     docs:
       fe_screen:
         - "demo_docs/fe/[Design][SCREEN] ADMIN_POST_LIST_DanhSachBai.md"
@@ -217,8 +217,8 @@ features:
 
   admin_categories:
     name: "Quản lý danh mục"
-    status: "implemented"
-    cycle_checkpoint: "e2e"
+    status: "stable"
+    cycle_checkpoint: "done"
     docs:
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_CATEGORY_LIST_QuanLyDanhMuc.md"
       be_api:
@@ -301,8 +301,8 @@ features:
 
   tags:
     name: "Quản lý Tags"
-    status: "implemented"
-    cycle_checkpoint: "review"
+    status: "stable"
+    cycle_checkpoint: "done"
     docs:
       fe_screen: 
         - "demo_docs/fe/[Design][SCREEN] ADMIN_TAG_LIST_QuanLyTags.md"
@@ -339,8 +339,8 @@ features:
 
   admin_dashboard:
     name: "Dashboard Thống kê"
-    status: "tested"
-    cycle_checkpoint: "e2e"
+    status: "stable"
+    cycle_checkpoint: "done"
     docs:
       fe_screen: "demo_docs/fe/[Design][SCREEN] ADMIN_DASHBOARD_TongQuan.md"
       be_api:

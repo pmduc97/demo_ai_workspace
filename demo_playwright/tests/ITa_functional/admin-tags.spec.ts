@@ -1,9 +1,23 @@
 import { test, expect } from '@playwright/test';
 import { AdminTagListPage } from '../../page-objects/AdminTagListPage';
 import { captureEvidence } from '../../utils/evidence';
+import { Client } from 'pg';
+
+const PASSWORD_HASH = '$2b$10$Q/sIfyktWXWUzv9f9JYHqOhbvIXUEWTsRewKBh0oRMukaoAyw1WXC';
 
 test.describe('ITa: Quản lý Tags', () => {
   let tagPage: AdminTagListPage;
+
+  test.beforeAll(async () => {
+    const client = new Client({ host: 'db.tvsdhpzpqxobkkotuhkh.supabase.co', port: 5432, database: 'postgres', user: 'postgres', password: 'trteam10T@123' });
+    await client.connect();
+    await client.query(`
+      INSERT INTO users (email, password_hash, name, role, status) VALUES
+      ('admin@hoianblog.vn', $1, 'Admin', 'admin', 'active')
+      ON CONFLICT (email) DO UPDATE SET password_hash = EXCLUDED.password_hash, role = 'admin', status = 'active';
+    `, [PASSWORD_HASH]);
+    await client.end();
+  });
 
   test.beforeEach(async ({ page, request }) => {
     // Login via API

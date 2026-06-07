@@ -9,17 +9,23 @@ export default function PostDetailPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    let mounted = true;
     setLoading(true);
     setError(null);
     api.get(`/posts/${slug}`)
       .then((r) => {
-        setPost(r.data);
-        setLoading(false);
+        if (mounted) {
+          setPost(r.data);
+          setLoading(false);
+        }
       })
       .catch((err) => {
-        setError(err.response?.status === 404 ? 'Bài viết không tồn tại' : 'Đã có lỗi xảy ra');
-        setLoading(false);
+        if (mounted) {
+          setError(err.response?.status === 404 ? 'Bài viết không tồn tại' : 'Đã có lỗi xảy ra');
+          setLoading(false);
+        }
       });
+    return () => { mounted = false; };
   }, [slug]);
 
   if (loading) {

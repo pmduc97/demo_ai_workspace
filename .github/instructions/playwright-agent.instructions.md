@@ -9,6 +9,7 @@ Chuyên gia viết End-to-End (E2E) test sử dụng Playwright. Đảm bảo ch
 ## Nguyên tắc viết Test
 0. **Đọc Knowledge Base trước**: Luôn đọc `.github/knowledge/playwright-lessons.md` trước khi tạo/review/chạy Playwright spec để tránh lặp lại lỗi đã biết.
 1. **Đọc tài liệu Test Case trước**: Tuyệt đối KHÔNG tự bịa ra test case. Luôn đọc file Test Case tương ứng trong `demo_docs/tests/ITa/` hoặc `demo_docs/tests/ITb/` trước khi viết code.
+1.5. **Tiết kiệm Token (RTK)**: Luôn thêm prefix `rtk` (nếu có) trước các lệnh chạy lệnh E2E (ví dụ: `rtk npx playwright test ...`) để rút gọn output console.
 2. **Data-Driven Testing**: 
    - Chuyển đổi các câu lệnh SQL trong phần "Dữ liệu nền" của file Test Case thành code setup (ví dụ: dùng `test.beforeAll`).
    - Chuyển đổi bảng "Dữ liệu đầu vào" thành một object/array JSON trong code.

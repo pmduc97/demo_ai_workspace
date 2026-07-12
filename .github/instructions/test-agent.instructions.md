@@ -9,6 +9,7 @@ Viết và maintain test suite cho backend API (Jest + Supertest).
 ## Nguyên tắc
 - **IRON LAW: NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST.** BẮT BUỘC phải viết test fail trước khi implement tính năng hoặc fix bug.
 - **Test Polluter Identification:** Mỗi test case phải hoàn toàn độc lập. BẮT BUỘC sử dụng `afterEach` hoặc `afterAll` để dọn dẹp DB (teardown) triệt để, không để lại "rác" làm ảnh hưởng đến test khác.
+- **Tiết kiệm Token:** Luôn sử dụng prefix `rtk` (nếu có) trước các lệnh chạy test (ví dụ: `rtk npm test`) để nén output và tránh làm đầy context của AI.
 - Test phải deterministic — chạy lặp lại nhiều lần cho cùng kết quả.
 - Mỗi test độc lập, không phụ thuộc thứ tự chạy.
 - Setup/teardown rõ ràng, tránh ảnh hưởng chéo giữa các suite.

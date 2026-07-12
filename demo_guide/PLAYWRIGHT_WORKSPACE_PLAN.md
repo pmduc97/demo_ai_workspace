@@ -258,20 +258,25 @@ test-cases/    [ITa] TC_{ScreenCode}_{FeatureName}.md
 
 Dưới đây là các tài liệu mẫu từ dự án Demo để team tham khảo cách một luồng Playwright được triển khai thực tế. Các file này đã được commit lên hệ thống.
 
-### 6.1. Input (Tài liệu đầu vào)
-- **Tài liệu Basic Design (Markdown):** `project_documents/basic-design/` (Ví dụ: `demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md`)
-- **Tài liệu Test Case (ITa/ITb):** `project_documents/test-cases/` (Ví dụ: `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_USER_LIST_QuanLyNguoiDung.md`)
-- **Dữ liệu mầm (Sample Data):** `demo_playwright/chunk02-tc12.json` hoặc `smoke-result.json`
+### 6.1. Ánh xạ Tài liệu (Inputs) và Code (Outputs)
 
-### 6.2. Mã Nguồn Test (Test Code)
-- **Cấu hình (Config):** `demo_playwright/playwright.config.ts`
-- **Page Object Model (POM):** `demo_playwright/page-objects/`
-- **Test Scripts:** `demo_playwright/tests/ITa_functional/` và `demo_playwright/tests/ITb_scenarios/`
-- **Utils (Fixture, Helpers):** `demo_playwright/utils/evidence.ts`
+Bảng dưới đây minh họa sự liên kết giữa tài liệu phân tích (Input) và Test Code (Output) được sinh ra bởi AI cho 2 phạm vi test: ITa (Chức năng) và ITb (Luồng nghiệp vụ).
 
-### 6.3. Báo Cáo & Bằng Chứng (Outputs & Evidence)
-- **Test Results (Dữ liệu raw):** `demo_playwright/test-results/` (Chứa ảnh chụp màn hình, video quay màn hình khi test fail hoặc trace).
-- **Playwright Report (Báo cáo HTML):** `demo_playwright/playwright-report/index.html` (Mở file này bằng trình duyệt để xem báo cáo test hoàn chỉnh với giao diện UI của Playwright).
-- **Evidence thư mục:** `demo_playwright/evidence/` (Chứa các screenshots và videos lưu lại quá trình chạy test).
+| Phạm vi (Scope) | Nguồn Dữ Liệu (Inputs) | Mã Nguồn Test (Outputs) |
+|---|---|---|
+| **ITa (Chức năng)** <br> *(Ví dụ: Quản lý Người Dùng)* | - **Basic Design:** `demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md` <br> - **Test Case:** `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_USER_LIST_QuanLyNguoiDung.md` | - **Page Object:** Các file trong `demo_playwright/page-objects/` <br> - **Test Script:** `demo_playwright/tests/ITa_functional/admin-users.01-list.spec.ts` |
+| **ITb (Luồng)** <br> *(Ví dụ: Member quản lý bài)* | - **Workflow:** (Tài liệu luồng nghiệp vụ tương ứng) <br> - **Test Case:** `demo_docs/tests/ITb/[Test][ITb] TC_WF_Member_Manage_Posts.md` | - **Page Object:** Tái sử dụng các POM hiện có. <br> - **Test Script:** `demo_playwright/tests/ITb_scenarios/member-posts.01-manage.spec.ts` |
 
-> **💡 Mẹo xem Báo cáo:** Để xem `playwright-report`, tốt nhất bạn không mở thẳng file `index.html` trong VSCode vì nó có thể không load được CSS/JS. Hãy mở terminal và chạy lệnh `npx playwright show-report demo_playwright/playwright-report`.
+### 6.2. Cấu hình & Bằng chứng (Config & Evidence)
+
+Bên cạnh code test, hãy tham khảo cách tổ chức báo cáo, dữ liệu động và công cụ hỗ trợ:
+
+| Thành phần | Đường dẫn thư mục / File | Chú thích |
+|---|---|---|
+| **Cấu hình Core** | `demo_playwright/playwright.config.ts` | File cấu hình gốc của Playwright. |
+| **Tiện ích (Utils)** | `demo_playwright/utils/evidence.ts` | Custom fixture để chụp ảnh màn hình và xử lý các thao tác dùng chung. |
+| **Dữ liệu Mock** | `demo_playwright/chunk02-tc12.json`<br>`demo_playwright/smoke-result.json` | Dữ liệu mẫu thô. |
+| **Báo cáo HTML** | `demo_playwright/playwright-report/` | Báo cáo UI đầy đủ nhất. Chạy lệnh: <br>`npx playwright show-report demo_playwright/playwright-report` |
+| **Evidence** | `demo_playwright/test-results/` | File lưu ảnh chụp màn hình, video và zip trace của luồng test. |
+
+> **💡 Lời khuyên:** Hãy mở file Test Case Markdown lên ở một tab, sau đó mở file Test Code (`.spec.ts`) tương ứng ở tab bên cạnh để thấy rõ AI đã bám sát từng Step trong tài liệu như thế nào!

@@ -5,6 +5,71 @@
 
 ---
 
+## 0. Tổng Quan Kiến Trúc & Quy Trình (The Big Picture)
+
+Dành cho các thành viên mới, quy trình dưới đây mô tả cách hệ thống vận hành. Mục tiêu cốt lõi của chúng ta là **giảm tối đa việc viết code test thủ công**, mà sử dụng AI đọc tài liệu và sinh code Playwright tự động.
+
+```mermaid
+graph TD
+    %% Định nghĩa các nhóm
+    subgraph Input ["1. Nguồn dữ liệu (Inputs)"]
+        A1[Tài liệu Excel: Basic Design]
+        A2[Tài liệu Excel: IT Test Cases]
+        A3[(Database Môi Trường Test)]
+    end
+
+    subgraph PreBuild ["2. Công Cụ Chuẩn Bị (Pre-build)"]
+        B1[Tool Convert: Excel -> Markdown]
+        B2[Tool: MCP DB Sampler]
+    end
+
+    subgraph Workspace ["3. Không Gian Làm Việc (Workspace)"]
+        C1[Thư mục: project_documents/ <br> Chứa Markdown files]
+        C2[Thư mục: .github/ <br> Chứa Rules & AI Agents]
+        C3[GitHub Copilot Chat]
+    end
+
+    subgraph Output ["4. Thực thi & Kết quả (Execution)"]
+        D1(AI Playwright Agent)
+        D2[File: *.spec.ts]
+        D3(Playwright Runner)
+        D4[Test Report HTML + Video Evidence]
+    end
+
+    %% Luồng đi
+    A1 -->|Convert| B1
+    A2 -->|Convert| B1
+    B1 -->|Sinh ra| C1
+    
+    A3 <-->|Truy vấn Dữ liệu| B2
+    B2 -.->|Cung cấp Data thật| C3
+
+    C1 -->|Làm Context| C3
+    C2 -->|Quy định luật code| C3
+    
+    C3 -->|Ra lệnh| D1
+    D1 -->|Sinh ra code| D2
+    D2 -->|Thực thi| D3
+    D3 -->|Kết quả| D4
+
+    classDef input fill:#e1f5fe,stroke:#03a9f4,stroke-width:2px,color:#000;
+    classDef process fill:#fff3e0,stroke:#ff9800,stroke-width:2px,color:#000;
+    classDef core fill:#e8f5e9,stroke:#4caf50,stroke-width:2px,color:#000;
+    classDef output fill:#fce4ec,stroke:#e91e63,stroke-width:2px,color:#000;
+    
+    class A1,A2,A3 input;
+    class B1,B2 process;
+    class C1,C2,C3 core;
+    class D1,D2,D3,D4 output;
+```
+
+> **Giải thích ngắn gọn:** 
+> - Vì AI (Copilot) đọc file Excel (nhị phân) rất kém, ta cần bước (2) để convert tài liệu sang Markdown (Text). 
+> - Đồng thời AI không tự bịa ra được user/pass test hợp lệ, nên ta dùng Tool (DB Sampler) để AI chui thẳng vào Database (3) lấy data mẫu.
+> - Khi có đủ Context (Tài liệu MD) và Rules (trong `.github/`), ta chỉ việc chat với AI Agent để nó tự sinh ra code Test (4).
+
+---
+
 ## 1. Thông Tin Dự Án
 
 | Trường | Giá trị |
@@ -186,3 +251,27 @@ test-cases/    [ITa] TC_{ScreenCode}_{FeatureName}.md
 - Các bước có thể làm song song: 4.1, 4.2, 4.3 (không phụ thuộc nhau)
 - Bước 4.4 nên làm sau khi có tài liệu markdown để agent có context test ngay
 - Tool convert Excel (4.1/4.2) có thể dùng chung một codebase, chỉ khác template output
+
+---
+
+## 6. Mẫu Tham Khảo (Sample Reference)
+
+Dưới đây là các tài liệu mẫu từ dự án Demo để team tham khảo cách một luồng Playwright được triển khai thực tế. Các file này đã được commit lên hệ thống.
+
+### 6.1. Input (Tài liệu đầu vào)
+- **Tài liệu Basic Design (Markdown):** `project_documents/basic-design/` (Ví dụ: `demo_docs/fe/[Design][SCREEN] ADMIN_USER_LIST_QuanLyNguoiDung.md`)
+- **Tài liệu Test Case (ITa/ITb):** `project_documents/test-cases/` (Ví dụ: `demo_docs/tests/ITa/[Test][ITa] TC_ADMIN_USER_LIST_QuanLyNguoiDung.md`)
+- **Dữ liệu mầm (Sample Data):** `demo_playwright/chunk02-tc12.json` hoặc `smoke-result.json`
+
+### 6.2. Mã Nguồn Test (Test Code)
+- **Cấu hình (Config):** `demo_playwright/playwright.config.ts`
+- **Page Object Model (POM):** `demo_playwright/page-objects/`
+- **Test Scripts:** `demo_playwright/tests/ITa_functional/` và `demo_playwright/tests/ITb_scenarios/`
+- **Utils (Fixture, Helpers):** `demo_playwright/utils/evidence.ts`
+
+### 6.3. Báo Cáo & Bằng Chứng (Outputs & Evidence)
+- **Test Results (Dữ liệu raw):** `demo_playwright/test-results/` (Chứa ảnh chụp màn hình, video quay màn hình khi test fail hoặc trace).
+- **Playwright Report (Báo cáo HTML):** `demo_playwright/playwright-report/index.html` (Mở file này bằng trình duyệt để xem báo cáo test hoàn chỉnh với giao diện UI của Playwright).
+- **Evidence thư mục:** `demo_playwright/evidence/` (Chứa các screenshots và videos lưu lại quá trình chạy test).
+
+> **💡 Mẹo xem Báo cáo:** Để xem `playwright-report`, tốt nhất bạn không mở thẳng file `index.html` trong VSCode vì nó có thể không load được CSS/JS. Hãy mở terminal và chạy lệnh `npx playwright show-report demo_playwright/playwright-report`.
